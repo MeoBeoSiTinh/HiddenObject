@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfde7fe9ced4cbb4ca400d0961cd4868, type: 3}
+  m_Name: LevelData
+  m_EditorClassIdentifier: 
+  data:
+  - LevelName: 0
+    target:
+    - TargetName: dog
+      TargetPrefab: {fileID: 912024706468662085, guid: 7d85f800356dc1048b8a2865a8e353d4, type: 3}
+    - TargetName: soc
+      TargetPrefab: {fileID: 4202135088714870730, guid: 43c6a5c7e38bb2a48b9b44f6d7a12b10, type: 3}
+    LevelPrefab: {fileID: 6459041796909485137, guid: 70e5c6ebb87f8e44b9e60e1d75ac0bcb, type: 3}
+  - LevelName: 1
+    target:
+    - TargetName: dog
+      TargetPrefab: {fileID: 912024706468662085, guid: 7d85f800356dc1048b8a2865a8e353d4, type: 3}
+    - TargetName: soc
+      TargetPrefab: {fileID: 4202135088714870730, guid: 43c6a5c7e38bb2a48b9b44f6d7a12b10, type: 3}
+    LevelPrefab: {fileID: 6459041796909485137, guid: 70e5c6ebb87f8e44b9e60e1d75ac0bcb, type: 3}
