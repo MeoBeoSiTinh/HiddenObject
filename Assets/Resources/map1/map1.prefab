@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8188852125779882784}
   - component: {fileID: 8323339086745227722}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 68
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2404509660195796508}
   - component: {fileID: 8921836601415482895}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 19
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -178,7 +178,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8084124800493621219}
   - component: {fileID: 2627258335318100220}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 77
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -262,7 +262,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6054103061710985951}
   - component: {fileID: 2623951801817723887}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 52
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -346,7 +346,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5279107310113418707}
   - component: {fileID: 8409673817850543091}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -430,7 +430,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6859920650531458805}
   - component: {fileID: 5622832375237976387}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 33
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -514,7 +514,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1376558562432805350}
   - component: {fileID: 5069169339254856422}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 22
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -598,7 +598,7 @@ GameObject:
   m_Component:
   - component: {fileID: 814898812799132141}
   - component: {fileID: 7278697863424937665}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 49
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -682,7 +682,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6714696625840604580}
   - component: {fileID: 1677010863589513220}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 37
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -766,7 +766,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5333276314909467259}
   - component: {fileID: 5132342968061737650}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 74
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -850,7 +850,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5939991128276366134}
   - component: {fileID: 1198008180971795296}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 71
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -934,7 +934,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2400837438595391077}
   - component: {fileID: 3588673937683278832}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1018,7 +1018,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6475687980103351301}
   - component: {fileID: 7814523716195406272}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 39
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1102,7 +1102,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3683171700055046014}
   - component: {fileID: 5393972146249333628}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 56
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1186,7 +1186,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7892919556825798353}
   - component: {fileID: 3232780899341811443}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 53
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1270,7 +1270,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5150801105126309339}
   - component: {fileID: 4778876937998080265}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1354,7 +1354,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2379200830769617319}
   - component: {fileID: 2025250788661779318}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 30
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1438,7 +1438,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9142411837909053037}
   - component: {fileID: 274906089346091285}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 40
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1522,7 +1522,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3615979374586406626}
   - component: {fileID: 1446576671324586318}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 61
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1606,7 +1606,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1353010015984667314}
   - component: {fileID: 77649305008550274}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 48
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1690,7 +1690,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4149350683710594260}
   - component: {fileID: 5265863314861688301}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 42
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1774,7 +1774,7 @@ GameObject:
   m_Component:
   - component: {fileID: 961064266040696319}
   - component: {fileID: 8914755222967549583}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 17
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1858,7 +1858,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7557783502364761805}
   - component: {fileID: 9050006010089985570}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1942,7 +1942,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6287182086964590444}
   - component: {fileID: 5251715351154886101}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2026,7 +2026,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1340096353911507910}
   - component: {fileID: 4547666940644162860}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 31
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2110,7 +2110,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2350167082365851544}
   - component: {fileID: 7596924335333726340}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 18
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2194,7 +2194,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6488182685523968802}
   - component: {fileID: 3238546039304513418}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 44
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2278,7 +2278,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4575956685434897682}
   - component: {fileID: 968485217878989610}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2362,7 +2362,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4376731220826330246}
   - component: {fileID: 1494284736049940284}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 25
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2446,7 +2446,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3507697869242875981}
   - component: {fileID: 5551758335794507977}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 12
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2530,7 +2530,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3741831039476167989}
   - component: {fileID: 621676338780215136}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 20
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2614,7 +2614,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4407501308518324744}
   - component: {fileID: 6528265630038803827}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 9
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2698,7 +2698,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5183165622872755221}
   - component: {fileID: 6621590737755181399}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 28
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2782,7 +2782,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5211883323201878318}
   - component: {fileID: 1054471532444119407}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 59
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2866,7 +2866,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7120446241933510397}
   - component: {fileID: 6134898434654148792}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 58
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2950,7 +2950,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6972045182958148842}
   - component: {fileID: 1361033042112149036}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 54
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3034,7 +3034,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5131159168933058478}
   - component: {fileID: 4114431265510960632}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 26
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3118,7 +3118,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4412663741390494591}
   - component: {fileID: 7955985033265038475}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 14
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3202,7 +3202,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6566645071225609558}
   - component: {fileID: 2662790761467974962}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 78
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3286,7 +3286,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8546082546406348821}
   - component: {fileID: 2226302112091765218}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 67
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3370,7 +3370,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8028287993309231550}
   - component: {fileID: 1054042306856754263}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 79
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3454,7 +3454,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4921109078554106558}
   - component: {fileID: 6644024355720962847}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 27
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3538,7 +3538,7 @@ GameObject:
   m_Component:
   - component: {fileID: 209693416387508733}
   - component: {fileID: 5314379613318584628}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 66
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3622,7 +3622,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6707291463739699091}
   - component: {fileID: 8620609118401810318}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 64
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3706,7 +3706,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5479968380211580421}
   - component: {fileID: 6257615880326237618}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 32
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3790,7 +3790,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7968878688766179679}
   - component: {fileID: 7687856508412176103}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 62
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3874,7 +3874,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6719159615717410213}
   - component: {fileID: 2022582328203897150}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3958,7 +3958,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1889296084469595851}
   - component: {fileID: 2887510583438952314}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 69
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4042,7 +4042,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6730591448614520618}
   - component: {fileID: 656440347170549865}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 46
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4126,7 +4126,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1945621439586980339}
   - component: {fileID: 4486030056818422785}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 21
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4210,7 +4210,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3284647690992964970}
   - component: {fileID: 8876519704198284468}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 41
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4294,7 +4294,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5140671483020655530}
   - component: {fileID: 1503093434597926881}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 16
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4378,7 +4378,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8771718630602360122}
   - component: {fileID: 6927125951029519089}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 72
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4462,7 +4462,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8856424486939358196}
   - component: {fileID: 9135518439130060599}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 23
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4546,7 +4546,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3847872020161033002}
   - component: {fileID: 5073260745252444381}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 65
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4630,7 +4630,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6086593754401877941}
   - component: {fileID: 6074811713964986340}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 29
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4714,7 +4714,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8964136022457290433}
   - component: {fileID: 5795395060573091323}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 34
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4798,7 +4798,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8573370375861293399}
   - component: {fileID: 6780185667906265448}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 76
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4882,7 +4882,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6570515219444055320}
   - component: {fileID: 6879799901295912871}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 55
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4966,7 +4966,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6837376619915285427}
   - component: {fileID: 1260243436068363392}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: map1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5134,7 +5134,7 @@ GameObject:
   - component: {fileID: 7533234791259243030}
   - component: {fileID: 7791662440042379693}
   - component: {fileID: 6658815090544617167}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: soc
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5251,7 +5251,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6041662647512605676}
   - component: {fileID: 143821969297155771}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 45
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5335,7 +5335,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3488486494385612270}
   - component: {fileID: 8009818653637203435}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 75
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5419,7 +5419,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4274490823652178778}
   - component: {fileID: 5816175138598554129}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 13
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5503,7 +5503,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8271045935903705274}
   - component: {fileID: 1140782741608040213}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 15
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5587,7 +5587,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8120591546938527495}
   - component: {fileID: 153293625271413151}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 70
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5671,7 +5671,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8494921238555122289}
   - component: {fileID: 2832441204470825466}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 35
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5755,7 +5755,7 @@ GameObject:
   m_Component:
   - component: {fileID: 570793965855209728}
   - component: {fileID: 3088977140210217506}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 36
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5839,7 +5839,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3083179645700634580}
   - component: {fileID: 2284325426219776245}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 43
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5923,7 +5923,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7900208586350511221}
   - component: {fileID: 2513372227413117593}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6007,7 +6007,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8201634531366211680}
   - component: {fileID: 6648894946369929844}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 38
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6091,7 +6091,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4184146383468964644}
   - component: {fileID: 3109463948573592678}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 47
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6175,7 +6175,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1488020330903100008}
   - component: {fileID: 2781557381795797692}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 57
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6261,7 +6261,7 @@ GameObject:
   - component: {fileID: 2297252241753084955}
   - component: {fileID: 3739957450344840843}
   - component: {fileID: 4093414418576812471}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: dog
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6378,7 +6378,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5617253549518934449}
   - component: {fileID: 4383603619593252356}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 24
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6462,7 +6462,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3071503747939311473}
   - component: {fileID: 3761618101816134261}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 50
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6546,7 +6546,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2351487183236529809}
   - component: {fileID: 4644727395616965034}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6630,7 +6630,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8483178293645039335}
   - component: {fileID: 8873314413443439585}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 60
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6714,7 +6714,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7538577254778327769}
   - component: {fileID: 6079902945678002639}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6798,7 +6798,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7886425197269264279}
   - component: {fileID: 134859307968006128}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 51
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6882,7 +6882,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7766338194815165011}
   - component: {fileID: 7003579566195491215}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 73
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6966,7 +6966,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7822694566005897770}
   - component: {fileID: 218867767503995164}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 63
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7050,7 +7050,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1238653212895095424}
   - component: {fileID: 2685038745023888966}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PNGObject 10
   m_TagString: Untagged
   m_Icon: {fileID: 0}

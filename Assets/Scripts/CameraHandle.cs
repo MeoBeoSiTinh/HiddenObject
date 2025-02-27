@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.EventSystems;
 public class CameraHandle : MonoBehaviour
 {
     public GameObject camera_GameObject;
@@ -24,7 +24,7 @@ public class CameraHandle : MonoBehaviour
 
         if (Input.touchCount == 1)
         {
-            if (!isZooming)
+            if (!isZooming && !EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
             {
                 if (Input.GetTouch(0).phase == TouchPhase.Moved)
                 {

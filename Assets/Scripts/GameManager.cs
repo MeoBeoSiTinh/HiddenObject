@@ -13,11 +13,7 @@ public class GameManager : MonoBehaviour
     private GameObject currentLevelInstance;
     private List<MyTarget> targetList;
     public Transform toolbarSlotsParent;
-    // Start is called before the first frame update
-    void Start()
-    {
 
-    }
 
     public void LoadLevel(int levelIndex)
     {
@@ -102,6 +98,7 @@ public class GameManager : MonoBehaviour
         {
             Transform slot = toolbarSlotsParent.GetChild(i).GetChild(1);
             Image image = slot.GetComponentInChildren<Image>();
+            DragAndDrop dragAndDrop = slot.GetComponentInChildren<DragAndDrop>();
 
             Transform slot2 = toolbarSlotsParent.GetChild(i).GetChild(0);
             Image background = slot2.GetComponentInChildren<Image>();
@@ -113,6 +110,7 @@ public class GameManager : MonoBehaviour
                 {
                     // Assign the icon to the Image component and enable the GameObject
                     Debug.Log("Icon: " + levelInfor.target[i].Icon);
+                    dragAndDrop.targetName = levelInfor.target[i].TargetName;
                     image.sprite = levelInfor.target[i].Icon;
                     image.gameObject.SetActive(true);
                 }
