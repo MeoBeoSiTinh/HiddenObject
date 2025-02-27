@@ -1,0 +1,8 @@
+.header {
+    align-self: center;
+    justify-content: flex-start;
+    -unity-font: url('project://database/Assets/UnityDefaultRuntimeTheme.tss?fileID=2230732570650464555&guid=f90a74c442301c94186ec1e6770588bd&type=3#NotInter-Regular');
+    font-size: 50px;
+    -unity-text-outline-width: 3px;
+    color: rgb(255, 251, 251);
+}

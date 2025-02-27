@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 public class TargetFind : MonoBehaviour
 
 {
-    public GameManager gameManager;
+    private GameManager gameManager;
     private Camera mainCamera;
 
     private void Start()
@@ -38,16 +38,24 @@ public class TargetFind : MonoBehaviour
             {
                 // Create a ray from the camera to the touch position
                 Ray ray = mainCamera.ScreenPointToRay(touch.position);
-                RaycastHit hit;
+                RaycastHit[] hits = Physics.RaycastAll(ray);
 
-                // Check if the ray hits an object
-                if (Physics.Raycast(ray, out hit))
+                // Sort hits by distance
+                System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+
+                foreach (RaycastHit hit in hits)
                 {
                     // Check if the hit object is the one this script is attached to
                     if (hit.transform == transform)
                     {
                         Debug.Log("Target found: " + gameObject.name);
                         gameManager.TargetFound(gameObject.name);
+                        break;
+                    }
+                    else
+                    {
+                        // If there is any object in front of the target, do nothing
+                        break;
                     }
                 }
             }
