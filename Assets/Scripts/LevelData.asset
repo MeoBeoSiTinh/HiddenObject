@@ -17,13 +17,17 @@ MonoBehaviour:
     target:
     - TargetName: dog
       TargetPrefab: {fileID: 912024706468662085, guid: 7d85f800356dc1048b8a2865a8e353d4, type: 3}
+      Icon: {fileID: 21300000, guid: d1ac2d14ee888ff4b82d11d2e291954c, type: 3}
     - TargetName: soc
       TargetPrefab: {fileID: 4202135088714870730, guid: 43c6a5c7e38bb2a48b9b44f6d7a12b10, type: 3}
+      Icon: {fileID: 21300000, guid: 9c93731711298f144b7d5782cc34132b, type: 3}
     LevelPrefab: {fileID: 6459041796909485137, guid: 70e5c6ebb87f8e44b9e60e1d75ac0bcb, type: 3}
   - LevelName: 1
     target:
     - TargetName: trung chim
       TargetPrefab: {fileID: 655471998921400781, guid: 067515c6424867549a66500d51ff6192, type: 3}
+      Icon: {fileID: 21300000, guid: d34f26a806705c2488ebc160314a9411, type: 3}
     - TargetName: ca
       TargetPrefab: {fileID: 189253359494949456, guid: 2821e08d50b117041a7c90d4f313bc9e, type: 3}
+      Icon: {fileID: 21300000, guid: e97d5ac741449b64389cb6d6200cb4ac, type: 3}
     LevelPrefab: {fileID: 5528415449943831337, guid: 449e928304e589f47802e12799b18858, type: 3}

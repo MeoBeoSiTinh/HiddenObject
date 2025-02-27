@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 
@@ -11,7 +11,8 @@ public class GameManager : MonoBehaviour
     public int currentLevelIndex;
     public Transform prefabsSpawn;
     private GameObject currentLevelInstance;
-    public List<MyTarget> targetList;
+    private List<MyTarget> targetList;
+    public Transform toolbarSlotsParent;
     // Start is called before the first frame update
     void Start()
     {
@@ -28,7 +29,7 @@ public class GameManager : MonoBehaviour
         MyLevelData levelInfor = levelData.data[levelIndex];
 
         if (levelInfor == null) return;
-        Debug.Log("Level Name: " + levelInfor.LevelPrefab.name);
+
         currentLevelInstance = Instantiate(levelInfor.LevelPrefab, prefabsSpawn);
 
         currentLevelIndex = levelIndex;
@@ -40,6 +41,8 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("Target: " + targetList[i].TargetName);
         }
+
+        UpdateHotBar(levelIndex);
 
     }
 
@@ -53,9 +56,27 @@ public class GameManager : MonoBehaviour
 
     public void TargetFound(string name)
     {
-        
-        targetList.RemoveAll(x => x.TargetName == name);
-        Debug.Log("Target Found in Manager: " + name);
+        //listing target
+        int targetIndex = targetList.FindIndex(x => x.TargetName == name);
+        if (targetIndex != -1)
+        {
+            targetList.RemoveAt(targetIndex);
+        }
+        else
+        {
+            Debug.Log("Target not found: " + name);
+        }
+
+        //change Hotbar color
+        Transform slot = toolbarSlotsParent.GetChild(targetIndex).GetChild(0);
+        Image image = slot.GetComponentInChildren<Image>();
+
+        if (image != null)
+        {
+            image.color = new Color(1f, 1f, 0.5f); // Light yellow color  
+        }
+
+        //change level
         if (targetList.Count == 0)
         {
             if (currentLevelIndex + 1 >= levelData.data.Count)
@@ -66,7 +87,41 @@ public class GameManager : MonoBehaviour
             }
             Debug.Log("Level Complete");
             LoadLevel(currentLevelIndex + 1);
-            
+        }
+    }
+
+    public void UpdateHotBar(int levelIndex)
+    {
+        if (levelIndex < 0 || levelIndex >= levelData.data.Count) return;
+
+        MyLevelData levelInfor = levelData.data[levelIndex];
+
+        if (levelInfor == null) return;
+
+        for (int i = 0; i < toolbarSlotsParent.childCount; i++)
+        {
+            Transform slot = toolbarSlotsParent.GetChild(i).GetChild(1);
+            Image image = slot.GetComponentInChildren<Image>();
+
+            Transform slot2 = toolbarSlotsParent.GetChild(i).GetChild(0);
+            Image background = slot2.GetComponentInChildren<Image>();
+
+            if (image != null)
+            {
+                background.color = new Color(1f, 1f, 1f); // White color
+                if (i < levelInfor.target.Count)
+                {
+                    // Assign the icon to the Image component and enable the GameObject
+                    Debug.Log("Icon: " + levelInfor.target[i].Icon);
+                    image.sprite = levelInfor.target[i].Icon;
+                    image.gameObject.SetActive(true);
+                }
+                else
+                {
+                    // Hide the Image component if there's no icon for this slot
+                    image.gameObject.SetActive(false);
+                }
+            }
         }
     }
 

@@ -49,6 +49,7 @@ public class TargetFind : MonoBehaviour
                     if (hit.transform == transform)
                     {
                         Debug.Log("Target found: " + gameObject.name);
+                        gameObject.SetActive(false);
                         gameManager.TargetFound(gameObject.name);
                         break;
                     }

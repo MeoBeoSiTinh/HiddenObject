@@ -14,6 +14,7 @@ public class MyLevelData
     public string LevelName;
     public List<MyTarget> target;
     public GameObject LevelPrefab;
+
 }
 
 [System.Serializable]
@@ -21,4 +22,5 @@ public class MyTarget
 {
     public string TargetName;
     public GameObject TargetPrefab;
+    public Sprite Icon;
 }

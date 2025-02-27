@@ -51,6 +51,12 @@ public class CameraHandle : MonoBehaviour
                 if (Vector2.Distance(DragNewPosition, Finger0Position) >= DistanceBetweenFingers)
                     camera_GameObject.GetComponent<Camera>().orthographicSize -= (PositionDifference.magnitude);
 
+                // Restrict the zoom size to be unable to be larger than the background
+                Camera cam = camera_GameObject.GetComponent<Camera>();
+                Bounds backgroundBounds = background_GameObject.GetComponent<SpriteRenderer>().bounds;
+                float maxZoomOut = Mathf.Min(backgroundBounds.size.x * Screen.height / Screen.width, backgroundBounds.size.y) / 2;
+                cam.orthographicSize = Mathf.Clamp(cam.orthographicSize, 0.1f, maxZoomOut);
+
                 DistanceBetweenFingers = Vector2.Distance(DragNewPosition, Finger0Position);
                 RestrictCameraPosition(); // Restrict the camera position after zooming
             }
@@ -69,7 +75,7 @@ public class CameraHandle : MonoBehaviour
 
         float minX = backgroundBounds.min.x + horzExtent;
         float maxX = backgroundBounds.max.x - horzExtent;
-        float minY = backgroundBounds.min.y + vertExtent;
+        float minY = backgroundBounds.min.y + vertExtent - 5;
         float maxY = backgroundBounds.max.y - vertExtent;
 
         Vector3 pos = cam.transform.position;

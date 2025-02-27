@@ -25,6 +25,8 @@ public class MainMenuScript : MonoBehaviour
         _document = GetComponent<UIDocument>();
         _startButton = _document.rootVisualElement.Q<Button>("StartButton") as Button;
         _startButton.RegisterCallback<ClickEvent>(OnPlayButtonClick);
+        gameManager.toolbarSlotsParent.gameObject.SetActive(false); // Disable hotbar UI
+
     }
     private void OnDisable()
     {
@@ -34,6 +36,7 @@ public class MainMenuScript : MonoBehaviour
     {
         Debug.Log("Play button clicked");
         gameObject.SetActive(false);
+        gameManager.toolbarSlotsParent.gameObject.SetActive(true);
         gameManager.LoadLevel(0);
     }
 }
