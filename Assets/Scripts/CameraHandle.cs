@@ -75,7 +75,7 @@ public class CameraHandle : MonoBehaviour
 
         float minX = backgroundBounds.min.x + horzExtent;
         float maxX = backgroundBounds.max.x - horzExtent;
-        float minY = backgroundBounds.min.y + vertExtent - 5;
+        float minY = backgroundBounds.min.y + vertExtent - 4;
         float maxY = backgroundBounds.max.y - vertExtent;
 
         Vector3 pos = cam.transform.position;

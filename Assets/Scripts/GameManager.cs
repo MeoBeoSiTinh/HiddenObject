@@ -52,20 +52,17 @@ public class GameManager : MonoBehaviour
     public void TargetFound(string name)
     {
         //listing target
-        int targetIndex = targetList.FindIndex(x => x.TargetName == name);
-        if (targetIndex != -1)
-        {
-            targetList.RemoveAt(targetIndex);
-        }
-        else
-        {
-            Debug.Log("Target not found: " + name);
-        }
+        int targetIndex = levelData.data[currentLevelIndex].target.FindIndex(x => x.TargetName == name);
+        targetList.RemoveAll(x => x.TargetName == name);
 
         //change Hotbar color
         Transform slot = toolbarSlotsParent.GetChild(targetIndex).GetChild(0);
         Image bg = slot.GetComponentInChildren<Image>();
 
+        //assign asset to the target
+        Transform slot2 = toolbarSlotsParent.GetChild(targetIndex).GetChild(1);
+        DragAndDrop asset = slot2.GetComponentInChildren<DragAndDrop>();
+        asset.targetObject = GameObject.Find(name);
 
         if (bg != null)
         {
