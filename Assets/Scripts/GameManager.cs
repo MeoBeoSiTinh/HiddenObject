@@ -9,7 +9,6 @@ public class GameManager : MonoBehaviour
 {
     public LevelData levelData;
     public int currentLevelIndex;
-    public Transform prefabsSpawn;
     private GameObject currentLevelInstance;
     private List<MyTarget> targetList;
     public Transform toolbarSlotsParent;
@@ -26,7 +25,7 @@ public class GameManager : MonoBehaviour
 
         if (levelInfor == null) return;
 
-        currentLevelInstance = Instantiate(levelInfor.LevelPrefab, prefabsSpawn);
+        currentLevelInstance = Instantiate(levelInfor.LevelPrefab);
 
         currentLevelIndex = levelIndex;
        
@@ -65,11 +64,12 @@ public class GameManager : MonoBehaviour
 
         //change Hotbar color
         Transform slot = toolbarSlotsParent.GetChild(targetIndex).GetChild(0);
-        Image image = slot.GetComponentInChildren<Image>();
+        Image bg = slot.GetComponentInChildren<Image>();
 
-        if (image != null)
+
+        if (bg != null)
         {
-            image.color = new Color(1f, 1f, 0.5f); // Light yellow color  
+            bg.color = new Color(1f, 1f, 0.5f); // Light yellow color  
         }
 
         //change level
@@ -98,7 +98,6 @@ public class GameManager : MonoBehaviour
         {
             Transform slot = toolbarSlotsParent.GetChild(i).GetChild(1);
             Image image = slot.GetComponentInChildren<Image>();
-            DragAndDrop dragAndDrop = slot.GetComponentInChildren<DragAndDrop>();
 
             Transform slot2 = toolbarSlotsParent.GetChild(i).GetChild(0);
             Image background = slot2.GetComponentInChildren<Image>();
@@ -110,7 +109,6 @@ public class GameManager : MonoBehaviour
                 {
                     // Assign the icon to the Image component and enable the GameObject
                     Debug.Log("Icon: " + levelInfor.target[i].Icon);
-                    dragAndDrop.targetName = levelInfor.target[i].TargetName;
                     image.sprite = levelInfor.target[i].Icon;
                     image.gameObject.SetActive(true);
                 }

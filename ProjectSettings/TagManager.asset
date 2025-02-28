@@ -3,12 +3,14 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - HotBarUI
+  - GameScene
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - GameScene
   - Water
   - UI
   - 
