@@ -12,7 +12,7 @@ public class LevelData : ScriptableObject
 public class MyLevelData
 {
     public string LevelName;
-    public List<MyTarget> target;
+    public List<MyStage> stage;
     public GameObject LevelPrefab;
 
 }
@@ -23,4 +23,11 @@ public class MyTarget
     public string TargetName;
     public GameObject TargetPrefab;
     public Sprite Icon;
+}
+
+[System.Serializable]
+public class MyStage
+{
+    public string StageName;
+    public List<MyTarget> target;
 }
