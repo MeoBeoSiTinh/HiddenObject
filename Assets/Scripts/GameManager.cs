@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
     private int currentStageIndex;
     private GameObject currentLevelInstance;
     private List<MyTarget> targetList;
-    private List<MyTarget> allTargetsList; // New list to contain all targets in every stage
+    public List<MyTarget> allTargetsList; // New list to contain all targets in every stage
     public Transform toolbarSlotsParent;
     public GameObject mapHiding;
 
@@ -170,19 +170,23 @@ public class GameManager : MonoBehaviour
         // Calculate total targets in all stages
         for (int i = 0; i < allTargetsList.Count; i++)
         {
-            GameObject newSlotObject = new GameObject("Slot" + i);
+            GameObject newSlotObject = new GameObject("Icon" + allTargetsList[i].TargetName);
             newSlotObject.transform.SetParent(toolbarSlotsParent);
             RectTransform rectTransform = newSlotObject.AddComponent<RectTransform>();
-            rectTransform.sizeDelta = new Vector2(100, 100); // Set size of the slot
+            rectTransform.sizeDelta = new Vector2(1, 1); // Set size of the slot
 
             Image newSlot = newSlotObject.AddComponent<Image>();
 
             GameObject backgroundObject = new GameObject("Background");
             backgroundObject.transform.SetParent(newSlotObject.transform);
+            RectTransform backgroundRectTransform = backgroundObject.AddComponent<RectTransform>();
+            backgroundRectTransform.sizeDelta = new Vector2(1, 1); // Set size of the background
             Image background = backgroundObject.AddComponent<Image>();
 
             GameObject iconObject = new GameObject("Icon");
             iconObject.transform.SetParent(newSlotObject.transform);
+            RectTransform iconRectTransform = iconObject.AddComponent<RectTransform>();
+            iconRectTransform.sizeDelta = new Vector2(1, 1); // Set size of the icon
             Image image = iconObject.AddComponent<Image>();
 
             // Add CanvasGroup to iconObject
