@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
     public List<MyTarget> allTargetsList; // New list to contain all targets in every stage
     public Transform toolbarSlotsParent;
     public GameObject mapHiding;
-
+    public float targetSize = 10f; // Size of the camera zoom out
     public void LoadLevel(int levelIndex)
     {
         Debug.Log("Load Level: " + levelIndex);
@@ -66,7 +66,7 @@ public class GameManager : MonoBehaviour
         Camera.main.GetComponent<CameraHandle>().currentStage = stageIndex;
 
         // Start the coroutine to move the camera
-        //StartCoroutine(MoveCameraToStage(stageIndex));
+        StartCoroutine(MoveCameraToStage(stageIndex));
     }
 
     private IEnumerator MoveCameraToStage(int stageIndex)
@@ -75,13 +75,13 @@ public class GameManager : MonoBehaviour
         float elapsedTime = 0f;
         Vector3 startPosition = Camera.main.transform.position;
         Vector3 targetPosition;
+        float startSize = Camera.main.orthographicSize;
 
         // Determine the target position based on the stage index
         switch (stageIndex)
         {
             case 0:
-                targetPosition = new Vector3(-5, 10, Camera.main.transform.position.z);
-                break;
+                yield break;
             case 1:
                 targetPosition = new Vector3(5, 10, Camera.main.transform.position.z);
                 break;
@@ -94,18 +94,23 @@ public class GameManager : MonoBehaviour
             default:
                 yield break; // Exit if the stage index is invalid
         }
-
-        // Smoothly move the camera to the target position
+        if (targetPosition == null)
+        {
+            yield return null;
+        }
+        // Smoothly move the camera to the target position and zoom out
         while (elapsedTime < duration)
         {
             elapsedTime += Time.deltaTime;
             float t = Mathf.Clamp01(elapsedTime / duration);
             Camera.main.transform.position = Vector3.Lerp(startPosition, targetPosition, t);
+            Camera.main.orthographicSize = Mathf.Lerp(startSize, targetSize, t);
             yield return null; // Wait for the next frame
         }
 
-        // Ensure the camera reaches the exact target position
+        // Ensure the camera reaches the exact target position and zoom level
         Camera.main.transform.position = targetPosition;
+        Camera.main.orthographicSize = targetSize;
     }
 
 

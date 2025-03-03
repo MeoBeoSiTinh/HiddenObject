@@ -100,21 +100,13 @@ public class TargetFind : MonoBehaviour
         }
 
         Debug.Log("Target found: " + gameObject.name);
-        
 
         // Start the flying animation
         StartCoroutine(FlyToToolbar(targetImagePrefab));
-        gameManager.TargetFound(gameObject.name);
-
-        // Disable the target object in the scene
-        gameObject.SetActive(false);
-
     }
 
     private IEnumerator FlyToToolbar(GameObject flyingImage)
     {
-        float duration = 20f; // Duration of the animation
-        float elapsedTime = 0f;
         RectTransform flyingImageRect = flyingImage.GetComponent<RectTransform>();
         Vector2 startPosition = flyingImageRect.anchoredPosition;
 
@@ -155,45 +147,52 @@ public class TargetFind : MonoBehaviour
         Debug.Log("Start Position: " + startPosition);
         Debug.Log("End Position: " + endPosition);
 
-        // Add a jumping effect
-        float jumpHeight = 100f; // Height of the jump
-        float jumpSpeed = 5f; // Speed of the jump
+        // Use LeanTween.sequence to create a sequence of animations
+        LeanTween.sequence()
+            .append(() =>
+            {
+                // First, make the image jump up and down
+                float jumpHeight = 100f; // Height of the jump
+                float jumpDuration = 0.5f; // Duration of the jump
 
-        while (elapsedTime < duration)
-        {
-            // Calculate the progress (0 to 1)
-            float progress = Mathf.Clamp01(elapsedTime / duration);
+                LeanTween.moveY(flyingImageRect, startPosition.y + jumpHeight, jumpDuration / 2)
+                    .setEase(LeanTweenType.easeOutQuad) // Jump up
+                    .setOnComplete(() =>
+                    {
+                        LeanTween.moveY(flyingImageRect, startPosition.y, jumpDuration / 2)
+                            .setEase(LeanTweenType.easeInQuad); // Jump down
+                    });
+            })
+            .append(0.5f) // Wait for 1 second after the jump
+            .append(() =>
+            {
+                // Then, move the image to the end position
+                LeanTween.move(flyingImageRect, endPosition, 1f) // Duration of 1 second
+                    .setEase(LeanTweenType.easeOutQuad) // Smooth easing
+                    .setOnComplete(() =>
+                    {
+                        // Optional: Perform any action after the animation completes
+                        Debug.Log("Flying image reached the toolbar!");
 
-            // Smoothly move the flying image towards the end position
-            Vector2 newPosition = Vector2.Lerp(startPosition, endPosition, progress);
+                        // Destroy the flying image after reaching the toolbar
+                        try
+                        {
+                            Destroy(flyingImage);
+                            Debug.Log("Flying image destroyed successfully.");
+                        }
+                        catch (System.Exception e)
+                        {
+                            Debug.LogError("Error destroying flying image: " + e.Message);
+                        }
 
-            // Add a jumping effect using Mathf.Sin
-            float jump = Mathf.Sin(progress * Mathf.PI * jumpSpeed) * jumpHeight * (1 - progress);
-            newPosition.y += jump;
+                        // Call TargetFound method after the animation completes
+                        gameManager.TargetFound(gameObject.name);
 
-            // Update the flying image's position
-            flyingImageRect.anchoredPosition = newPosition;
+                        // Disable the target object in the scene
+                        gameObject.SetActive(false);
+                    });
+            });
 
-            // Increment elapsed time
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        // Ensure the final position is set exactly to the end position
-        flyingImageRect.anchoredPosition = endPosition;
-
-        // Destroy the flying image after reaching the toolbar
-        try
-        {
-            Destroy(flyingImage);
-            Debug.Log("Flying image destroyed successfully.");
-        }
-        catch (System.Exception e)
-        {
-            Debug.LogError("Error destroying flying image: " + e.Message);
-        }
-
-        // Optionally, update the toolbar (e.g., increment a counter or add the item to a list)
-        Debug.Log("Item added to toolbar!");
+        yield return null;
     }
 }

@@ -18,8 +18,9 @@ public class CameraHandle : MonoBehaviour
     public int currentStage;
 
     // Define min and max zoom levels
-    public float minZoom = 4f;
-    public float maxZoom = 10f;
+    private float minZoom =2.5f;
+    private float maxZoom =10f;
+
 
     // Update is called once per frame
     void Update()
@@ -57,7 +58,25 @@ public class CameraHandle : MonoBehaviour
 
                 if (Vector2.Distance(DragNewPosition, Finger0Position) >= DistanceBetweenFingers)
                     camera_GameObject.GetComponent<Camera>().orthographicSize -= (PositionDifference.magnitude);
-
+                switch (currentStage)
+                {
+                    case 0:
+                        minZoom = 2.5f;
+                        maxZoom = 10f;
+                        break;
+                    case 1:
+                        minZoom = 2.5f;
+                        maxZoom = 12f;
+                        break;
+                    case 2:
+                        minZoom = 2.5f;
+                        maxZoom = 20f;
+                        break;
+                    case 3:
+                        minZoom = 2.5f;
+                        maxZoom = 20f;
+                        break;
+                }
                 // Restrict the zoom size to be unable to be larger than the background
                 Camera cam = camera_GameObject.GetComponent<Camera>();
                 Bounds backgroundBounds = background_GameObject.GetComponent<SpriteRenderer>().bounds;
