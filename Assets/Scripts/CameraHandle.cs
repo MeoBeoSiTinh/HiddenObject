@@ -17,6 +17,10 @@ public class CameraHandle : MonoBehaviour
     // Define the stages
     public int currentStage;
 
+    // Define min and max zoom levels
+    public float minZoom = 4f;
+    public float maxZoom = 10f;
+
     // Update is called once per frame
     void Update()
     {
@@ -58,7 +62,7 @@ public class CameraHandle : MonoBehaviour
                 Camera cam = camera_GameObject.GetComponent<Camera>();
                 Bounds backgroundBounds = background_GameObject.GetComponent<SpriteRenderer>().bounds;
                 float maxZoomOut = Mathf.Min(backgroundBounds.size.x * Screen.height / Screen.width, backgroundBounds.size.y) / 2;
-                cam.orthographicSize = Mathf.Clamp(cam.orthographicSize, 0.1f, maxZoomOut);
+                cam.orthographicSize = Mathf.Clamp(cam.orthographicSize, minZoom, Mathf.Min(maxZoom, maxZoomOut));
 
                 DistanceBetweenFingers = Vector2.Distance(DragNewPosition, Finger0Position);
                 RestrictCameraPosition(); // Restrict the camera position after zooming
@@ -73,6 +77,11 @@ public class CameraHandle : MonoBehaviour
         Camera cam = camera_GameObject.GetComponent<Camera>();
         Bounds backgroundBounds = background_GameObject.GetComponent<SpriteRenderer>().bounds;
 
+        // Calculate the maximum orthographic size based on the background bounds
+        float maxOrthographicSize = Mathf.Min(backgroundBounds.size.x * Screen.height / Screen.width, backgroundBounds.size.y) / 2;
+        cam.orthographicSize = Mathf.Clamp(cam.orthographicSize, minZoom, Mathf.Min(maxZoom, maxOrthographicSize));
+
+        // Calculate the camera's viewable area
         float vertExtent = cam.orthographicSize;
         float horzExtent = vertExtent * Screen.width / Screen.height;
 
@@ -116,20 +125,11 @@ public class CameraHandle : MonoBehaviour
                 break;
         }
 
+        // Clamp the camera's position to stay within the bounds
         Vector3 pos = cam.transform.position;
         pos.x = Mathf.Clamp(pos.x, minX, maxX);
         pos.y = Mathf.Clamp(pos.y, minY, maxY);
         cam.transform.position = pos;
-
-        // Slide back slowly if the camera reaches the end of the background
-        if (pos.x == minX || pos.x == maxX)
-        {
-            cam.transform.Translate(new Vector3(pos.x == minX ? 2 : -2, 0, 0) * Time.deltaTime);
-        }
-        if (pos.y == minY || pos.y == maxY)
-        {
-            cam.transform.Translate(new Vector3(0, pos.y == minY ? 2 : -2, 0) * Time.deltaTime);
-        }
     }
 
     Vector2 GetWorldPosition()
