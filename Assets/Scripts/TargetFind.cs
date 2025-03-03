@@ -100,39 +100,98 @@ public class TargetFind : MonoBehaviour
         }
 
         Debug.Log("Target found: " + gameObject.name);
-        gameManager.TargetFound(gameObject.name);
+        
 
         // Start the flying animation
         StartCoroutine(FlyToToolbar(targetImagePrefab));
+        gameManager.TargetFound(gameObject.name);
 
         // Disable the target object in the scene
         gameObject.SetActive(false);
+
     }
 
     private IEnumerator FlyToToolbar(GameObject flyingImage)
     {
-        float duration = 1f; // Duration of the animation
+        float duration = 20f; // Duration of the animation
         float elapsedTime = 0f;
         RectTransform flyingImageRect = flyingImage.GetComponent<RectTransform>();
         Vector2 startPosition = flyingImageRect.anchoredPosition;
 
+        // Disable the GridLayoutGroup to stop it from interfering
+        GridLayoutGroup grid = UiHotbar.parent.GetComponent<GridLayoutGroup>();
+        grid.enabled = false;
+
         // Get the end position (UiHotbar's anchored position)
         RectTransform hotbarRect = UiHotbar.GetComponent<RectTransform>();
-        Vector2 endPosition = hotbarRect.anchoredPosition;
 
+        // Step 1: Get the current world position of the hotbarRect
+        Vector3 hotbarWorldPosition = hotbarRect.TransformPoint(hotbarRect.rect.center);
+
+        // Step 2: Change the anchor preset of the hotbarRect
+        hotbarRect.anchorMin = new Vector2(0.5f, 0.5f);
+        hotbarRect.anchorMax = new Vector2(0.5f, 0.5f);
+        hotbarRect.pivot = new Vector2(0.5f, 0.5f);
+
+        // Step 3: Force Unity to update the layout
+        LayoutRebuilder.ForceRebuildLayoutImmediate(hotbarRect);
+
+        // Step 4: Convert the world position back to the new anchored position
+        RectTransform parentRect = hotbarRect.parent as RectTransform;
+        Vector2 endPosition;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            parentRect,
+            RectTransformUtility.WorldToScreenPoint(null, hotbarWorldPosition),
+            null,
+            out endPosition
+        );
+
+        // Set endPosition's y to UiHotbar's parent's y position
+        endPosition.y = parentRect.anchoredPosition.y;
+
+        grid.enabled = true;
+
+        // Log the new anchored position
         Debug.Log("Start Position: " + startPosition);
         Debug.Log("End Position: " + endPosition);
 
+        // Add a jumping effect
+        float jumpHeight = 100f; // Height of the jump
+        float jumpSpeed = 5f; // Speed of the jump
+
         while (elapsedTime < duration)
         {
-            // Smoothly interpolate the position of the flying image
-            flyingImageRect.anchoredPosition = Vector2.Lerp(startPosition, endPosition, elapsedTime / duration);
+            // Calculate the progress (0 to 1)
+            float progress = Mathf.Clamp01(elapsedTime / duration);
+
+            // Smoothly move the flying image towards the end position
+            Vector2 newPosition = Vector2.Lerp(startPosition, endPosition, progress);
+
+            // Add a jumping effect using Mathf.Sin
+            float jump = Mathf.Sin(progress * Mathf.PI * jumpSpeed) * jumpHeight * (1 - progress);
+            newPosition.y += jump;
+
+            // Update the flying image's position
+            flyingImageRect.anchoredPosition = newPosition;
+
+            // Increment elapsed time
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
+        // Ensure the final position is set exactly to the end position
+        flyingImageRect.anchoredPosition = endPosition;
+
         // Destroy the flying image after reaching the toolbar
-        Destroy(flyingImage);
+        try
+        {
+            Destroy(flyingImage);
+            Debug.Log("Flying image destroyed successfully.");
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError("Error destroying flying image: " + e.Message);
+        }
 
         // Optionally, update the toolbar (e.g., increment a counter or add the item to a list)
         Debug.Log("Item added to toolbar!");

@@ -66,7 +66,7 @@ public class GameManager : MonoBehaviour
         Camera.main.GetComponent<CameraHandle>().currentStage = stageIndex;
 
         // Start the coroutine to move the camera
-        StartCoroutine(MoveCameraToStage(stageIndex));
+        //StartCoroutine(MoveCameraToStage(stageIndex));
     }
 
     private IEnumerator MoveCameraToStage(int stageIndex)
@@ -161,44 +161,43 @@ public class GameManager : MonoBehaviour
 
         if (levelInfor == null) return;
 
-        // Clear existing slots
+        // Clear existing slots  
         foreach (Transform child in toolbarSlotsParent)
         {
             Destroy(child.gameObject);
         }
 
-        // Calculate total targets in all stages
+        // Calculate total targets in all stages  
         for (int i = 0; i < allTargetsList.Count; i++)
         {
             GameObject newSlotObject = new GameObject("Icon" + allTargetsList[i].TargetName);
             newSlotObject.transform.SetParent(toolbarSlotsParent);
             RectTransform rectTransform = newSlotObject.AddComponent<RectTransform>();
             rectTransform.sizeDelta = new Vector2(1, 1); // Set size of the slot
-
             Image newSlot = newSlotObject.AddComponent<Image>();
 
             GameObject backgroundObject = new GameObject("Background");
             backgroundObject.transform.SetParent(newSlotObject.transform);
             RectTransform backgroundRectTransform = backgroundObject.AddComponent<RectTransform>();
-            backgroundRectTransform.sizeDelta = new Vector2(1, 1); // Set size of the background
+            backgroundRectTransform.sizeDelta = new Vector2(1, 1); // Set size of the background  
             Image background = backgroundObject.AddComponent<Image>();
 
             GameObject iconObject = new GameObject("Icon");
             iconObject.transform.SetParent(newSlotObject.transform);
             RectTransform iconRectTransform = iconObject.AddComponent<RectTransform>();
-            iconRectTransform.sizeDelta = new Vector2(1, 1); // Set size of the icon
+            iconRectTransform.sizeDelta = new Vector2(1, 1); // Set size of the icon  
             Image image = iconObject.AddComponent<Image>();
 
-            // Add CanvasGroup to iconObject
+            // Add CanvasGroup to iconObject  
             CanvasGroup canvasGroup = iconObject.AddComponent<CanvasGroup>();
 
-            // Add DragAndDrop script to iconObject
+            // Add DragAndDrop script to iconObject  
             DragAndDrop dragAndDrop = iconObject.AddComponent<DragAndDrop>();
-            dragAndDrop.backgroundCanvas = backgroundObject.transform; // Assign background to DragAndDrop
+            dragAndDrop.backgroundCanvas = backgroundObject.transform; // Assign background to DragAndDrop  
 
             background.color = new Color(1f, 1f, 1f); // White color  
 
-            // Set the sprite of the image to the target's icon
+            // Set the sprite of the image to the target's icon  
             if (i < allTargetsList.Count)
             {
                 image.sprite = allTargetsList[i].Icon;
