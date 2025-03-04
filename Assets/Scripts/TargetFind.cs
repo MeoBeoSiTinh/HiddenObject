@@ -110,23 +110,11 @@ public class TargetFind : MonoBehaviour
         RectTransform flyingImageRect = flyingImage.GetComponent<RectTransform>();
         Vector2 startPosition = flyingImageRect.anchoredPosition;
 
-        // Disable the GridLayoutGroup to stop it from interfering
-        GridLayoutGroup grid = UiHotbar.parent.GetComponent<GridLayoutGroup>();
-        grid.enabled = false;
-
         // Get the end position (UiHotbar's anchored position)
         RectTransform hotbarRect = UiHotbar.GetComponent<RectTransform>();
 
         // Step 1: Get the current world position of the hotbarRect
         Vector3 hotbarWorldPosition = hotbarRect.TransformPoint(hotbarRect.rect.center);
-
-        // Step 2: Change the anchor preset of the hotbarRect
-        hotbarRect.anchorMin = new Vector2(0.5f, 0.5f);
-        hotbarRect.anchorMax = new Vector2(0.5f, 0.5f);
-        hotbarRect.pivot = new Vector2(0.5f, 0.5f);
-
-        // Step 3: Force Unity to update the layout
-        LayoutRebuilder.ForceRebuildLayoutImmediate(hotbarRect);
 
         // Step 4: Convert the world position back to the new anchored position
         RectTransform parentRect = hotbarRect.parent as RectTransform;
@@ -137,11 +125,9 @@ public class TargetFind : MonoBehaviour
             null,
             out endPosition
         );
-
+        RectTransform uiLocaction = GameObject.Find("UILocation").GetComponent<RectTransform>();
         // Set endPosition's y to UiHotbar's parent's y position
-        endPosition.y = parentRect.anchoredPosition.y;
-
-        grid.enabled = true;
+        endPosition.y = uiLocaction.anchoredPosition.y;
 
         // Log the new anchored position
         Debug.Log("Start Position: " + startPosition);

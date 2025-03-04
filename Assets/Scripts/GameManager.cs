@@ -36,7 +36,6 @@ public class GameManager : MonoBehaviour
             allTargetsList.AddRange(stage.target);
         }
         LoadStage(0);
-        UpdateHotBar(levelIndex);
         mapHiding.SetActive(true);
         foreach (Transform child in mapHiding.transform)
         {
@@ -67,6 +66,7 @@ public class GameManager : MonoBehaviour
 
         // Start the coroutine to move the camera
         StartCoroutine(MoveCameraToStage(stageIndex));
+        UpdateHotBar();
     }
 
     private IEnumerator MoveCameraToStage(int stageIndex)
@@ -150,6 +150,7 @@ public class GameManager : MonoBehaviour
             {
                 Debug.Log("Level Complete");
                 allTargetsList.Clear();
+                clearHotBar();
                 LoadLevel(currentLevelIndex + 1);
                 return;
             }
@@ -158,39 +159,29 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void UpdateHotBar(int levelIndex)
+    public void UpdateHotBar()
     {
-        if (levelIndex < 0 || levelIndex >= levelData.data.Count) return;
-
-        MyLevelData levelInfor = levelData.data[levelIndex];
-
-        if (levelInfor == null) return;
-
-        // Clear existing slots  
-        foreach (Transform child in toolbarSlotsParent)
+        for (int i = 0; i < targetList.Count; i++)
         {
-            Destroy(child.gameObject);
-        }
-
-        // Calculate total targets in all stages  
-        for (int i = 0; i < allTargetsList.Count; i++)
-        {
-            GameObject newSlotObject = new GameObject("Icon" + allTargetsList[i].TargetName);
+            GameObject newSlotObject = new GameObject("Icon" + targetList[i].TargetName);
             newSlotObject.transform.SetParent(toolbarSlotsParent);
             RectTransform rectTransform = newSlotObject.AddComponent<RectTransform>();
             rectTransform.sizeDelta = new Vector2(1, 1); // Set size of the slot
+            rectTransform.anchoredPosition3D = new Vector3(rectTransform.anchoredPosition3D.x, rectTransform.anchoredPosition3D.y, 0); // Set z position to 0
             Image newSlot = newSlotObject.AddComponent<Image>();
 
             GameObject backgroundObject = new GameObject("Background");
             backgroundObject.transform.SetParent(newSlotObject.transform);
             RectTransform backgroundRectTransform = backgroundObject.AddComponent<RectTransform>();
             backgroundRectTransform.sizeDelta = new Vector2(1, 1); // Set size of the background  
+            backgroundRectTransform.anchoredPosition3D = new Vector3(backgroundRectTransform.anchoredPosition3D.x, backgroundRectTransform.anchoredPosition3D.y, 0); // Set z position to 0
             Image background = backgroundObject.AddComponent<Image>();
 
             GameObject iconObject = new GameObject("Icon");
             iconObject.transform.SetParent(newSlotObject.transform);
             RectTransform iconRectTransform = iconObject.AddComponent<RectTransform>();
             iconRectTransform.sizeDelta = new Vector2(1, 1); // Set size of the icon  
+            iconRectTransform.anchoredPosition3D = new Vector3(iconRectTransform.anchoredPosition3D.x, iconRectTransform.anchoredPosition3D.y, 0); // Set z position to 0
             Image image = iconObject.AddComponent<Image>();
 
             // Add CanvasGroup to iconObject  
@@ -203,12 +194,20 @@ public class GameManager : MonoBehaviour
             background.color = new Color(1f, 1f, 1f); // White color  
 
             // Set the sprite of the image to the target's icon  
-            if (i < allTargetsList.Count)
+            if (i < targetList.Count)
             {
-                image.sprite = allTargetsList[i].Icon;
+                image.sprite = targetList[i].Icon;
             }
 
             image.gameObject.SetActive(true);
+        }
+    }
+
+    public void clearHotBar()
+    {
+        foreach (Transform child in toolbarSlotsParent)
+        {
+            Destroy(child.gameObject);
         }
     }
 
