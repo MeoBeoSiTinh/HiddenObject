@@ -35,9 +35,8 @@ public class TargetFind : MonoBehaviour
             Touch touch = Input.GetTouch(0);
 
             // Check if the touch phase is a tap (began and ended without moving)
-            if (touch.phase == TouchPhase.Began)
+            if (touch.phase == TouchPhase.Ended && touch.tapCount == 1 && touch.deltaPosition.magnitude < 10f)
             {
-                // Create a ray from the camera to the touch position
                 Ray ray = mainCamera.ScreenPointToRay(touch.position);
                 RaycastHit[] hits = Physics.RaycastAll(ray);
 
@@ -59,11 +58,6 @@ public class TargetFind : MonoBehaviour
                         break;
                     }
                 }
-            }
-            else if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
-            {
-                // If the touch is moving or stationary, do nothing (user is dragging or pinching)
-                return;
             }
         }
     }
