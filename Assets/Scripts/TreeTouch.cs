@@ -31,11 +31,11 @@ public class TreeTouch : MonoBehaviour
             if (touch.phase == TouchPhase.Ended && touch.tapCount == 1)
             {
                 // Create a ray from the camera to the touch position
-                Ray ray = mainCamera.ScreenPointToRay(touch.position);
-                RaycastHit hit;
+                Vector2 touchPosition = mainCamera.ScreenToWorldPoint(touch.position);
+                RaycastHit2D hit = Physics2D.Raycast(touchPosition, Vector2.zero);
 
                 // Check if the ray hits an object
-                if (Physics.Raycast(ray, out hit))
+                if (hit.collider != null)
                 {
                     // Check if the hit object is the one this script is attached to
                     if (hit.transform == transform)

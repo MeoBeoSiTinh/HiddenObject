@@ -74,11 +74,15 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator MoveCameraToStage(int stageIndex)
     {
-        float duration = 1.5f; // Duration of the camera movement in seconds
+        float duration = 1f; // Duration of the camera movement in seconds
         float elapsedTime = 0f;
         Vector3 startPosition = Camera.main.transform.position;
         Vector3 targetPosition;
         float startSize = Camera.main.orthographicSize;
+
+        // Disable CameraHandle script
+        CameraHandle cameraHandle = Camera.main.GetComponent<CameraHandle>();
+        
 
         // Determine the target position based on the stage index
         switch (stageIndex)
@@ -86,12 +90,15 @@ public class GameManager : MonoBehaviour
             case 0:
                 yield break;
             case 1:
+                cameraHandle.enabled = false;
                 targetPosition = new Vector3(5, 10, Camera.main.transform.position.z);
                 break;
             case 2:
+                cameraHandle.enabled = false;
                 targetPosition = new Vector3(-5, -10, Camera.main.transform.position.z);
                 break;
             case 3:
+                cameraHandle.enabled = false;
                 targetPosition = new Vector3(5, -10, Camera.main.transform.position.z);
                 break;
             default:
@@ -114,6 +121,9 @@ public class GameManager : MonoBehaviour
         // Ensure the camera reaches the exact target position and zoom level
         Camera.main.transform.position = targetPosition;
         Camera.main.orthographicSize = targetSize;
+
+        // Re-enable CameraHandle script
+        cameraHandle.enabled = true;
     }
 
 
@@ -221,6 +231,6 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+       
     }
 }

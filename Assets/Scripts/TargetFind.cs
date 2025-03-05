@@ -37,25 +37,42 @@ public class TargetFind : MonoBehaviour
             // Check if the touch phase is a tap (began and ended without moving)
             if (touch.phase == TouchPhase.Ended && touch.tapCount == 1 && touch.deltaPosition.magnitude < 10f)
             {
-                Ray ray = mainCamera.ScreenPointToRay(touch.position);
-                RaycastHit[] hits = Physics.RaycastAll(ray);
+                Vector2 touchPosition = mainCamera.ScreenToWorldPoint(touch.position);
+                RaycastHit2D[] hits = Physics2D.RaycastAll(touchPosition, Vector2.zero);
 
-                // Sort hits by distance
-                System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
-
-                foreach (RaycastHit hit in hits)
+                if (hits.Length > 0)
                 {
+                    // Sort hits by sorting layer and sorting order
+                    System.Array.Sort(hits, (a, b) =>
+                    {
+                        SpriteRenderer rendererA = a.collider.GetComponent<SpriteRenderer>();
+                        SpriteRenderer rendererB = b.collider.GetComponent<SpriteRenderer>();
+
+                        if (rendererA != null && rendererB != null)
+                        {
+                            // Compare sorting layers
+                            int layerComparison = SortingLayer.GetLayerValueFromID(rendererA.sortingLayerID)
+                                .CompareTo(SortingLayer.GetLayerValueFromID(rendererB.sortingLayerID));
+
+                            if (layerComparison != 0)
+                                return layerComparison;
+
+                            // Compare sorting orders within the same layer
+                            return rendererB.sortingOrder.CompareTo(rendererA.sortingOrder);
+                        }
+
+                        // If no SpriteRenderer, fall back to distance
+                        return a.distance.CompareTo(b.distance);
+                    });
+
+                    // Get the topmost hit
+                    RaycastHit2D topmostHit = hits[0];
+
                     // Check if the hit object is the one this script is attached to
-                    if (hit.transform == transform)
+                    if (topmostHit.transform == transform)
                     {
                         // Create the target image at the touch position
                         CreateTargetImage(touch.position);
-                        break;
-                    }
-                    else
-                    {
-                        // If there is any object in front of the target, do nothing
-                        break;
                     }
                 }
             }
@@ -87,7 +104,6 @@ public class TargetFind : MonoBehaviour
         targetImage.rectTransform.anchoredPosition = localPoint;
 
         // Find the UI hotbar by name and assign it to UiHotbar
-        Debug.Log("Icon" + gameObject.name);
         GameObject hotbarObject = GameObject.Find("Icon" + gameObject.name);
 
         if (hotbarObject != null)
@@ -98,8 +114,6 @@ public class TargetFind : MonoBehaviour
         {
             Debug.LogError("Hotbar object not found in the scene.");
         }
-
-        Debug.Log("Target found: " + gameObject.name);
 
 
         // Start the flying animation
@@ -132,10 +146,6 @@ public class TargetFind : MonoBehaviour
         // Set endPosition's y to UiHotbar's parent's y position
         endPosition.y = uiLocaction.anchoredPosition.y;
 
-        // Log the new anchored position
-        Debug.Log("Start Position: " + startPosition);
-        Debug.Log("End Position: " + endPosition);
-
         // Use LeanTween.sequence to create a sequence of animations
         LeanTween.sequence()
             .append(() =>
@@ -160,14 +170,10 @@ public class TargetFind : MonoBehaviour
                     .setEase(LeanTweenType.easeOutQuad) // Smooth easing
                     .setOnComplete(() =>
                     {
-                        // Optional: Perform any action after the animation completes
-                        Debug.Log("Flying image reached the toolbar!");
 
-                        // Destroy the flying image after reaching the toolbar
                         try
                         {
                             Destroy(flyingImage);
-                            Debug.Log("Flying image destroyed successfully.");
                         }
                         catch (System.Exception e)
                         {

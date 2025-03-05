@@ -1,22 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class TentOpen : MonoBehaviour
+public class WrongTarget : MonoBehaviour
 {
     private Camera mainCamera;
-
+    public GameObject targetImagePrefab; // Prefab for the target image
 
     // Start is called before the first frame update
     void Start()
     {
+        // Cache the main camera for performance
         mainCamera = Camera.main;
     }
 
     // Update is called once per frame
     void Update()
     {
-
         // Check if there is a touch input
         if (Input.touchCount > 0)
         {
@@ -60,15 +61,50 @@ public class TentOpen : MonoBehaviour
                     if (topmostHit.transform == transform)
                     {
                         // Create the target image at the touch position
-                        StartCoroutine(DestroyAfterDelay(0.2f));
+                        CreateTargetImage(touch.position);
+                        Debug.Log("Wrong target ");
                     }
                 }
             }
         }
     }
-    private IEnumerator DestroyAfterDelay(float delay)
+
+    private void CreateTargetImage(Vector2 touchPosition)
     {
-        yield return new WaitForSeconds(delay);
-        Destroy(gameObject);
+        // Instantiate the target image prefab  
+        GameObject targetImageInstance = Instantiate(targetImagePrefab);
+
+        // Get the Image component from the instantiated prefab  
+        Image targetImage = targetImageInstance.GetComponent<Image>();
+
+        // Set the parent of the instantiated prefab to the Canvas  
+        targetImageInstance.transform.SetParent(GameObject.Find("Canvas").transform, false);
+
+        // Set the size and sprite of the target image  
+        targetImage.rectTransform.sizeDelta = new Vector2(100, 100); // Adjust size as needed  
+
+        // Convert touch position to local position in the Canvas  
+        RectTransform canvasRect = GameObject.Find("Canvas").GetComponent<RectTransform>();
+        Vector2 localPoint;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            canvasRect,
+            touchPosition,
+            mainCamera,
+            out localPoint
+        );
+
+        // Set the initial position of the target image to the touch position  
+        targetImage.rectTransform.anchoredPosition = localPoint;
+
+        // Animate the target image to pop up and then fade out  
+        targetImage.color = new Color(targetImage.color.r, targetImage.color.g, targetImage.color.b, 0);
+        LeanTween.scale(targetImage.rectTransform, Vector3.one * 1.5f, 0.5f).setEaseOutBack();
+        LeanTween.alpha(targetImage.rectTransform, 1, 0.5f).setEaseOutBack().setOnComplete(() =>
+        {
+            LeanTween.alpha(targetImage.rectTransform, 0, 0.3f).setDelay(0.5f).setOnComplete(() =>
+            {
+                Destroy(targetImageInstance);
+            });
+        });
     }
 }
