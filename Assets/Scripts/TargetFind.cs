@@ -8,6 +8,7 @@ public class TargetFind : MonoBehaviour
     private Camera mainCamera;
     public Transform UiHotbar; // Reference to the UI hotbar
     private GameObject targetImagePrefab; // Prefab for the target image
+    private GameObject targetNamePopup; // Popup for the target name
 
     private void Start()
     {
@@ -59,6 +60,11 @@ public class TargetFind : MonoBehaviour
                     }
                 }
             }
+            else if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
+            {
+                // If the touch is moving or stationary, do nothing (user is dragging or pinching)
+                return;
+            }
         }
     }
 
@@ -101,9 +107,12 @@ public class TargetFind : MonoBehaviour
 
         Debug.Log("Target found: " + gameObject.name);
 
+
         // Start the flying animation
         StartCoroutine(FlyToToolbar(targetImagePrefab));
     }
+
+
 
     private IEnumerator FlyToToolbar(GameObject flyingImage)
     {
@@ -139,7 +148,7 @@ public class TargetFind : MonoBehaviour
             {
                 // First, make the image jump up and down
                 float jumpHeight = 100f; // Height of the jump
-                float jumpDuration = 0.5f; // Duration of the jump
+                float jumpDuration = 0.3f; // Duration of the jump
 
                 LeanTween.moveY(flyingImageRect, startPosition.y + jumpHeight, jumpDuration / 2)
                     .setEase(LeanTweenType.easeOutQuad) // Jump up
@@ -149,11 +158,11 @@ public class TargetFind : MonoBehaviour
                             .setEase(LeanTweenType.easeInQuad); // Jump down
                     });
             })
-            .append(0.5f) // Wait for 1 second after the jump
+            .append(0.3f) // Wait for 1 second after the jump
             .append(() =>
             {
                 // Then, move the image to the end position
-                LeanTween.move(flyingImageRect, endPosition, 1f) // Duration of 1 second
+                LeanTween.move(flyingImageRect, endPosition, 0.8f) // Duration of 1 second
                     .setEase(LeanTweenType.easeOutQuad) // Smooth easing
                     .setOnComplete(() =>
                     {
@@ -170,6 +179,9 @@ public class TargetFind : MonoBehaviour
                         {
                             Debug.LogError("Error destroying flying image: " + e.Message);
                         }
+
+                        // Destroy the target name popup
+                        Destroy(targetNamePopup);
 
                         // Call TargetFound method after the animation completes
                         gameManager.TargetFound(gameObject.name);

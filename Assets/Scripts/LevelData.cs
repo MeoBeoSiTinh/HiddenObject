@@ -22,7 +22,6 @@ public class MyTarget
 {
     public string TargetName;
     public GameObject TargetPrefab;
-    public Sprite Icon;
 }
 
 [System.Serializable]

@@ -15,10 +15,12 @@ public class GameManager : MonoBehaviour
     public Transform toolbarSlotsParent;
     public GameObject mapHiding;
     public float targetSize = 10f; // Size of the camera zoom out
+    
     public void LoadLevel(int levelIndex)
-    {
+    {   
+        
         Debug.Log("Load Level: " + levelIndex);
-        if (levelIndex < 0 || levelIndex >= levelData.data.Count) return;
+        if (levelIndex < 0 || levelIndex + 1  > levelData.data.Count) return;
 
         DeleteCurrentLevel();
 
@@ -27,7 +29,7 @@ public class GameManager : MonoBehaviour
         if (levelInfor == null) return;
 
         currentLevelInstance = Instantiate(levelInfor.LevelPrefab);
-
+        Camera.main.GetComponent<CameraHandle>().background_GameObject = GameObject.Find("Background");
         currentLevelIndex = levelIndex;
         // Populate allTargetsList with all targets in every stage
         allTargetsList = new List<MyTarget>();
@@ -52,6 +54,7 @@ public class GameManager : MonoBehaviour
         targetList = new List<MyTarget>(levelInfor.stage[stageIndex].target);
         for (int i = 0; i < targetList.Count; i++)
         {
+            GameObject.Find(targetList[i].TargetName).GetComponent<TargetFind>().enabled = true;
             Debug.Log("Target: " + targetList[i].TargetName);
         }
 
@@ -71,7 +74,7 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator MoveCameraToStage(int stageIndex)
     {
-        float duration = 2f; // Duration of the camera movement in seconds
+        float duration = 1.5f; // Duration of the camera movement in seconds
         float elapsedTime = 0f;
         Vector3 startPosition = Camera.main.transform.position;
         Vector3 targetPosition;
@@ -157,6 +160,7 @@ public class GameManager : MonoBehaviour
             Debug.Log("Stage Complete");
             LoadStage(currentStageIndex + 1);
         }
+        
     }
 
     public void UpdateHotBar()
@@ -167,6 +171,7 @@ public class GameManager : MonoBehaviour
             newSlotObject.transform.SetParent(toolbarSlotsParent);
             RectTransform rectTransform = newSlotObject.AddComponent<RectTransform>();
             rectTransform.sizeDelta = new Vector2(1, 1); // Set size of the slot
+            rectTransform.localScale = new Vector3(1, 1, 1); // Set scale of the slot
             rectTransform.anchoredPosition3D = new Vector3(rectTransform.anchoredPosition3D.x, rectTransform.anchoredPosition3D.y, 0); // Set z position to 0
             Image newSlot = newSlotObject.AddComponent<Image>();
 
@@ -174,6 +179,7 @@ public class GameManager : MonoBehaviour
             backgroundObject.transform.SetParent(newSlotObject.transform);
             RectTransform backgroundRectTransform = backgroundObject.AddComponent<RectTransform>();
             backgroundRectTransform.sizeDelta = new Vector2(1, 1); // Set size of the background  
+            backgroundRectTransform.localScale = new Vector3(100, 100, 100); // Set scale of the slot
             backgroundRectTransform.anchoredPosition3D = new Vector3(backgroundRectTransform.anchoredPosition3D.x, backgroundRectTransform.anchoredPosition3D.y, 0); // Set z position to 0
             Image background = backgroundObject.AddComponent<Image>();
 
@@ -181,6 +187,7 @@ public class GameManager : MonoBehaviour
             iconObject.transform.SetParent(newSlotObject.transform);
             RectTransform iconRectTransform = iconObject.AddComponent<RectTransform>();
             iconRectTransform.sizeDelta = new Vector2(1, 1); // Set size of the icon  
+            iconRectTransform.localScale = new Vector3(100, 100, 100); // Set scale of the sloy
             iconRectTransform.anchoredPosition3D = new Vector3(iconRectTransform.anchoredPosition3D.x, iconRectTransform.anchoredPosition3D.y, 0); // Set z position to 0
             Image image = iconObject.AddComponent<Image>();
 
@@ -196,7 +203,7 @@ public class GameManager : MonoBehaviour
             // Set the sprite of the image to the target's icon  
             if (i < targetList.Count)
             {
-                image.sprite = targetList[i].Icon;
+                image.sprite = targetList[i].TargetPrefab.GetComponent<SpriteRenderer>().sprite;
             }
 
             image.gameObject.SetActive(true);

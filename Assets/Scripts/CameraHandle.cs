@@ -62,19 +62,19 @@ public class CameraHandle : MonoBehaviour
                 {
                     case 0:
                         minZoom = 2.5f;
-                        maxZoom = 10f;
+                        maxZoom = 12f;
                         break;
                     case 1:
                         minZoom = 2.5f;
-                        maxZoom = 12f;
+                        maxZoom = 14f;
                         break;
                     case 2:
                         minZoom = 2.5f;
-                        maxZoom = 20f;
+                        maxZoom = 25f;
                         break;
                     case 3:
                         minZoom = 2.5f;
-                        maxZoom = 20f;
+                        maxZoom = 25f;
                         break;
                 }
                 // Restrict the zoom size to be unable to be larger than the background
@@ -114,14 +114,14 @@ public class CameraHandle : MonoBehaviour
         {
             case 0:
                 minX = backgroundBounds.min.x + horzExtent;
-                maxX = backgroundBounds.min.x + stageWidth - horzExtent;
-                minY = backgroundBounds.max.y - stageHeight + vertExtent - 3;
+                maxX = backgroundBounds.min.x + stageWidth - horzExtent + 2;
+                minY = backgroundBounds.max.y - stageHeight + vertExtent - 6;
                 maxY = backgroundBounds.max.y - vertExtent;
                 break;
             case 1:
                 minX = backgroundBounds.min.x + horzExtent;
                 maxX = backgroundBounds.max.x - horzExtent;
-                minY = backgroundBounds.max.y - stageHeight + vertExtent - 3;
+                minY = backgroundBounds.max.y - stageHeight + vertExtent - 6;
                 maxY = backgroundBounds.max.y - vertExtent;
                 break;
             case 2:
