@@ -124,6 +124,7 @@ public class TargetFind : MonoBehaviour
 
     private IEnumerator FlyToToolbar(GameObject flyingImage)
     {
+        gameObject.SetActive(false);
         RectTransform flyingImageRect = flyingImage.GetComponent<RectTransform>();
         Vector2 startPosition = flyingImageRect.anchoredPosition;
 
@@ -187,7 +188,6 @@ public class TargetFind : MonoBehaviour
                         gameManager.TargetFound(gameObject.name);
 
                         // Disable the target object in the scene
-                        gameObject.SetActive(false);
                     });
             });
 

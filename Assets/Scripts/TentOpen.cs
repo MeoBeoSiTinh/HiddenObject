@@ -59,8 +59,7 @@ public class TentOpen : MonoBehaviour
                     // Check if the hit object is the one this script is attached to
                     if (topmostHit.transform == transform)
                     {
-                        // Create the target image at the touch position
-                        StartCoroutine(DestroyAfterDelay(0.2f));
+                        StartCoroutine(DestroyAfterDelay(0.05f));
                     }
                 }
             }
