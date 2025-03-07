@@ -18,9 +18,14 @@ public class CameraHandle : MonoBehaviour
     public int currentStage;
 
     // Define min and max zoom levels
-    private float minZoom =2.5f;
-    private float maxZoom =10f;
+    private float minZoom = 2.5f;
+    private float maxZoom = 12f;
 
+
+    void Start()
+    {
+
+    }
 
     // Update is called once per frame
     void Update()
@@ -61,8 +66,6 @@ public class CameraHandle : MonoBehaviour
                 switch (currentStage)
                 {
                     case 0:
-                        minZoom = 2.5f;
-                        maxZoom = 12f;
                         break;
                     case 1:
                         minZoom = 2.5f;

@@ -7659,6 +7659,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UiHotbar: {fileID: 0}
+  spineAnimationPrefab: {fileID: 1389588780676235433, guid: 258fa316bdd9fb542b83d3727d65e8af, type: 3}
 --- !u!61 &3824720558440188263
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -30465,6 +30466,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UiHotbar: {fileID: 0}
+  spineAnimationPrefab: {fileID: 1389588780676235433, guid: 258fa316bdd9fb542b83d3727d65e8af, type: 3}
 --- !u!61 &2399189977444656992
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -33885,6 +33887,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UiHotbar: {fileID: 0}
+  spineAnimationPrefab: {fileID: 1389588780676235433, guid: 258fa316bdd9fb542b83d3727d65e8af, type: 3}
 --- !u!61 &8756805817284605239
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -34281,6 +34284,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UiHotbar: {fileID: 0}
+  spineAnimationPrefab: {fileID: 1389588780676235433, guid: 258fa316bdd9fb542b83d3727d65e8af, type: 3}
 --- !u!61 &8608778410777396851
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -38852,6 +38856,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UiHotbar: {fileID: 0}
+  spineAnimationPrefab: {fileID: 1389588780676235433, guid: 258fa316bdd9fb542b83d3727d65e8af, type: 3}
 --- !u!61 &8414752158555259475
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -41012,6 +41017,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UiHotbar: {fileID: 0}
+  spineAnimationPrefab: {fileID: 1389588780676235433, guid: 258fa316bdd9fb542b83d3727d65e8af, type: 3}
 --- !u!61 &3913084652259578605
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -46819,6 +46825,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UiHotbar: {fileID: 0}
+  spineAnimationPrefab: {fileID: 1389588780676235433, guid: 258fa316bdd9fb542b83d3727d65e8af, type: 3}
 --- !u!61 &234111311662550731
 BoxCollider2D:
   m_ObjectHideFlags: 0

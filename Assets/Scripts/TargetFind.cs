@@ -9,6 +9,7 @@ public class TargetFind : MonoBehaviour
     public Transform UiHotbar; // Reference to the UI hotbar
     private GameObject targetImagePrefab; // Prefab for the target image
     private GameObject targetNamePopup; // Popup for the target name
+    public GameObject spineAnimationPrefab; // Prefab for the Spine animation
 
     private void Start()
     {
@@ -71,8 +72,12 @@ public class TargetFind : MonoBehaviour
                     // Check if the hit object is the one this script is attached to
                     if (topmostHit.transform == transform)
                     {
+                        // Create the Spine animation at the touch position
+                        CreateSpineAnimation(touch.position);
                         // Create the target image at the touch position
                         CreateTargetImage(touch.position);
+
+                        
                     }
                 }
             }
@@ -115,12 +120,42 @@ public class TargetFind : MonoBehaviour
             Debug.LogError("Hotbar object not found in the scene.");
         }
 
-
         // Start the flying animation
         StartCoroutine(FlyToToolbar(targetImagePrefab));
     }
 
+    private void CreateSpineAnimation(Vector2 touchPosition)
+    {
+        // Instantiate the Spine animation prefab
+        GameObject spineAnimation = Instantiate(spineAnimationPrefab, touchPosition, Quaternion.identity);
+        spineAnimation.transform.SetParent(GameObject.Find("Canvas").transform, false);
 
+        // Ensure the Spine animation has a RectTransform component
+        RectTransform spineRectTransform = spineAnimation.GetComponent<RectTransform>();
+        if (spineRectTransform == null)
+        {
+            spineRectTransform = spineAnimation.AddComponent<RectTransform>();
+        }
+
+        // Set the initial position of the Spine animation to the touch position
+        RectTransform canvasRect = GameObject.Find("Canvas").GetComponent<RectTransform>();
+        Vector2 localPoint;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            canvasRect,
+            touchPosition,
+            mainCamera,
+            out localPoint
+        );
+
+        spineRectTransform.anchoredPosition = localPoint;
+
+        // Adjust size and scale
+        spineRectTransform.sizeDelta = new Vector2(100, 100); // Adjust size as needed
+        spineRectTransform.localScale = new Vector3(80, 80, 80); // Adjust scale as needed
+
+        // Destroy the Spine animation GameObject after a delay
+        Destroy(spineAnimation, 1f); // Adjust the delay as needed
+    }
 
     private IEnumerator FlyToToolbar(GameObject flyingImage)
     {
@@ -153,7 +188,7 @@ public class TargetFind : MonoBehaviour
             {
                 // First, make the image jump up and down
                 float jumpHeight = 100f; // Height of the jump
-                float jumpDuration = 0.3f; // Duration of the jump
+                float jumpDuration = 0.5f; // Duration of the jump
 
                 LeanTween.moveY(flyingImageRect, startPosition.y + jumpHeight, jumpDuration / 2)
                     .setEase(LeanTweenType.easeOutQuad) // Jump up
@@ -167,11 +202,10 @@ public class TargetFind : MonoBehaviour
             .append(() =>
             {
                 // Then, move the image to the end position
-                LeanTween.move(flyingImageRect, endPosition, 0.8f) // Duration of 1 second
+                LeanTween.move(flyingImageRect, endPosition, 1f) // Duration of 1 second
                     .setEase(LeanTweenType.easeOutQuad) // Smooth easing
                     .setOnComplete(() =>
                     {
-
                         try
                         {
                             Destroy(flyingImage);

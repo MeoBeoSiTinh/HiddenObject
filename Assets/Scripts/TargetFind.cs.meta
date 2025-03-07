@@ -3,7 +3,9 @@ guid: 272db8b58ec55664b8815340f9c2e28e
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - UiHotbar: {instanceID: 0}
+  - spineAnimationPrefab: {fileID: 1389588780676235433, guid: 258fa316bdd9fb542b83d3727d65e8af, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

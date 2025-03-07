@@ -14,13 +14,19 @@ public class GameManager : MonoBehaviour
     public List<MyTarget> allTargetsList; // New list to contain all targets in every stage
     public Transform toolbarSlotsParent;
     public GameObject mapHiding;
-    public float targetSize = 10f; // Size of the camera zoom out
+    public float targetSize; // Size of the camera zoom out
+
+    public GameObject levelCompleteUI;
     
     public void LoadLevel(int levelIndex)
     {   
         
         Debug.Log("Load Level: " + levelIndex);
-        if (levelIndex < 0 || levelIndex + 1  > levelData.data.Count) return;
+        if (levelIndex < 0 || levelIndex + 1  > levelData.data.Count)
+        {
+            Debug.Log("Game Complete");
+            return;
+        }
 
         DeleteCurrentLevel();
 
@@ -164,7 +170,7 @@ public class GameManager : MonoBehaviour
                 Debug.Log("Level Complete");
                 allTargetsList.Clear();
                 clearHotBar();
-                LoadLevel(currentLevelIndex + 1);
+                levelCompleteUI.SetActive(true);
                 return;
             }
             Debug.Log("Stage Complete");
