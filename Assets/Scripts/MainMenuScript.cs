@@ -10,7 +10,6 @@ public class MainMenuScript : MonoBehaviour
     private Button _startButton;
     private GameManager gameManager;
 
-
     private void Awake()
     {
         GameObject gameManagerObject = GameObject.Find("GameManager");
@@ -26,12 +25,24 @@ public class MainMenuScript : MonoBehaviour
         _startButton = _document.rootVisualElement.Q<Button>("StartButton") as Button;
         _startButton.RegisterCallback<ClickEvent>(OnPlayButtonClick);
         gameManager.toolbarSlotsParent.gameObject.SetActive(false); // Disable hotbar UI
-
     }
+
+    private void OnEnable()
+    {
+        if (_startButton != null)
+        {
+            _startButton.RegisterCallback<ClickEvent>(OnPlayButtonClick);
+        }
+    }
+
     private void OnDisable()
     {
-        _startButton.UnregisterCallback<ClickEvent>(OnPlayButtonClick);
+        if (_startButton != null)
+        {
+            _startButton.UnregisterCallback<ClickEvent>(OnPlayButtonClick);
+        }
     }
+
     private void OnPlayButtonClick(ClickEvent evt)
     {
         Debug.Log("Play button clicked");

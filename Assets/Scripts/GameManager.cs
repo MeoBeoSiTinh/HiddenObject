@@ -17,7 +17,8 @@ public class GameManager : MonoBehaviour
     public float targetSize; // Size of the camera zoom out
 
     public GameObject levelCompleteUI;
-    
+    public GameObject mainMenuUI;
+
     public void LoadLevel(int levelIndex)
     {   
         
@@ -25,6 +26,8 @@ public class GameManager : MonoBehaviour
         if (levelIndex < 0 || levelIndex + 1  > levelData.data.Count)
         {
             Debug.Log("Game Complete");
+            DeleteCurrentLevel();
+            mainMenuUI.SetActive(true);
             return;
         }
 
@@ -232,6 +235,12 @@ public class GameManager : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
+    }
+
+    public void OnContinueClicked()
+    {
+        levelCompleteUI.SetActive(false);
+        LoadLevel(currentLevelIndex + 1);
     }
 
     // Update is called once per frame
