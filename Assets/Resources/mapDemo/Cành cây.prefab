@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 554
-  m_Sprite: {fileID: 21300000, guid: 9272710de4c9f7645b2237433d89b833, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 5b360b304a972fd4d87e8355895a935f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -99,6 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UiHotbar: {fileID: 0}
+  spineAnimationPrefab: {fileID: 0}
 --- !u!65 &6541339258594323457
 BoxCollider:
   m_ObjectHideFlags: 0

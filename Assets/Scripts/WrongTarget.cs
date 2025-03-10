@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using UnityEngine.EventSystems;
 public class WrongTarget : MonoBehaviour
 {
     private Camera mainCamera;
@@ -22,6 +22,12 @@ public class WrongTarget : MonoBehaviour
         if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
+
+            // Check if the touch is over a UI element
+            if (IsPointerOverUIObject(touch))
+            {
+                return;
+            }
 
             // Check if the touch phase is a tap (began and ended without moving)
             if (touch.phase == TouchPhase.Ended && touch.tapCount == 1 && touch.deltaPosition.magnitude < 10f)
@@ -67,6 +73,15 @@ public class WrongTarget : MonoBehaviour
                 }
             }
         }
+    }
+
+    private bool IsPointerOverUIObject(Touch touch)
+    {
+        PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
+        eventDataCurrentPosition.position = new Vector2(touch.position.x, touch.position.y);
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
+        return results.Count > 0;
     }
 
     private void CreateTargetImage(Vector2 touchPosition)

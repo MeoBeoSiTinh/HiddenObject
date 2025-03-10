@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: LevelData
   m_EditorClassIdentifier: 
   data:
-  - LevelName: 1
+  - LevelName: Camping in the woods
     stage:
     - StageName: 1
       target:

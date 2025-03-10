@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class GameManager : MonoBehaviour
 {
@@ -18,11 +20,14 @@ public class GameManager : MonoBehaviour
 
     public GameObject levelCompleteUI;
     public GameObject mainMenuUI;
+    public GameObject inGameUi;
+    public GameObject hotbarUi;
+    private bool isHotBarMinimized = false;
 
 
     public void Awake()
     {
-        toolbarSlotsParent.gameObject.SetActive(false);
+
     }
 
     public void LoadLevel(int levelIndex)
@@ -48,6 +53,9 @@ public class GameManager : MonoBehaviour
         currentLevelIndex = levelIndex;
         // Populate allTargetsList with all targets in every stage
         allTargetsList = new List<MyTarget>();
+        TextMeshProUGUI stageName = GameObject.Find("StageName").GetComponentInChildren<TextMeshProUGUI>();
+        Debug.Log("Level Name: " + levelInfor.LevelName);
+        stageName.text = levelInfor.LevelName;
         foreach (var stage in levelInfor.stage)
         {
             allTargetsList.AddRange(stage.target);
@@ -204,9 +212,10 @@ public class GameManager : MonoBehaviour
             backgroundObject.transform.SetParent(newSlotObject.transform);
             RectTransform backgroundRectTransform = backgroundObject.AddComponent<RectTransform>();
             backgroundRectTransform.sizeDelta = new Vector2(1, 1); // Set size of the background  
-            backgroundRectTransform.localScale = new Vector3(100, 100, 100); // Set scale of the slot
+            backgroundRectTransform.localScale = new Vector3(135, 135, 135); // Set scale of the slot
             backgroundRectTransform.anchoredPosition3D = new Vector3(backgroundRectTransform.anchoredPosition3D.x, backgroundRectTransform.anchoredPosition3D.y, 0); // Set z position to 0
             Image background = backgroundObject.AddComponent<Image>();
+            background.sprite = Resources.Load<Sprite>("UI/HotbarslotUI");
 
             GameObject iconObject = new GameObject("Icon");
             iconObject.transform.SetParent(newSlotObject.transform);
@@ -251,9 +260,28 @@ public class GameManager : MonoBehaviour
     public void OnStartClicked()
     {
         mainMenuUI.SetActive(false);
-        toolbarSlotsParent.gameObject.SetActive(true);
+        inGameUi.SetActive(true);
         LoadLevel(0);
     }
+    public void OnMinimizeClicked()
+    {
+        if (isHotBarMinimized)
+        {
+            LeanTween.moveY(hotbarUi.GetComponent<RectTransform>(), hotbarUi.GetComponent<RectTransform>().anchoredPosition.y + toolbarSlotsParent.GetComponent<RectTransform>().rect.height - 50, 0.5f).setEase(LeanTweenType.easeInQuad);
+            GameObject.Find("MinimizeButton").GetComponent<RectTransform>().localRotation = Quaternion.Euler(0, 0, 0);
+            isHotBarMinimized = false;
+        }
+        else
+        {
+            LeanTween.moveY(hotbarUi.GetComponent<RectTransform>(), hotbarUi.GetComponent<RectTransform>().anchoredPosition.y - toolbarSlotsParent.GetComponent<RectTransform>().rect.height + 50, 0.5f).setEase(LeanTweenType.easeInQuad);
+            GameObject.Find("MinimizeButton").GetComponent<RectTransform>().localRotation = Quaternion.Euler(0, 0, 180);
+
+            isHotBarMinimized = true;
+        }        
+        Debug.Log("Minimize Clicked");
+
+    }
+
 
     // Update is called once per frame
     void Update()

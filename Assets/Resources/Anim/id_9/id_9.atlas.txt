@@ -1,0 +1,17 @@
+id_9.png
+size:468,144
+filter:Linear,Linear
+pma:true
+QA_12
+bounds:224,2,137,138
+rotate:90
+al
+bounds:364,72,72,67
+ar
+bounds:364,3,72,67
+b
+bounds:2,2,137,220
+rotate:90
+e
+bounds:438,93,46,28
+rotate:90
