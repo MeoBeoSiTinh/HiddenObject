@@ -19,6 +19,12 @@ public class GameManager : MonoBehaviour
     public GameObject levelCompleteUI;
     public GameObject mainMenuUI;
 
+
+    public void Awake()
+    {
+        toolbarSlotsParent.gameObject.SetActive(false);
+    }
+
     public void LoadLevel(int levelIndex)
     {   
         
@@ -241,6 +247,12 @@ public class GameManager : MonoBehaviour
     {
         levelCompleteUI.SetActive(false);
         LoadLevel(currentLevelIndex + 1);
+    }
+    public void OnStartClicked()
+    {
+        mainMenuUI.SetActive(false);
+        toolbarSlotsParent.gameObject.SetActive(true);
+        LoadLevel(0);
     }
 
     // Update is called once per frame
