@@ -159,7 +159,11 @@ public class TargetFind : MonoBehaviour
 
     private IEnumerator FlyToToolbar(GameObject flyingImage)
     {
-        gameObject.SetActive(false);
+        gameObject.GetComponent<SpriteRenderer>().enabled = false;
+        if(gameManager.isHotBarMinimized)
+        {
+            gameManager.OnMinimizeClicked();
+        }
         RectTransform flyingImageRect = flyingImage.GetComponent<RectTransform>();
         Vector2 startPosition = flyingImageRect.anchoredPosition;
 
@@ -214,14 +218,8 @@ public class TargetFind : MonoBehaviour
                         {
                             Debug.LogError("Error destroying flying image: " + e.Message);
                         }
-
-                        // Destroy the target name popup
-                        Destroy(targetNamePopup);
-
-                        // Call TargetFound method after the animation completes
                         gameManager.TargetFound(gameObject.name);
 
-                        // Disable the target object in the scene
                     });
             });
 

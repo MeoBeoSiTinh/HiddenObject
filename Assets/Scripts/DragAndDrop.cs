@@ -66,13 +66,14 @@ public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                 targetObject.SetActive(true);
                 targetObject = null; // Reset the target object
             }
+            // Change the background canvas color
+            if (backgroundCanvas != null)
+            {
+                backgroundCanvas.GetComponent<Image>().color = Color.green; // Change to desired color
+            }
         }
 
-        // Change the background canvas color
-        if (backgroundCanvas != null)
-        {
-            backgroundCanvas.GetComponent<Image>().color = Color.green; // Change to desired color
-        }
+        
 
         // Return the UI element to its original position
         rectTransform.SetParent(parentTransform);

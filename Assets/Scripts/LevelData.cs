@@ -22,6 +22,7 @@ public class MyTarget
 {
     public string TargetName;
     public GameObject TargetPrefab;
+    public string Description;
 }
 
 [System.Serializable]

@@ -19,22 +19,29 @@ MonoBehaviour:
       target:
       - TargetName: fire
         TargetPrefab: {fileID: 919177151280423022, guid: 1b9da0d34d99dbc45a422be12c4e22be, type: 3}
+        Description: burning shjt
     - StageName: 2
       target:
       - TargetName: soc
         TargetPrefab: {fileID: 2339255886218969185, guid: cd3c029273e6f244fa213489233f8eae, type: 3}
+        Description: scares of people
     - StageName: 3
       target:
       - TargetName: toc
         TargetPrefab: {fileID: 1090317075555034225, guid: a2a7fa082c3bc4144b8f2ba3297a0879, type: 3}
+        Description: thang` co toc'
       - TargetName: trung chim
         TargetPrefab: {fileID: 2280094934590391909, guid: 4420005710a283f4096acea18c7a50c2, type: 3}
+        Description: CHIM
     - StageName: 4
       target:
       - TargetName: "C\xE0nh c\xE2y"
         TargetPrefab: {fileID: 2233797479234088975, guid: f957959ccaa20dc4cacd16e79e2b2338, type: 3}
+        Description: canh` cay
       - TargetName: not fire
         TargetPrefab: {fileID: 5875783244036296393, guid: e8623a64bbb8ea7489b1c397227d8f28, type: 3}
+        Description: Del chay'
       - TargetName: dog
         TargetPrefab: {fileID: 2317503772019206534, guid: bfd01a5ebe5e4b8428fa44bc0465e25d, type: 3}
+        Description: Cho'
     LevelPrefab: {fileID: 4200273370681321277, guid: aff4ffef6aa37804eb9706958dacaea3, type: 3}

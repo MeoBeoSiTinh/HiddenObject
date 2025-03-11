@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
     public GameObject mainMenuUI;
     public GameObject inGameUi;
     public GameObject hotbarUi;
-    private bool isHotBarMinimized = false;
+    public bool isHotBarMinimized = false;
 
 
     public void Awake()
@@ -38,7 +38,9 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("Game Complete");
             DeleteCurrentLevel();
+            ResetMainCameraPosition();
             mainMenuUI.SetActive(true);
+            inGameUi.SetActive(false);
             return;
         }
 
@@ -161,6 +163,7 @@ public class GameManager : MonoBehaviour
 
     public void TargetFound(string name)
     {
+        GameObject target = GameObject.Find(name);
         targetList.RemoveAll(x => x.TargetName == name);
         int targetIndex = allTargetsList.FindIndex(x => x.TargetName == name);
         Debug.Log("index: " + targetIndex);
@@ -172,7 +175,9 @@ public class GameManager : MonoBehaviour
         Transform slot2 = toolbarSlotsParent.GetChild(targetIndex).GetChild(1);
         DragAndDrop asset = slot2.GetComponentInChildren<DragAndDrop>();
         Debug.Log("Target Found in Manager: " + name);
-        asset.targetObject = GameObject.Find(name);
+        asset.targetObject = target;
+        target.SetActive(false);
+        target.GetComponent<SpriteRenderer>().enabled = true;
 
         if (bg != null)
         {
@@ -232,6 +237,10 @@ public class GameManager : MonoBehaviour
             DragAndDrop dragAndDrop = iconObject.AddComponent<DragAndDrop>();
             dragAndDrop.backgroundCanvas = backgroundObject.transform; // Assign background to DragAndDrop  
 
+            Description description = iconObject.AddComponent<Description>();
+            description.description = targetList[i].Description;
+            description.uiPrefab = Resources.Load<GameObject>("UI/DescBox");
+
             background.color = new Color(1f, 1f, 1f); // White color  
 
             // Set the sprite of the image to the target's icon  
@@ -267,13 +276,13 @@ public class GameManager : MonoBehaviour
     {
         if (isHotBarMinimized)
         {
-            LeanTween.moveY(hotbarUi.GetComponent<RectTransform>(), hotbarUi.GetComponent<RectTransform>().anchoredPosition.y + toolbarSlotsParent.GetComponent<RectTransform>().rect.height - 50, 0.5f).setEase(LeanTweenType.easeInQuad);
+            LeanTween.moveY(hotbarUi.GetComponent<RectTransform>(), hotbarUi.GetComponent<RectTransform>().anchoredPosition.y + toolbarSlotsParent.GetComponent<RectTransform>().rect.height, 0.5f).setEase(LeanTweenType.easeInQuad);
             GameObject.Find("MinimizeButton").GetComponent<RectTransform>().localRotation = Quaternion.Euler(0, 0, 0);
             isHotBarMinimized = false;
         }
         else
         {
-            LeanTween.moveY(hotbarUi.GetComponent<RectTransform>(), hotbarUi.GetComponent<RectTransform>().anchoredPosition.y - toolbarSlotsParent.GetComponent<RectTransform>().rect.height + 50, 0.5f).setEase(LeanTweenType.easeInQuad);
+            LeanTween.moveY(hotbarUi.GetComponent<RectTransform>(), hotbarUi.GetComponent<RectTransform>().anchoredPosition.y - toolbarSlotsParent.GetComponent<RectTransform>().rect.height, 0.5f).setEase(LeanTweenType.easeInQuad);
             GameObject.Find("MinimizeButton").GetComponent<RectTransform>().localRotation = Quaternion.Euler(0, 0, 180);
 
             isHotBarMinimized = true;
@@ -287,5 +296,10 @@ public class GameManager : MonoBehaviour
     void Update()
     {
        
+    }
+    public void ResetMainCameraPosition()
+    {
+        Camera.main.transform.position = new Vector3(-5, 10, -10); // Reset to default position
+        Camera.main.orthographicSize = 8; // Reset to default size
     }
 }
