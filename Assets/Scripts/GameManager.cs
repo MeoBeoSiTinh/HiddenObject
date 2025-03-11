@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     public Transform toolbarSlotsParent;
     public GameObject mapHiding;
     public float targetSize; // Size of the camera zoom out
+    public GameObject CameraRenderer;
 
     public GameObject levelCompleteUI;
     public GameObject mainMenuUI;
@@ -68,6 +69,9 @@ public class GameManager : MonoBehaviour
         {
             child.gameObject.SetActive(true);
         }
+        CameraRenderer.GetComponent<CameraFocus>().ResetMap(currentLevelIndex + 1);
+        CameraRenderer.SetActive(true);
+
     }
 
     public void LoadStage(int stageIndex)
