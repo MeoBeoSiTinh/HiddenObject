@@ -160,10 +160,11 @@ public class TargetFind : MonoBehaviour
     private IEnumerator FlyToToolbar(GameObject flyingImage)
     {
         gameObject.GetComponent<SpriteRenderer>().enabled = false;
-        if(gameManager.isHotBarMinimized)
+        if (gameManager.isHotBarMinimized)
         {
             gameManager.OnMinimizeClicked();
         }
+
         RectTransform flyingImageRect = flyingImage.GetComponent<RectTransform>();
         Vector2 startPosition = flyingImageRect.anchoredPosition;
 
@@ -182,9 +183,20 @@ public class TargetFind : MonoBehaviour
             null,
             out endPosition
         );
+
         RectTransform uiLocaction = GameObject.Find("UILocation").GetComponent<RectTransform>();
         // Set endPosition's y to UiHotbar's parent's y position
         endPosition.y = uiLocaction.anchoredPosition.y;
+
+        // Define control points for a sideways parabola (opening to the right)
+        Vector2 midPoint = (startPosition + endPosition) * 0.5f;
+        float parabolaHeight = 200f; // Adjust this to control the "width" of the parabola
+
+        // Control points are offset horizontally and vertically to form the parabola
+        Vector2 controlPoint = new Vector2(
+            midPoint.x - parabolaHeight, // Offset left/right
+            midPoint.y + parabolaHeight  // Offset up/down
+        );
 
         // Use LeanTween.sequence to create a sequence of animations
         LeanTween.sequence()
@@ -192,7 +204,7 @@ public class TargetFind : MonoBehaviour
             {
                 // First, make the image jump up and down
                 float jumpHeight = 100f; // Height of the jump
-                float jumpDuration = 0.5f; // Duration of the jump
+                float jumpDuration = 0.4f; // Duration of the jump
 
                 LeanTween.moveY(flyingImageRect, startPosition.y + jumpHeight, jumpDuration / 2)
                     .setEase(LeanTweenType.easeOutQuad) // Jump up
@@ -202,12 +214,17 @@ public class TargetFind : MonoBehaviour
                             .setEase(LeanTweenType.easeInQuad); // Jump down
                     });
             })
-            .append(0.3f) // Wait for 1 second after the jump
+            .append(0.5f) 
             .append(() =>
             {
-                // Then, move the image to the end position
-                LeanTween.move(flyingImageRect, endPosition, 1f) // Duration of 1 second
+                // Move the image along the sideways parabolic path
+                LeanTween.value(flyingImage, 0f, 1f, 1.2f)
                     .setEase(LeanTweenType.easeOutQuad) // Smooth easing
+                    .setOnUpdate((float t) =>
+                    {
+                        // Calculate the position along the cubic Bezier curve
+                        flyingImageRect.anchoredPosition = CalculateQuadraticBezierPoint(t, startPosition, controlPoint, endPosition);
+                    })
                     .setOnComplete(() =>
                     {
                         try
@@ -219,10 +236,24 @@ public class TargetFind : MonoBehaviour
                             Debug.LogError("Error destroying flying image: " + e.Message);
                         }
                         gameManager.TargetFound(gameObject.name);
-
                     });
             });
 
         yield return null;
+    }
+
+    // Helper method to calculate a point on a quadratic Bezier curve
+    private Vector2 CalculateQuadraticBezierPoint(float t, Vector2 p0, Vector2 p1, Vector2 p2)
+    {
+        float u = 1 - t;
+        float tt = t * t;
+        float uu = u * u;
+
+        // Quadratic Bezier formula: B(t) = (1-t)^2 * P0 + 2*(1-t)*t*P1 + t^2*P2
+        Vector2 point = uu * p0;
+        point += 2 * u * t * p1;
+        point += tt * p2;
+
+        return point;
     }
 }

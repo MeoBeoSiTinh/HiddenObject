@@ -70,7 +70,8 @@ public class CameraFocus : MonoBehaviour
         dynamicObjects.Clear(); // Clear the list before adding new objects
         for (int i = 0; i < map.transform.childCount; i++)
         {
-            dynamicObjects.Add(map.transform.GetChild(i).gameObject);
+            if (map.transform.GetChild(i).GetComponent<TargetFind>() == null)
+                dynamicObjects.Add(map.transform.GetChild(i).gameObject);
         }
         dynamicObjects.RemoveAll(x => x.name == "Background");
     }
