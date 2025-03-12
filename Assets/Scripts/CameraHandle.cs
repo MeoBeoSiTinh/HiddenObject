@@ -7,12 +7,15 @@ public class CameraHandle : MonoBehaviour
     public GameObject camera_GameObject;
     public GameObject background_GameObject; // Add a reference to the background GameObject
 
+    
     Vector2 StartPosition;
     Vector2 DragStartPosition;
     Vector2 DragNewPosition;
     Vector2 Finger0Position;
     float DistanceBetweenFingers;
     bool isZooming;
+    private Camera cam;
+    //private float dragSpeed = 65f;
 
     // Define the stages
     public int currentStage;
@@ -24,7 +27,8 @@ public class CameraHandle : MonoBehaviour
 
     void Start()
     {
-
+        cam = camera_GameObject.GetComponent<Camera>();
+        Input.simulateMouseWithTouches = false;
     }
 
     // Update is called once per frame
@@ -81,7 +85,7 @@ public class CameraHandle : MonoBehaviour
                         break;
                 }
                 // Restrict the zoom size to be unable to be larger than the background
-                Camera cam = camera_GameObject.GetComponent<Camera>();
+
                 Bounds backgroundBounds = background_GameObject.GetComponent<SpriteRenderer>().bounds;
                 float maxZoomOut = Mathf.Min(backgroundBounds.size.x * Screen.height / Screen.width, backgroundBounds.size.y) / 2;
                 cam.orthographicSize = Mathf.Clamp(cam.orthographicSize, minZoom, Mathf.Min(maxZoom, maxZoomOut));
@@ -92,10 +96,39 @@ public class CameraHandle : MonoBehaviour
             DragStartPosition = GetWorldPositionOfFinger(1);
             Finger0Position = GetWorldPositionOfFinger(0);
         }
+        //else if (Input.GetMouseButton(0) && !isZooming && Input.touchCount == 0)
+        //{
+        //    // Handle mouse input for LDPlayer
+        //    if (Input.GetMouseButtonDown(0))
+        //    {
+        //        StartPosition = GetWorldPosition();
+        //    }
+        //    if (Input.GetMouseButton(0))
+        //    {
+        //        Vector2 NewPosition = GetWorldPosition();
+        //        Vector2 PositionDifference = NewPosition - StartPosition;
+        //        camera_GameObject.transform.Translate(-PositionDifference * Time.deltaTime * dragSpeed); // Adjust drag speed if necessary
+        //        RestrictCameraPosition(); // Restrict the camera position after moving
+        //        StartPosition = NewPosition;
+        //    }
+        //}
+        //float scroll = Input.GetAxis("Mouse ScrollWheel");
+        //if (scroll != 0f)
+        //{
+        //    cam.orthographicSize -= scroll * 2; // Adjust zoom speed if necessary
+        //    Bounds backgroundBounds = background_GameObject.GetComponent<SpriteRenderer>().bounds;
+        //    float maxZoomOut = Mathf.Min(backgroundBounds.size.x * Screen.height / Screen.width, backgroundBounds.size.y) / 2;
+        //    cam.orthographicSize = Mathf.Clamp(cam.orthographicSize, minZoom, Mathf.Min(maxZoom, maxZoomOut));
+        //    RestrictCameraPosition();
+        //}
     }
 
     void RestrictCameraPosition()
     {
+        if (background_GameObject == null)
+        {
+            return;
+        }
         Camera cam = camera_GameObject.GetComponent<Camera>();
         Bounds backgroundBounds = background_GameObject.GetComponent<SpriteRenderer>().bounds;
 
@@ -163,4 +196,5 @@ public class CameraHandle : MonoBehaviour
     {
         return camera_GameObject.GetComponent<Camera>().ScreenToWorldPoint(Input.GetTouch(FingerIndex).position);
     }
+
 }

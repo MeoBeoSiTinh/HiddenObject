@@ -15,6 +15,7 @@ public class TargetFind : MonoBehaviour
     {
         // Cache the main camera for performance
         mainCamera = Camera.main;
+        Input.simulateMouseWithTouches = false;
 
         // Find the GameManager object by name and get the GameManager component
         GameObject gameManagerObject = GameObject.Find("GameManager");
@@ -31,7 +32,7 @@ public class TargetFind : MonoBehaviour
     private void Update()
     {
         // Check if there is a touch input
-        if (Input.touchCount > 0)
+        if (Input.touchCount == 1)
         {
             Touch touch = Input.GetTouch(0);
 
@@ -214,11 +215,11 @@ public class TargetFind : MonoBehaviour
                             .setEase(LeanTweenType.easeInQuad); // Jump down
                     });
             })
-            .append(0.5f) 
+            .append(0.4f) 
             .append(() =>
             {
                 // Move the image along the sideways parabolic path
-                LeanTween.value(flyingImage, 0f, 1f, 1.2f)
+                LeanTween.value(flyingImage, 0f, 1f, 1f)
                     .setEase(LeanTweenType.easeOutQuad) // Smooth easing
                     .setOnUpdate((float t) =>
                     {

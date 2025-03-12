@@ -18,7 +18,7 @@ public class TentOpen : MonoBehaviour
     {
 
         // Check if there is a touch input
-        if (Input.touchCount > 0)
+        if (Input.touchCount == 1)
         {
             Touch touch = Input.GetTouch(0);
 
