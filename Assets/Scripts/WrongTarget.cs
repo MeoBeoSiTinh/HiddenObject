@@ -7,6 +7,9 @@ public class WrongTarget : MonoBehaviour
 {
     private Camera mainCamera;
     public GameObject targetImagePrefab; // Prefab for the target image
+    public float touchThresholdTime = 0.2f; // Threshold time for touch
+
+    private float touchStartTime;
 
     // Start is called before the first frame update
     void Start()
@@ -16,7 +19,7 @@ public class WrongTarget : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         // Check if there is a touch input
         if (Input.touchCount > 0)
@@ -30,7 +33,12 @@ public class WrongTarget : MonoBehaviour
             }
 
             // Check if the touch phase is a tap (began and ended without moving)
-            if (touch.phase == TouchPhase.Ended && touch.tapCount == 1 && touch.deltaPosition.magnitude < 10f)
+            if (touch.phase == TouchPhase.Began)
+            {
+                touchStartTime = Time.time;
+            }
+
+            if (touch.phase == TouchPhase.Ended && touch.tapCount == 1 && touch.deltaPosition.magnitude < 1f && (Time.time - touchStartTime) <= touchThresholdTime)
             {
                 // Ensure no other touches are active (to prevent multi-touch gestures like pinch)
                 if (Input.touchCount == 1)

@@ -5,7 +5,8 @@ using UnityEngine;
 public class TentOpen : MonoBehaviour
 {
     private Camera mainCamera;
-
+    private float touchStartTime;
+    public float touchThresholdTime = 0.2f; // Threshold time for touch
 
     // Start is called before the first frame update
     void Start()
@@ -21,9 +22,12 @@ public class TentOpen : MonoBehaviour
         if (Input.touchCount == 1)
         {
             Touch touch = Input.GetTouch(0);
-
+            if (touch.phase == TouchPhase.Began)
+            {
+                touchStartTime = Time.time;
+            }
             // Check if the touch phase is a tap (began and ended without moving)
-            if (touch.phase == TouchPhase.Ended && touch.tapCount == 1 && touch.deltaPosition.magnitude < 10f)
+            if (touch.phase == TouchPhase.Ended && touch.tapCount == 1 && touch.deltaPosition.magnitude < 1f && (Time.time - touchStartTime) <= touchThresholdTime)
             {
                 Vector2 touchPosition = mainCamera.ScreenToWorldPoint(touch.position);
                 RaycastHit2D[] hits = Physics2D.RaycastAll(touchPosition, Vector2.zero);

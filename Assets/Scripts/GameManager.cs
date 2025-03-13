@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     public GameObject mapHiding;
     public float targetSize; // Size of the camera zoom out
     public GameObject CameraRenderer;
+    public GameObject Confetti;
 
     public GameObject levelCompleteUI;
     public GameObject mainMenuUI;
@@ -196,6 +197,7 @@ public class GameManager : MonoBehaviour
                 Debug.Log("Level Complete");
                 allTargetsList.Clear();
                 clearHotBar();
+                Confetti.SetActive(true);
                 levelCompleteUI.SetActive(true);
                 return;
             }
@@ -268,6 +270,7 @@ public class GameManager : MonoBehaviour
     public void OnContinueClicked()
     {
         levelCompleteUI.SetActive(false);
+        Confetti.SetActive(false);
         LoadLevel(currentLevelIndex + 1);
     }
     public void OnStartClicked()

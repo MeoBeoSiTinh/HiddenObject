@@ -7,7 +7,6 @@ public class CameraHandle : MonoBehaviour
     public GameObject camera_GameObject;
     public GameObject background_GameObject; // Add a reference to the background GameObject
 
-    
     Vector2 StartPosition;
     Vector2 DragStartPosition;
     Vector2 DragNewPosition;
@@ -15,7 +14,9 @@ public class CameraHandle : MonoBehaviour
     float DistanceBetweenFingers;
     bool isZooming;
     private Camera cam;
-    //private float dragSpeed = 65f;
+    private float dragSpeed = 1f; // Adjust drag speed for smoothness
+    private float zoomSpeed = 3f; // Adjust zoom speed for smoothness
+    private float zoomVelocity = 0.3f; // Velocity for smooth zooming
 
     // Define the stages
     public int currentStage;
@@ -23,7 +24,6 @@ public class CameraHandle : MonoBehaviour
     // Define min and max zoom levels
     private float minZoom = 2.5f;
     private float maxZoom = 12f;
-
 
     void Start()
     {
@@ -47,7 +47,7 @@ public class CameraHandle : MonoBehaviour
                 {
                     Vector2 NewPosition = GetWorldPosition();
                     Vector2 PositionDifference = NewPosition - StartPosition;
-                    camera_GameObject.transform.Translate(-PositionDifference);
+                    camera_GameObject.transform.Translate(-PositionDifference * dragSpeed);
                     RestrictCameraPosition(); // Restrict the camera position after moving
                 }
                 StartPosition = GetWorldPosition();
@@ -62,11 +62,14 @@ public class CameraHandle : MonoBehaviour
                 DragNewPosition = GetWorldPositionOfFinger(1);
                 Vector2 PositionDifference = DragNewPosition - DragStartPosition;
 
+                float targetZoom = cam.orthographicSize;
+
                 if (Vector2.Distance(DragNewPosition, Finger0Position) < DistanceBetweenFingers)
-                    camera_GameObject.GetComponent<Camera>().orthographicSize += (PositionDifference.magnitude);
+                    targetZoom += (PositionDifference.magnitude * zoomSpeed);
 
                 if (Vector2.Distance(DragNewPosition, Finger0Position) >= DistanceBetweenFingers)
-                    camera_GameObject.GetComponent<Camera>().orthographicSize -= (PositionDifference.magnitude);
+                    targetZoom -= (PositionDifference.magnitude * zoomSpeed);
+
                 switch (currentStage)
                 {
                     case 0:
@@ -88,7 +91,9 @@ public class CameraHandle : MonoBehaviour
 
                 Bounds backgroundBounds = background_GameObject.GetComponent<SpriteRenderer>().bounds;
                 float maxZoomOut = Mathf.Min(backgroundBounds.size.x * Screen.height / Screen.width, backgroundBounds.size.y) / 2;
-                cam.orthographicSize = Mathf.Clamp(cam.orthographicSize, minZoom, Mathf.Min(maxZoom, maxZoomOut));
+                targetZoom = Mathf.Clamp(targetZoom, minZoom, Mathf.Min(maxZoom, maxZoomOut));
+
+                cam.orthographicSize = Mathf.SmoothDamp(cam.orthographicSize, targetZoom, ref zoomVelocity, 0.1f, Mathf.Infinity, Time.deltaTime);
 
                 DistanceBetweenFingers = Vector2.Distance(DragNewPosition, Finger0Position);
                 RestrictCameraPosition(); // Restrict the camera position after zooming
@@ -96,31 +101,6 @@ public class CameraHandle : MonoBehaviour
             DragStartPosition = GetWorldPositionOfFinger(1);
             Finger0Position = GetWorldPositionOfFinger(0);
         }
-        //else if (Input.GetMouseButton(0) && !isZooming && Input.touchCount == 0)
-        //{
-        //    // Handle mouse input for LDPlayer
-        //    if (Input.GetMouseButtonDown(0))
-        //    {
-        //        StartPosition = GetWorldPosition();
-        //    }
-        //    if (Input.GetMouseButton(0))
-        //    {
-        //        Vector2 NewPosition = GetWorldPosition();
-        //        Vector2 PositionDifference = NewPosition - StartPosition;
-        //        camera_GameObject.transform.Translate(-PositionDifference * Time.deltaTime * dragSpeed); // Adjust drag speed if necessary
-        //        RestrictCameraPosition(); // Restrict the camera position after moving
-        //        StartPosition = NewPosition;
-        //    }
-        //}
-        //float scroll = Input.GetAxis("Mouse ScrollWheel");
-        //if (scroll != 0f)
-        //{
-        //    cam.orthographicSize -= scroll * 2; // Adjust zoom speed if necessary
-        //    Bounds backgroundBounds = background_GameObject.GetComponent<SpriteRenderer>().bounds;
-        //    float maxZoomOut = Mathf.Min(backgroundBounds.size.x * Screen.height / Screen.width, backgroundBounds.size.y) / 2;
-        //    cam.orthographicSize = Mathf.Clamp(cam.orthographicSize, minZoom, Mathf.Min(maxZoom, maxZoomOut));
-        //    RestrictCameraPosition();
-        //}
     }
 
     void RestrictCameraPosition()
@@ -163,13 +143,13 @@ public class CameraHandle : MonoBehaviour
             case 2:
                 minX = backgroundBounds.min.x + horzExtent;
                 maxX = backgroundBounds.max.x - horzExtent;
-                minY = backgroundBounds.min.y + vertExtent - 5/2;
+                minY = backgroundBounds.min.y + vertExtent - 5 / 2;
                 maxY = backgroundBounds.max.y - vertExtent;
                 break;
             case 3:
                 minX = backgroundBounds.min.x + horzExtent;
                 maxX = backgroundBounds.max.x - horzExtent;
-                minY = backgroundBounds.min.y + vertExtent - 5/2;
+                minY = backgroundBounds.min.y + vertExtent - 5 / 2;
                 maxY = backgroundBounds.max.y - vertExtent;
                 break;
             default:
@@ -196,5 +176,4 @@ public class CameraHandle : MonoBehaviour
     {
         return camera_GameObject.GetComponent<Camera>().ScreenToWorldPoint(Input.GetTouch(FingerIndex).position);
     }
-
 }

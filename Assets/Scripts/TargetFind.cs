@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,7 +11,8 @@ public class TargetFind : MonoBehaviour
     private GameObject targetImagePrefab; // Prefab for the target image
     private GameObject targetNamePopup; // Popup for the target name
     public GameObject spineAnimationPrefab; // Prefab for the Spine animation
-
+    private float touchStartTime;
+    public float touchThresholdTime = 0.2f; // Threshold time for touch
     private void Start()
     {
         // Cache the main camera for performance
@@ -29,15 +31,19 @@ public class TargetFind : MonoBehaviour
         }
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         // Check if there is a touch input
         if (Input.touchCount == 1)
         {
             Touch touch = Input.GetTouch(0);
 
-            // Check if the touch phase is a tap (began and ended without moving)
-            if (touch.phase == TouchPhase.Ended && touch.tapCount == 1 && touch.deltaPosition.magnitude < 10f)
+            if (touch.phase == TouchPhase.Began)
+            {
+                touchStartTime = Time.time;
+            }
+
+            if (touch.phase == TouchPhase.Ended && touch.tapCount == 1 && touch.deltaPosition.magnitude < 1f && (Time.time - touchStartTime) <= touchThresholdTime)
             {
                 Vector2 touchPosition = mainCamera.ScreenToWorldPoint(touch.position);
                 RaycastHit2D[] hits = Physics2D.RaycastAll(touchPosition, Vector2.zero);
@@ -174,9 +180,9 @@ public class TargetFind : MonoBehaviour
 
         // Step 1: Get the current world position of the hotbarRect
         Vector3 hotbarWorldPosition = hotbarRect.TransformPoint(hotbarRect.rect.center);
-
         // Step 4: Convert the world position back to the new anchored position
         RectTransform parentRect = hotbarRect.parent as RectTransform;
+        GameObject UILoctation = CreateEmptyUIElementAtParentRectPosition(parentRect);
         Vector2 endPosition;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
             parentRect,
@@ -188,6 +194,7 @@ public class TargetFind : MonoBehaviour
         RectTransform uiLocaction = GameObject.Find("UILocation").GetComponent<RectTransform>();
         // Set endPosition's y to UiHotbar's parent's y position
         endPosition.y = uiLocaction.anchoredPosition.y;
+        
 
         // Define control points for a sideways parabola (opening to the right)
         Vector2 midPoint = (startPosition + endPosition) * 0.5f;
@@ -208,12 +215,7 @@ public class TargetFind : MonoBehaviour
                 float jumpDuration = 0.4f; // Duration of the jump
 
                 LeanTween.moveY(flyingImageRect, startPosition.y + jumpHeight, jumpDuration / 2)
-                    .setEase(LeanTweenType.easeOutQuad) // Jump up
-                    .setOnComplete(() =>
-                    {
-                        LeanTween.moveY(flyingImageRect, startPosition.y, jumpDuration / 2)
-                            .setEase(LeanTweenType.easeInQuad); // Jump down
-                    });
+                    .setEase(LeanTweenType.easeOutQuad); // Jump up
             })
             .append(0.4f) 
             .append(() =>
@@ -239,6 +241,7 @@ public class TargetFind : MonoBehaviour
                         gameManager.TargetFound(gameObject.name);
                     });
             });
+        Destroy(UILoctation);
 
         yield return null;
     }
@@ -256,5 +259,31 @@ public class TargetFind : MonoBehaviour
         point += tt * p2;
 
         return point;
+    }
+    private GameObject CreateEmptyUIElementAtParentRectPosition(RectTransform parentRect)
+    {
+        // Create an empty GameObject
+        GameObject emptyUIElement = new GameObject("UILocation");
+
+        // Add RectTransform component
+        RectTransform rectTransform = emptyUIElement.AddComponent<RectTransform>();
+
+
+        // Get the world position of the parentRect
+        Vector3 parentWorldPosition = parentRect.TransformPoint(parentRect.rect.center);
+
+        // Convert the world position to local position in the Canvas
+        RectTransform canvasRect = GameObject.Find("Canvas").GetComponent<RectTransform>();
+        Vector2 localPoint;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            canvasRect,
+            RectTransformUtility.WorldToScreenPoint(null, parentWorldPosition),
+            null,
+            out localPoint
+        );
+
+        // Set the anchored position of the empty UI element to the local point
+        rectTransform.anchoredPosition = localPoint;
+        return emptyUIElement;
     }
 }
