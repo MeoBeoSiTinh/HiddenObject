@@ -198,13 +198,18 @@ public class GameManager : MonoBehaviour
                 allTargetsList.Clear();
                 clearHotBar();
                 Confetti.SetActive(true);
-                levelCompleteUI.SetActive(true);
+                StartCoroutine(ShowLevelCompleteUIWithDelay());
                 return;
             }
             Debug.Log("Stage Complete");
             LoadStage(currentStageIndex + 1);
         }
-        
+    }
+
+    private IEnumerator ShowLevelCompleteUIWithDelay()
+    {
+        yield return new WaitForSeconds(2f); // Adjust the delay as needed
+        levelCompleteUI.SetActive(true);
     }
 
     public void UpdateHotBar()

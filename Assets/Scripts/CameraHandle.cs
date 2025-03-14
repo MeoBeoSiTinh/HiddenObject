@@ -2,11 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
+using TouchPhase = UnityEngine.TouchPhase;
 public class CameraHandle : MonoBehaviour
 {
     public GameObject camera_GameObject;
     public GameObject background_GameObject; // Add a reference to the background GameObject
-
+    private float prevMagnitude = 0;
+    private float touchCount = 0;
     Vector2 StartPosition;
     Vector2 DragStartPosition;
     Vector2 DragNewPosition;
@@ -14,9 +17,9 @@ public class CameraHandle : MonoBehaviour
     float DistanceBetweenFingers;
     bool isZooming;
     private Camera cam;
-    private float dragSpeed = 1f; // Adjust drag speed for smoothness
-    private float zoomSpeed = 3f; // Adjust zoom speed for smoothness
-    private float zoomVelocity = 0.3f; // Velocity for smooth zooming
+    private float dragSpeed = 0.5f; // Adjust drag speed for smoothness
+    private float zoomSpeed = 0.01f; // Adjust zoom speed for smoothness
+    private float zoomVelocity = 0.1f; // Velocity for smooth zooming
 
     // Define the stages
     public int currentStage;
@@ -28,79 +31,114 @@ public class CameraHandle : MonoBehaviour
     void Start()
     {
         cam = camera_GameObject.GetComponent<Camera>();
-        Input.simulateMouseWithTouches = false;
+        var touch0contact = new InputAction
+        (
+            type: InputActionType.Button,
+            binding: "<Touchscreen>/touch0/press"
+        );
+        touch0contact.Enable();
+        var touch1contact = new InputAction
+        (
+            type: InputActionType.Button,
+            binding: "<Touchscreen>/touch1/press"
+        );
+        touch1contact.Enable();
+
+        touch0contact.performed += _ =>
+        {
+            touchCount++;
+        };
+        touch1contact.performed += _ =>
+        {
+            touchCount++;
+        };
+        touch0contact.canceled += _ =>
+        {
+            touchCount--;
+            prevMagnitude = 0;
+            isZooming = false;
+        };
+        touch1contact.canceled += _ =>
+        {
+            touchCount--;
+            prevMagnitude = 0;
+            isZooming = false;
+        };
+
+        var touch0Pos = new InputAction
+        (
+            type: InputActionType.Value,
+            binding: "<Touchscreen>/touch0/position"
+        );
+        touch0Pos.Enable();
+        var touch1Pos = new InputAction
+        (
+            type: InputActionType.Value,
+            binding: "<Touchscreen>/touch1/position"
+        );
+        touch1Pos.Enable();
+        touch1Pos.performed += _ =>
+        {
+            if (touchCount != 2)
+            {
+                return;
+            }
+            var magnitude = (touch1Pos.ReadValue<Vector2>() - touch0Pos.ReadValue<Vector2>()).magnitude;
+            if (prevMagnitude == 0)
+            {
+                prevMagnitude = magnitude;
+            }
+            var difference = prevMagnitude - magnitude;
+            prevMagnitude = magnitude;
+            cameraZoom(difference * zoomSpeed);
+            isZooming = true;
+        };
+
+        var touch0Drag = new InputAction
+        (
+            type: InputActionType.Value,
+            binding: "<Touchscreen>/touch0/delta"
+        );
+        touch0Drag.Enable();
+        touch0Drag.performed += ctx =>
+        {
+            if (touchCount == 1 && !isZooming)
+            {
+                Vector2 delta = ctx.ReadValue<Vector2>();
+                Vector3 move = new Vector3(-delta.x, -delta.y, 0) * dragSpeed * Time.deltaTime;
+                camera_GameObject.transform.Translate(move);
+                RestrictCameraPosition();
+            }
+        };
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.touchCount == 0 && isZooming)
+        switch (currentStage)
         {
-            isZooming = false;
+            case 0:
+                break;
+            case 1:
+                minZoom = 2.5f;
+                maxZoom = 14f;
+                break;
+            case 2:
+                minZoom = 2.5f;
+                maxZoom = 25f;
+                break;
+            case 3:
+                minZoom = 2.5f;
+                maxZoom = 25f;
+                break;
         }
+    }
 
-        if (Input.touchCount == 1)
-        {
-            if (!isZooming && !EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
-            {
-                if (Input.GetTouch(0).phase == TouchPhase.Moved)
-                {
-                    Vector2 NewPosition = GetWorldPosition();
-                    Vector2 PositionDifference = NewPosition - StartPosition;
-                    camera_GameObject.transform.Translate(-PositionDifference * dragSpeed);
-                    RestrictCameraPosition(); // Restrict the camera position after moving
-                }
-                StartPosition = GetWorldPosition();
-            }
-        }
-        else if (Input.touchCount == 2)
-        {
-            if (Input.GetTouch(1).phase == TouchPhase.Moved)
-            {
-                isZooming = true;
-
-                DragNewPosition = GetWorldPositionOfFinger(1);
-                Vector2 PositionDifference = DragNewPosition - DragStartPosition;
-
-                float targetZoom = cam.orthographicSize;
-
-                if (Vector2.Distance(DragNewPosition, Finger0Position) < DistanceBetweenFingers)
-                    targetZoom += (PositionDifference.magnitude * zoomSpeed);
-
-                if (Vector2.Distance(DragNewPosition, Finger0Position) >= DistanceBetweenFingers)
-                    targetZoom -= (PositionDifference.magnitude * zoomSpeed);
-
-                switch (currentStage)
-                {
-                    case 0:
-                        break;
-                    case 1:
-                        minZoom = 2.5f;
-                        maxZoom = 14f;
-                        break;
-                    case 2:
-                        minZoom = 2.5f;
-                        maxZoom = 25f;
-                        break;
-                    case 3:
-                        minZoom = 2.5f;
-                        maxZoom = 25f;
-                        break;
-                }
-                // Restrict the zoom size to be unable to be larger than the background
-
-                Bounds backgroundBounds = background_GameObject.GetComponent<SpriteRenderer>().bounds;
-                float maxZoomOut = Mathf.Min(backgroundBounds.size.x * Screen.height / Screen.width, backgroundBounds.size.y) / 2;
-                targetZoom = Mathf.Clamp(targetZoom, minZoom, Mathf.Min(maxZoom, maxZoomOut));
-
-                cam.orthographicSize = Mathf.SmoothDamp(cam.orthographicSize, targetZoom, ref zoomVelocity, 0.1f, Mathf.Infinity, Time.deltaTime);
-
-                DistanceBetweenFingers = Vector2.Distance(DragNewPosition, Finger0Position);
-                RestrictCameraPosition(); // Restrict the camera position after zooming
-            }
-            DragStartPosition = GetWorldPositionOfFinger(1);
-            Finger0Position = GetWorldPositionOfFinger(0);
-        }
+    private void cameraZoom(float increment)
+    {
+        Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize + increment, minZoom, maxZoom);
+        cam.orthographicSize = Mathf.SmoothDamp(cam.orthographicSize, cam.orthographicSize + increment, ref zoomVelocity, 0.1f, Mathf.Infinity, Time.deltaTime);
+        RestrictCameraPosition(); // Restrict the camera position after zooming
     }
 
     void RestrictCameraPosition()
@@ -165,15 +203,5 @@ public class CameraHandle : MonoBehaviour
         pos.x = Mathf.Clamp(pos.x, minX, maxX);
         pos.y = Mathf.Clamp(pos.y, minY, maxY);
         cam.transform.position = pos;
-    }
-
-    Vector2 GetWorldPosition()
-    {
-        return camera_GameObject.GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition);
-    }
-
-    Vector2 GetWorldPositionOfFinger(int FingerIndex)
-    {
-        return camera_GameObject.GetComponent<Camera>().ScreenToWorldPoint(Input.GetTouch(FingerIndex).position);
     }
 }

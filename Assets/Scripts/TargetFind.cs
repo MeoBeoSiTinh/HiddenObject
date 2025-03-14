@@ -217,7 +217,7 @@ public class TargetFind : MonoBehaviour
                 LeanTween.moveY(flyingImageRect, startPosition.y + jumpHeight, jumpDuration / 2)
                     .setEase(LeanTweenType.easeOutQuad); // Jump up
             })
-            .append(0.4f) 
+            .append(0.3f) 
             .append(() =>
             {
                 // Move the image along the sideways parabolic path
