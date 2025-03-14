@@ -79,7 +79,7 @@ public class CameraHandle : MonoBehaviour
         touch1Pos.Enable();
         touch1Pos.performed += _ =>
         {
-            if (touchCount != 2)
+            if (touchCount != 2 || IsPointerOverUI(touch0Pos.ReadValue<Vector2>()) || IsPointerOverUI(touch1Pos.ReadValue<Vector2>()))
             {
                 return;
             }
@@ -102,7 +102,7 @@ public class CameraHandle : MonoBehaviour
         touch0Drag.Enable();
         touch0Drag.performed += ctx =>
         {
-            if (touchCount == 1 && !isZooming)
+            if (touchCount == 1 && !isZooming && !IsPointerOverUI(touch0Pos.ReadValue<Vector2>()))
             {
                 Vector2 delta = ctx.ReadValue<Vector2>();
                 Vector3 move = new Vector3(-delta.x, -delta.y, 0) * dragSpeed * Time.deltaTime;
@@ -110,6 +110,17 @@ public class CameraHandle : MonoBehaviour
                 RestrictCameraPosition();
             }
         };
+    }
+
+    private bool IsPointerOverUI(Vector2 touchPosition)
+    {
+        PointerEventData eventData = new PointerEventData(EventSystem.current)
+        {
+            position = touchPosition
+        };
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventData, results);
+        return results.Count > 0; // Returns true if any UI element is hit
     }
 
     // Update is called once per frame
@@ -137,7 +148,7 @@ public class CameraHandle : MonoBehaviour
     private void cameraZoom(float increment)
     {
         Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize + increment, minZoom, maxZoom);
-        cam.orthographicSize = Mathf.SmoothDamp(cam.orthographicSize, cam.orthographicSize + increment, ref zoomVelocity, 0.1f, Mathf.Infinity, Time.deltaTime);
+        cam.orthographicSize = Mathf.SmoothDamp(cam.orthographicSize, cam.orthographicSize + increment, ref zoomVelocity, 0.2f, Mathf.Infinity, Time.deltaTime);
         RestrictCameraPosition(); // Restrict the camera position after zooming
     }
 

@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     public GameObject CameraRenderer;
     public GameObject Confetti;
 
+    public GameObject LevelMenuHolder;
     public GameObject levelCompleteUI;
     public GameObject mainMenuUI;
     public GameObject inGameUi;
@@ -27,9 +28,16 @@ public class GameManager : MonoBehaviour
     public bool isHotBarMinimized = false;
 
 
-    public void Awake()
+    public void Start()
     {
-
+        int i = 1;
+        Transform LevelPanel = GameObject.Find("LevelPanel").transform;
+        foreach (MyLevelData data in levelData.data)
+        {
+            GameObject LevelHolder = Instantiate(LevelMenuHolder, LevelPanel);
+            LevelHolder.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Level " + i;
+            i++;
+        }
     }
 
     public void LoadLevel(int levelIndex)
@@ -178,9 +186,9 @@ public class GameManager : MonoBehaviour
 
         //assign asset to the target
         Transform slot2 = toolbarSlotsParent.GetChild(targetIndex).GetChild(1);
-        DragAndDrop asset = slot2.GetComponentInChildren<DragAndDrop>();
-        Debug.Log("Target Found in Manager: " + name);
-        asset.targetObject = target;
+        //DragAndDrop asset = slot2.GetComponentInChildren<DragAndDrop>();
+        //Debug.Log("Target Found in Manager: " + name);
+        //asset.targetObject = target;
         target.SetActive(false);
         target.GetComponent<SpriteRenderer>().enabled = true;
 
@@ -237,7 +245,6 @@ public class GameManager : MonoBehaviour
             iconObject.transform.SetParent(newSlotObject.transform);
             RectTransform iconRectTransform = iconObject.AddComponent<RectTransform>();
             iconRectTransform.sizeDelta = new Vector2(1, 1); // Set size of the icon  
-            iconRectTransform.localScale = new Vector3(100, 100, 100); // Set scale of the sloy
             iconRectTransform.anchoredPosition3D = new Vector3(iconRectTransform.anchoredPosition3D.x, iconRectTransform.anchoredPosition3D.y, 0); // Set z position to 0
             Image image = iconObject.AddComponent<Image>();
 
@@ -245,8 +252,8 @@ public class GameManager : MonoBehaviour
             CanvasGroup canvasGroup = iconObject.AddComponent<CanvasGroup>();
 
             // Add DragAndDrop script to iconObject  
-            DragAndDrop dragAndDrop = iconObject.AddComponent<DragAndDrop>();
-            dragAndDrop.backgroundCanvas = backgroundObject.transform; // Assign background to DragAndDrop  
+            //DragAndDrop dragAndDrop = iconObject.AddComponent<DragAndDrop>();
+            //dragAndDrop.backgroundCanvas = backgroundObject.transform; // Assign background to DragAndDrop  
 
             Description description = iconObject.AddComponent<Description>();
             description.description = targetList[i].Description;
