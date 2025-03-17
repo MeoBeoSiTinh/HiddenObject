@@ -10,12 +10,8 @@ public class CameraHandle : MonoBehaviour
     public GameObject background_GameObject; // Add a reference to the background GameObject
     private float prevMagnitude = 0;
     private float touchCount = 0;
-    Vector2 StartPosition;
-    Vector2 DragStartPosition;
-    Vector2 DragNewPosition;
-    Vector2 Finger0Position;
-    float DistanceBetweenFingers;
     bool isZooming;
+    bool uiDragging = false;
     private Camera cam;
     private float dragSpeed = 0.5f; // Adjust drag speed for smoothness
     private float zoomSpeed = 0.01f; // Adjust zoom speed for smoothness
@@ -79,7 +75,7 @@ public class CameraHandle : MonoBehaviour
         touch1Pos.Enable();
         touch1Pos.performed += _ =>
         {
-            if (touchCount != 2 || IsPointerOverUI(touch0Pos.ReadValue<Vector2>()) || IsPointerOverUI(touch1Pos.ReadValue<Vector2>()))
+            if (touchCount != 2 || IsPointerOverUI(touch0Pos.ReadValue<Vector2>()) || IsPointerOverUI(touch1Pos.ReadValue<Vector2>()) || uiDragging)
             {
                 return;
             }
@@ -102,7 +98,7 @@ public class CameraHandle : MonoBehaviour
         touch0Drag.Enable();
         touch0Drag.performed += ctx =>
         {
-            if (touchCount == 1 && !isZooming && !IsPointerOverUI(touch0Pos.ReadValue<Vector2>()))
+            if (touchCount == 1 && !isZooming && !IsPointerOverUI(touch0Pos.ReadValue<Vector2>()) || !uiDragging)
             {
                 Vector2 delta = ctx.ReadValue<Vector2>();
                 Vector3 move = new Vector3(-delta.x, -delta.y, 0) * dragSpeed * Time.deltaTime;

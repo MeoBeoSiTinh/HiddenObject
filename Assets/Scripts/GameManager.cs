@@ -13,8 +13,10 @@ public class GameManager : MonoBehaviour
     private int currentStageIndex;
     private GameObject currentLevelInstance;
     private List<MyTarget> targetList;
+    private List<MyTarget> specialList;
     public List<MyTarget> allTargetsList; // New list to contain all targets in every stage
     public Transform toolbarSlotsParent;
+    public Transform SpecialSlotsParent;
     public GameObject mapHiding;
     public float targetSize; // Size of the camera zoom out
     public GameObject CameraRenderer;
@@ -25,6 +27,7 @@ public class GameManager : MonoBehaviour
     public GameObject mainMenuUI;
     public GameObject inGameUi;
     public GameObject hotbarUi;
+    public TabGroup tabGroup;
     public bool isHotBarMinimized = false;
 
 
@@ -36,15 +39,21 @@ public class GameManager : MonoBehaviour
         {
             GameObject LevelHolder = Instantiate(LevelMenuHolder, LevelPanel);
             LevelHolder.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Level " + i;
+
+            // Add Button component and set its callback
+            Button levelButton = LevelHolder.AddComponent<Button>();
+            int levelIndex = i - 1; // Capture the current value of i
+            levelButton.onClick.AddListener(() => LoadLevel(levelIndex));
+
             i++;
         }
     }
 
     public void LoadLevel(int levelIndex)
-    {   
-        
+    {
+
         Debug.Log("Load Level: " + levelIndex);
-        if (levelIndex < 0 || levelIndex + 1  > levelData.data.Count)
+        if (levelIndex < 0 || levelIndex + 1 > levelData.data.Count)
         {
             Debug.Log("Game Complete");
             DeleteCurrentLevel();
@@ -53,6 +62,8 @@ public class GameManager : MonoBehaviour
             inGameUi.SetActive(false);
             return;
         }
+        mainMenuUI.SetActive(false);
+        inGameUi.SetActive(true);
 
         DeleteCurrentLevel();
 
@@ -72,6 +83,8 @@ public class GameManager : MonoBehaviour
         {
             allTargetsList.AddRange(stage.target);
         }
+        specialList = new List<MyTarget>(levelInfor.special);
+        UpdateSpecialBar();
         LoadStage(0);
         mapHiding.SetActive(true);
         foreach (Transform child in mapHiding.transform)
@@ -120,7 +133,7 @@ public class GameManager : MonoBehaviour
 
         // Disable CameraHandle script
         CameraHandle cameraHandle = Camera.main.GetComponent<CameraHandle>();
-        
+
 
         // Determine the target position based on the stage index
         switch (stageIndex)
@@ -186,9 +199,6 @@ public class GameManager : MonoBehaviour
 
         //assign asset to the target
         Transform slot2 = toolbarSlotsParent.GetChild(targetIndex).GetChild(1);
-        //DragAndDrop asset = slot2.GetComponentInChildren<DragAndDrop>();
-        //Debug.Log("Target Found in Manager: " + name);
-        //asset.targetObject = target;
         target.SetActive(false);
         target.GetComponent<SpriteRenderer>().enabled = true;
 
@@ -218,6 +228,57 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(2f); // Adjust the delay as needed
         levelCompleteUI.SetActive(true);
+    }
+    public void UpdateSpecialBar()
+    {
+        for (int i = 0; i < specialList.Count; i++)
+        {
+            Debug.Log("Special: " + specialList[i].TargetName);
+            GameObject newSlotObject = new GameObject("Icon" + specialList[i].TargetName);
+            newSlotObject.transform.SetParent(SpecialSlotsParent);
+            RectTransform rectTransform = newSlotObject.AddComponent<RectTransform>();
+            rectTransform.sizeDelta = new Vector2(1, 1); // Set size of the slot
+            rectTransform.localScale = new Vector3(1, 1, 1); // Set scale of the slot
+            rectTransform.anchoredPosition3D = new Vector3(rectTransform.anchoredPosition3D.x, rectTransform.anchoredPosition3D.y, 0); // Set z position to 0
+            Image newSlot = newSlotObject.AddComponent<Image>();
+
+            GameObject backgroundObject = new GameObject("Background");
+            backgroundObject.transform.SetParent(newSlotObject.transform);
+            RectTransform backgroundRectTransform = backgroundObject.AddComponent<RectTransform>();
+            backgroundRectTransform.sizeDelta = new Vector2(1, 1); // Set size of the background  
+            backgroundRectTransform.localScale = new Vector3(135, 135, 135); // Set scale of the slot
+            backgroundRectTransform.anchoredPosition3D = new Vector3(backgroundRectTransform.anchoredPosition3D.x, backgroundRectTransform.anchoredPosition3D.y, 0); // Set z position to 0
+            Image background = backgroundObject.AddComponent<Image>();
+            background.sprite = Resources.Load<Sprite>("UI/HotbarslotUI");
+
+            GameObject iconObject = new GameObject("Icon");
+            iconObject.transform.SetParent(newSlotObject.transform);
+            RectTransform iconRectTransform = iconObject.AddComponent<RectTransform>();
+            iconRectTransform.sizeDelta = new Vector2(1, 1); // Set size of the icon  
+            iconRectTransform.anchoredPosition3D = new Vector3(iconRectTransform.anchoredPosition3D.x, iconRectTransform.anchoredPosition3D.y, 0); // Set z position to 0
+            Image image = iconObject.AddComponent<Image>();
+
+            // Add CanvasGroup to iconObject  
+            CanvasGroup canvasGroup = iconObject.AddComponent<CanvasGroup>();
+
+            //Add DragAndDrop script to iconObject
+            DragAndDrop dragAndDrop = iconObject.AddComponent<DragAndDrop>();
+            dragAndDrop.backgroundCanvas = backgroundObject.transform; // Assign background to DragAndDrop  
+
+            Description description = iconObject.AddComponent<Description>();
+            description.description = specialList[i].Description;
+            description.uiPrefab = Resources.Load<GameObject>("UI/DescBox");
+
+            background.color = new Color(1f, 1f, 1f); // White color  
+
+            // Set the sprite of the image to the target's icon  
+            if (i < specialList.Count)
+            {
+                image.sprite = specialList[i].TargetPrefab.GetComponent<SpriteRenderer>().sprite;
+            }
+
+            image.gameObject.SetActive(true);
+        }
     }
 
     public void UpdateHotBar()
@@ -255,9 +316,9 @@ public class GameManager : MonoBehaviour
             //DragAndDrop dragAndDrop = iconObject.AddComponent<DragAndDrop>();
             //dragAndDrop.backgroundCanvas = backgroundObject.transform; // Assign background to DragAndDrop  
 
-            Description description = iconObject.AddComponent<Description>();
-            description.description = targetList[i].Description;
-            description.uiPrefab = Resources.Load<GameObject>("UI/DescBox");
+            //Description description = iconObject.AddComponent<Description>();
+            //description.description = targetList[i].Description;
+            //description.uiPrefab = Resources.Load<GameObject>("UI/DescBox");
 
             background.color = new Color(1f, 1f, 1f); // White color  
 
@@ -287,8 +348,6 @@ public class GameManager : MonoBehaviour
     }
     public void OnStartClicked()
     {
-        mainMenuUI.SetActive(false);
-        inGameUi.SetActive(true);
         LoadLevel(0);
     }
     public void OnMinimizeClicked()
@@ -307,6 +366,11 @@ public class GameManager : MonoBehaviour
             isHotBarMinimized = true;
         }        
         Debug.Log("Minimize Clicked");
+
+    }
+
+    public void OnHomeClicked()
+    {
 
     }
 

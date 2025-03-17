@@ -14,6 +14,7 @@ public class MyLevelData
     public string LevelName;
     public List<MyStage> stage;
     public GameObject LevelPrefab;
+    public List<MyTarget> special;
 
 }
 

@@ -10,11 +10,13 @@ public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     private Transform parentTransform;
     public GameObject targetObject; // Cache the target object
     public Transform backgroundCanvas; // Reference to the background canvas
+    private CameraHandle cam;
 
     void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
+        cam = Camera.main.GetComponent<CameraHandle>();
         parentTransform = rectTransform.parent; // Store the original parent
     }
 
@@ -26,7 +28,7 @@ public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         startPosition = rectTransform.anchoredPosition;
 
         // Disable CameraHandle script from the main camera
-        Camera.main.GetComponent<CameraHandle>().enabled = false;
+        
     }
 
     public void OnDrag(PointerEventData eventData)

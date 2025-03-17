@@ -45,3 +45,10 @@ MonoBehaviour:
         TargetPrefab: {fileID: 2317503772019206534, guid: bfd01a5ebe5e4b8428fa44bc0465e25d, type: 3}
         Description: Cho'
     LevelPrefab: {fileID: 4200273370681321277, guid: aff4ffef6aa37804eb9706958dacaea3, type: 3}
+    special:
+    - TargetName: sung san
+      TargetPrefab: {fileID: 5066771720048516272, guid: 0fe120d780792ee48ba3dfdf1c06a10d, type: 3}
+      Description: fish catching
+    - TargetName: ca
+      TargetPrefab: {fileID: 2654469614985203489, guid: d7e5d33e26c84c04ba6f96c25e516442, type: 3}
+      Description: fish
