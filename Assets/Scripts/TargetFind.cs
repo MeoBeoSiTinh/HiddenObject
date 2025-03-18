@@ -9,7 +9,6 @@ public class TargetFind : MonoBehaviour
     private Camera mainCamera;
     public Transform UiHotbar; // Reference to the UI hotbar
     private GameObject targetImagePrefab; // Prefab for the target image
-    private GameObject targetNamePopup; // Popup for the target name
     public GameObject spineAnimationPrefab; // Prefab for the Spine animation
     private float touchStartTime;
     public float touchThresholdTime = 0.2f; // Threshold time for touch
@@ -91,7 +90,7 @@ public class TargetFind : MonoBehaviour
         }
     }
 
-    private void CreateTargetImage(Vector2 touchPosition)
+    public void CreateTargetImage(Vector2 touchPosition)
     {
         // Instantiate the target image prefab
         targetImagePrefab = new GameObject("TargetImage");
@@ -131,7 +130,7 @@ public class TargetFind : MonoBehaviour
         StartCoroutine(FlyToToolbar(targetImagePrefab));
     }
 
-    private void CreateSpineAnimation(Vector2 touchPosition)
+    public void CreateSpineAnimation(Vector2 touchPosition)
     {
         // Instantiate the Spine animation prefab
         GameObject spineAnimation = Instantiate(spineAnimationPrefab, touchPosition, Quaternion.identity);
@@ -194,7 +193,8 @@ public class TargetFind : MonoBehaviour
         RectTransform uiLocaction = GameObject.Find("UILocation").GetComponent<RectTransform>();
         // Set endPosition's y to UiHotbar's parent's y position
         endPosition.y = uiLocaction.anchoredPosition.y;
-        
+        endPosition.x += parentRect.anchoredPosition.x;
+
 
         // Define control points for a sideways parabola (opening to the right)
         Vector2 midPoint = (startPosition + endPosition) * 0.5f;
@@ -238,7 +238,7 @@ public class TargetFind : MonoBehaviour
                         {
                             Debug.LogError("Error destroying flying image: " + e.Message);
                         }
-                        gameManager.TargetFound(gameObject.name);
+                        gameManager.TargetFound(gameObject);
                     });
             });
         Destroy(UILoctation);

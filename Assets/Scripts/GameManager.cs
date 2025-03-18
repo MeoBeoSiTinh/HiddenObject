@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     private List<MyTarget> targetList;
     private List<MyTarget> specialList;
     public List<MyTarget> allTargetsList; // New list to contain all targets in every stage
+    public List<MyTarget> allSpecialList; // New list to contain all special targets
     public Transform toolbarSlotsParent;
     public Transform SpecialSlotsParent;
     public GameObject mapHiding;
@@ -52,10 +53,8 @@ public class GameManager : MonoBehaviour
     public void LoadLevel(int levelIndex)
     {
 
-        Debug.Log("Load Level: " + levelIndex);
         if (levelIndex < 0 || levelIndex + 1 > levelData.data.Count)
         {
-            Debug.Log("Game Complete");
             DeleteCurrentLevel();
             ResetMainCameraPosition();
             mainMenuUI.SetActive(true);
@@ -77,13 +76,13 @@ public class GameManager : MonoBehaviour
         // Populate allTargetsList with all targets in every stage
         allTargetsList = new List<MyTarget>();
         TextMeshProUGUI stageName = GameObject.Find("StageName").GetComponentInChildren<TextMeshProUGUI>();
-        Debug.Log("Level Name: " + levelInfor.LevelName);
         stageName.text = levelInfor.LevelName;
         foreach (var stage in levelInfor.stage)
         {
             allTargetsList.AddRange(stage.target);
         }
         specialList = new List<MyTarget>(levelInfor.special);
+        allSpecialList = new List<MyTarget>(levelInfor.special);
         UpdateSpecialBar();
         LoadStage(0);
         mapHiding.SetActive(true);
@@ -106,7 +105,6 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < targetList.Count; i++)
         {
             GameObject.Find(targetList[i].TargetName).GetComponent<TargetFind>().enabled = true;
-            Debug.Log("Target: " + targetList[i].TargetName);
         }
 
         // Disable the child of mapHiding with index equal to stageIndex - 1
@@ -187,41 +185,68 @@ public class GameManager : MonoBehaviour
         currentLevelInstance = null;
     }
 
-    public void TargetFound(string name)
+    public void TargetFound(GameObject target)
     {
-        GameObject target = GameObject.Find(name);
-        targetList.RemoveAll(x => x.TargetName == name);
-        int targetIndex = allTargetsList.FindIndex(x => x.TargetName == name);
-        Debug.Log("index: " + targetIndex);
-        //change Hotbar color
-        Transform slot = toolbarSlotsParent.GetChild(targetIndex).GetChild(0);
-        Image bg = slot.GetComponentInChildren<Image>();
-
-        //assign asset to the target
-        Transform slot2 = toolbarSlotsParent.GetChild(targetIndex).GetChild(1);
-        target.SetActive(false);
-        target.GetComponent<SpriteRenderer>().enabled = true;
-
-        if (bg != null)
+        int targetIndex = allTargetsList.FindIndex(x => x.TargetName == target.name);
+        if (targetIndex == -1)
         {
-            bg.color = new Color(1f, 1f, 0.5f); // Light yellow color  
-        }
-
-        //change level
-        if (targetList.Count == 0)
-        {
-            if (currentStageIndex + 1 >= levelData.data[currentLevelIndex].stage.Count)
+            int specialIndex = allSpecialList.FindIndex(x => x.TargetName == target.name);
+            if (specialIndex == -1)
             {
-                Debug.Log("Level Complete");
-                allTargetsList.Clear();
-                clearHotBar();
-                Confetti.SetActive(true);
-                StartCoroutine(ShowLevelCompleteUIWithDelay());
                 return;
             }
-            Debug.Log("Stage Complete");
+            else
+            {
+                specialList.RemoveAll(x => x.TargetName == target.name);
+                //change Hotbar color
+                Transform slot = SpecialSlotsParent.GetChild(specialIndex).GetChild(0);
+                Image bg = slot.GetComponentInChildren<Image>();
+                //assign asset to the target
+                Transform slot2 = SpecialSlotsParent.GetChild(specialIndex).GetChild(1);
+                DragAndDrop dragAndDrop = slot2.GetComponent<DragAndDrop>();
+                dragAndDrop.targetObject = target;
+                target.SetActive(false);
+                target.GetComponent<SpriteRenderer>().enabled = true;
+                if (bg != null)
+                {
+                    bg.color = new Color(1f, 1f, 0.5f); // Light yellow color  
+                }
+                else
+                {
+                    Debug.Log("vailon bug");
+                }
+            }
+        }
+        else
+        {
+            targetList.RemoveAll(x => x.TargetName == target.name);
+            //change Hotbar color
+            Transform slot = toolbarSlotsParent.GetChild(targetIndex).GetChild(0);
+            Image bg = slot.GetComponentInChildren<Image>();
+
+            //assign asset to the target
+            Transform slot2 = toolbarSlotsParent.GetChild(targetIndex).GetChild(1);
+            target.SetActive(false);
+            target.GetComponent<SpriteRenderer>().enabled = true;
+
+            if (bg != null)
+            {
+                bg.color = new Color(1f, 1f, 0.5f); // Light yellow color  
+            }
+        }
+        if (targetList.Count == 0 && currentStageIndex + 1 >= levelData.data[currentLevelIndex].stage.Count && specialList.Count == 0)
+        {
+            allTargetsList.Clear();
+            clearHotBar();
+            Confetti.SetActive(true);
+            StartCoroutine(ShowLevelCompleteUIWithDelay());
+            return;
+        }
+        else if (targetList.Count == 0 && currentStageIndex + 1 < levelData.data[currentLevelIndex].stage.Count)
+        {
             LoadStage(currentStageIndex + 1);
         }
+
     }
 
     private IEnumerator ShowLevelCompleteUIWithDelay()
@@ -233,7 +258,6 @@ public class GameManager : MonoBehaviour
     {
         for (int i = 0; i < specialList.Count; i++)
         {
-            Debug.Log("Special: " + specialList[i].TargetName);
             GameObject newSlotObject = new GameObject("Icon" + specialList[i].TargetName);
             newSlotObject.transform.SetParent(SpecialSlotsParent);
             RectTransform rectTransform = newSlotObject.AddComponent<RectTransform>();
@@ -246,7 +270,7 @@ public class GameManager : MonoBehaviour
             backgroundObject.transform.SetParent(newSlotObject.transform);
             RectTransform backgroundRectTransform = backgroundObject.AddComponent<RectTransform>();
             backgroundRectTransform.sizeDelta = new Vector2(1, 1); // Set size of the background  
-            backgroundRectTransform.localScale = new Vector3(135, 135, 135); // Set scale of the slot
+            backgroundRectTransform.localScale = new Vector3(120, 120, 120); // Set scale of the slot
             backgroundRectTransform.anchoredPosition3D = new Vector3(backgroundRectTransform.anchoredPosition3D.x, backgroundRectTransform.anchoredPosition3D.y, 0); // Set z position to 0
             Image background = backgroundObject.AddComponent<Image>();
             background.sprite = Resources.Load<Sprite>("UI/HotbarslotUI");
@@ -255,6 +279,7 @@ public class GameManager : MonoBehaviour
             iconObject.transform.SetParent(newSlotObject.transform);
             RectTransform iconRectTransform = iconObject.AddComponent<RectTransform>();
             iconRectTransform.sizeDelta = new Vector2(1, 1); // Set size of the icon  
+            iconRectTransform.localScale = new Vector3(85,85,85); // Set scale of the slot
             iconRectTransform.anchoredPosition3D = new Vector3(iconRectTransform.anchoredPosition3D.x, iconRectTransform.anchoredPosition3D.y, 0); // Set z position to 0
             Image image = iconObject.AddComponent<Image>();
 
@@ -289,7 +314,7 @@ public class GameManager : MonoBehaviour
             newSlotObject.transform.SetParent(toolbarSlotsParent);
             RectTransform rectTransform = newSlotObject.AddComponent<RectTransform>();
             rectTransform.sizeDelta = new Vector2(1, 1); // Set size of the slot
-            rectTransform.localScale = new Vector3(1, 1, 1); // Set scale of the slot
+            rectTransform.localScale = new Vector3(1,1,1); // Set scale of the slot
             rectTransform.anchoredPosition3D = new Vector3(rectTransform.anchoredPosition3D.x, rectTransform.anchoredPosition3D.y, 0); // Set z position to 0
             Image newSlot = newSlotObject.AddComponent<Image>();
 
@@ -297,7 +322,7 @@ public class GameManager : MonoBehaviour
             backgroundObject.transform.SetParent(newSlotObject.transform);
             RectTransform backgroundRectTransform = backgroundObject.AddComponent<RectTransform>();
             backgroundRectTransform.sizeDelta = new Vector2(1, 1); // Set size of the background  
-            backgroundRectTransform.localScale = new Vector3(135, 135, 135); // Set scale of the slot
+            backgroundRectTransform.localScale = new Vector3(120, 120, 120); // Set scale of the slot
             backgroundRectTransform.anchoredPosition3D = new Vector3(backgroundRectTransform.anchoredPosition3D.x, backgroundRectTransform.anchoredPosition3D.y, 0); // Set z position to 0
             Image background = backgroundObject.AddComponent<Image>();
             background.sprite = Resources.Load<Sprite>("UI/HotbarslotUI");
@@ -306,6 +331,7 @@ public class GameManager : MonoBehaviour
             iconObject.transform.SetParent(newSlotObject.transform);
             RectTransform iconRectTransform = iconObject.AddComponent<RectTransform>();
             iconRectTransform.sizeDelta = new Vector2(1, 1); // Set size of the icon  
+            iconRectTransform.localScale = new Vector3(85,85,85); // Set scale of the slot
             iconRectTransform.anchoredPosition3D = new Vector3(iconRectTransform.anchoredPosition3D.x, iconRectTransform.anchoredPosition3D.y, 0); // Set z position to 0
             Image image = iconObject.AddComponent<Image>();
 
@@ -354,18 +380,17 @@ public class GameManager : MonoBehaviour
     {
         if (isHotBarMinimized)
         {
-            LeanTween.moveY(hotbarUi.GetComponent<RectTransform>(), hotbarUi.GetComponent<RectTransform>().anchoredPosition.y + toolbarSlotsParent.GetComponent<RectTransform>().rect.height, 0.5f).setEase(LeanTweenType.easeInQuad);
+            LeanTween.moveY(hotbarUi.GetComponent<RectTransform>(), hotbarUi.GetComponent<RectTransform>().anchoredPosition.y + GameObject.Find("Hotbar").GetComponent<RectTransform>().rect.height, 0.5f).setEase(LeanTweenType.easeInQuad);
             GameObject.Find("MinimizeButton").GetComponent<RectTransform>().localRotation = Quaternion.Euler(0, 0, 0);
             isHotBarMinimized = false;
         }
         else
         {
-            LeanTween.moveY(hotbarUi.GetComponent<RectTransform>(), hotbarUi.GetComponent<RectTransform>().anchoredPosition.y - toolbarSlotsParent.GetComponent<RectTransform>().rect.height, 0.5f).setEase(LeanTweenType.easeInQuad);
+            LeanTween.moveY(hotbarUi.GetComponent<RectTransform>(), hotbarUi.GetComponent<RectTransform>().anchoredPosition.y - GameObject.Find("Hotbar").GetComponent<RectTransform>().rect.height, 0.5f).setEase(LeanTweenType.easeInQuad);
             GameObject.Find("MinimizeButton").GetComponent<RectTransform>().localRotation = Quaternion.Euler(0, 0, 180);
 
             isHotBarMinimized = true;
         }        
-        Debug.Log("Minimize Clicked");
 
     }
 

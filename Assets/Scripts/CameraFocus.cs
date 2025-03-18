@@ -19,6 +19,11 @@ public class CameraFocus : MonoBehaviour
         // Loop through all dynamic objects and enable/disable them
         foreach (GameObject obj in dynamicObjects)
         {
+            if (obj == null) // Check if the object got destroyed
+            {
+                continue;
+            }
+
             if (IsObjectNearCamera(obj) || IsObjectVisibleToCamera(obj))
             {
                 EnableObject(obj);

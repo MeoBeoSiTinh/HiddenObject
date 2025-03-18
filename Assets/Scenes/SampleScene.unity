@@ -1175,6 +1175,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   camera_GameObject: {fileID: 519420028}
   background_GameObject: {fileID: 0}
+  uiDragging: 0
   currentStage: 0
 --- !u!1 &616114010
 GameObject:
@@ -2220,6 +2221,7 @@ MonoBehaviour:
   levelData: {fileID: 11400000, guid: f7bc66233d8f0fd4da271354e978f7b1, type: 2}
   currentLevelIndex: 0
   allTargetsList: []
+  allSpecialList: []
   toolbarSlotsParent: {fileID: 2051101473}
   SpecialSlotsParent: {fileID: 1523133334}
   mapHiding: {fileID: 7500801319247903733}
@@ -2918,7 +2920,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1555800680
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3629,7 +3631,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1914762899
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4003,7 +4005,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 310}
+  m_SizeDelta: {x: 0, y: 135}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2051101474
 MonoBehaviour:

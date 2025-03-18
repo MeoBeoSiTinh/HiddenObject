@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using TouchPhase = UnityEngine.TouchPhase;
+
 public class CameraHandle : MonoBehaviour
 {
     public GameObject camera_GameObject;
@@ -11,7 +11,7 @@ public class CameraHandle : MonoBehaviour
     private float prevMagnitude = 0;
     private float touchCount = 0;
     bool isZooming;
-    bool uiDragging = false;
+    public bool uiDragging = false;
     private Camera cam;
     private float dragSpeed = 0.5f; // Adjust drag speed for smoothness
     private float zoomSpeed = 0.01f; // Adjust zoom speed for smoothness
@@ -98,7 +98,7 @@ public class CameraHandle : MonoBehaviour
         touch0Drag.Enable();
         touch0Drag.performed += ctx =>
         {
-            if (touchCount == 1 && !isZooming && !IsPointerOverUI(touch0Pos.ReadValue<Vector2>()) || !uiDragging)
+            if (touchCount == 1 && !isZooming && !IsPointerOverUI(touch0Pos.ReadValue<Vector2>()) && !uiDragging)
             {
                 Vector2 delta = ctx.ReadValue<Vector2>();
                 Vector3 move = new Vector3(-delta.x, -delta.y, 0) * dragSpeed * Time.deltaTime;
