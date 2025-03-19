@@ -148,7 +148,7 @@ public class CameraHandle : MonoBehaviour
         RestrictCameraPosition(); // Restrict the camera position after zooming
     }
 
-    void RestrictCameraPosition()
+    public void RestrictCameraPosition()
     {
         if (background_GameObject == null)
         {
@@ -211,4 +211,60 @@ public class CameraHandle : MonoBehaviour
         pos.y = Mathf.Clamp(pos.y, minY, maxY);
         cam.transform.position = pos;
     }
+    public bool IsCameraTouchingBorder()
+    {
+        if (background_GameObject == null)
+        {
+            return false;
+        }
+
+        Camera cam = camera_GameObject.GetComponent<Camera>();
+        Bounds backgroundBounds = background_GameObject.GetComponent<SpriteRenderer>().bounds;
+
+        float vertExtent = cam.orthographicSize;
+        float horzExtent = vertExtent * Screen.width / Screen.height;
+
+        float stageWidth = backgroundBounds.size.x / 2;
+        float stageHeight = backgroundBounds.size.y / 2;
+
+        float minX, maxX, minY, maxY;
+
+        switch (currentStage)
+        {
+            case 0:
+                minX = backgroundBounds.min.x + horzExtent;
+                maxX = backgroundBounds.min.x + stageWidth - horzExtent + 2;
+                minY = backgroundBounds.max.y - stageHeight + vertExtent - 6;
+                maxY = backgroundBounds.max.y - vertExtent;
+                break;
+            case 1:
+                minX = backgroundBounds.min.x + horzExtent;
+                maxX = backgroundBounds.max.x - horzExtent;
+                minY = backgroundBounds.max.y - stageHeight + vertExtent - 6;
+                maxY = backgroundBounds.max.y - vertExtent;
+                break;
+            case 2:
+                minX = backgroundBounds.min.x + horzExtent;
+                maxX = backgroundBounds.max.x - horzExtent;
+                minY = backgroundBounds.min.y + vertExtent - 5 / 2;
+                maxY = backgroundBounds.max.y - vertExtent;
+                break;
+            case 3:
+                minX = backgroundBounds.min.x + horzExtent;
+                maxX = backgroundBounds.max.x - horzExtent;
+                minY = backgroundBounds.min.y + vertExtent - 5 / 2;
+                maxY = backgroundBounds.max.y - vertExtent;
+                break;
+            default:
+                minX = backgroundBounds.min.x + horzExtent;
+                maxX = backgroundBounds.max.x - horzExtent;
+                minY = backgroundBounds.min.y + vertExtent;
+                maxY = backgroundBounds.max.y - vertExtent;
+                break;
+        }
+
+        Vector3 pos = cam.transform.position;
+        return pos.x <= minX || pos.x >= maxX || pos.y <= minY || pos.y >= maxY;
+    }
+
 }

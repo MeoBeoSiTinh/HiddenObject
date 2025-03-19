@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
     public GameObject inGameUi;
     public GameObject hotbarUi;
     public TabGroup tabGroup;
+    public GadgetManager gadgetManager;
     public bool isHotBarMinimized = false;
 
 
@@ -48,6 +49,7 @@ public class GameManager : MonoBehaviour
 
             i++;
         }
+        gadgetManager = GameObject.Find("GadgetManager").GetComponent<GadgetManager>();
     }
 
     public void LoadLevel(int levelIndex)
@@ -358,6 +360,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void ResetMainCameraPosition()
+    {
+        Camera.main.transform.position = new Vector3(-5, 10, -10); // Reset to default position
+        Camera.main.orthographicSize = 8; // Reset to default size
+    }
+
     public void clearHotBar()
     {
         foreach (Transform child in toolbarSlotsParent)
@@ -400,14 +408,32 @@ public class GameManager : MonoBehaviour
     }
 
 
-    // Update is called once per frame
-    void Update()
+    public void OnScanClicked()
     {
-       
+        List<GameObject> targets = new List<GameObject>();
+        foreach (MyTarget target in targetList)
+        {
+            GameObject targetObject = GameObject.Find(target.TargetName);
+            if (targetObject != null)
+            {
+                targets.Add(targetObject);
+            }
+        }
+        gadgetManager.Scan(targets);
     }
-    public void ResetMainCameraPosition()
+
+    public void OnCompassClicked()
     {
-        Camera.main.transform.position = new Vector3(-5, 10, -10); // Reset to default position
-        Camera.main.orthographicSize = 8; // Reset to default size
+        List<GameObject> targets = new List<GameObject>();
+        foreach (MyTarget target in targetList)
+        {
+            GameObject targetObject = GameObject.Find(target.TargetName);
+            if (targetObject != null)
+            {
+                targets.Add(targetObject);
+            }
+        }
+        gadgetManager.Compass(targets);
     }
+    
 }

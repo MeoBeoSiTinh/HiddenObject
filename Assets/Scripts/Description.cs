@@ -20,7 +20,6 @@ public class Description : MonoBehaviour, IPointerDownHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        Debug.Log("Pointer down on " + gameObject.name);
         // Convert screen touch position to Canvas local position
         Vector2 localPosition;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
