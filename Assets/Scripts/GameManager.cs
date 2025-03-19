@@ -16,20 +16,23 @@ public class GameManager : MonoBehaviour
     private List<MyTarget> specialList;
     public List<MyTarget> allTargetsList; // New list to contain all targets in every stage
     public List<MyTarget> allSpecialList; // New list to contain all special targets
-    public Transform toolbarSlotsParent;
-    public Transform SpecialSlotsParent;
+
     public GameObject mapHiding;
     public float targetSize; // Size of the camera zoom out
     public GameObject CameraRenderer;
-    public GameObject Confetti;
 
+    [Header("UI Settings")]
     public GameObject LevelMenuHolder;
     public GameObject levelCompleteUI;
     public GameObject mainMenuUI;
     public GameObject inGameUi;
     public GameObject hotbarUi;
     public TabGroup tabGroup;
+    public GameObject Confetti;
     public GadgetManager gadgetManager;
+    public Transform toolbarSlotsParent;
+    public Transform SpecialSlotsParent;
+    public GameObject specialFoundUi;
     public bool isHotBarMinimized = false;
 
 
@@ -249,6 +252,20 @@ public class GameManager : MonoBehaviour
             LoadStage(currentStageIndex + 1);
         }
 
+    }
+
+    public void specialFound(string name, GameObject image)
+    {
+        specialFoundUi.SetActive(true);
+        specialFoundUi.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = name;
+        StartCoroutine(DestroyImageAfterDelay(image));
+    }
+
+    private IEnumerator DestroyImageAfterDelay(GameObject image)
+    {
+        yield return new WaitForSeconds(3f); // Delay for 3 seconds
+        Destroy(image);
+        specialFoundUi.SetActive(false);
     }
 
     private IEnumerator ShowLevelCompleteUIWithDelay()

@@ -204,7 +204,7 @@ public class TargetFind : MonoBehaviour
         );
 
         // Move the image along the parabolic path with slow start and end
-        LeanTween.value(flyingImage, 0f, 1f, 1f) // Increased duration to 1.5s for smoother effect
+        LeanTween.value(flyingImage, 0f, 1f, 1.3f) // Increased duration to 1.5s for smoother effect
             .setEase(LeanTweenType.easeInOutQuad) // Starts slow, speeds up, then slows down
             .setOnUpdate((float t) =>
             {
@@ -266,5 +266,72 @@ public class TargetFind : MonoBehaviour
         // Set the anchored position of the empty UI element to the local point
         rectTransform.anchoredPosition = localPoint;
         return emptyUIElement;
+    }
+
+    public void SpecialTargetFound(Vector2 touchPosition)
+    {
+        // Instantiate the target image prefab
+        targetImagePrefab = new GameObject("TargetImage");
+        Image targetImage = targetImagePrefab.AddComponent<Image>();
+        targetImagePrefab.transform.SetParent(GameObject.Find("Canvas").transform);
+
+        // Set the size and sprite of the target image
+        Sprite sourceSprite = gameObject.GetComponent<SpriteRenderer>().sprite;
+        targetImage.sprite = sourceSprite;
+        targetImage.rectTransform.sizeDelta = new Vector2(sourceSprite.rect.width, sourceSprite.rect.height);
+        targetImage.rectTransform.localScale = new Vector3(1f,1f,1f); // Adjust scale as needed
+
+        // Convert touch position to local position in the Canvas
+        RectTransform canvasRect = GameObject.Find("Canvas").GetComponent<RectTransform>();
+        Vector2 localPoint;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            canvasRect,
+            touchPosition,
+            mainCamera,
+            out localPoint
+        );
+
+        // Set the initial position of the target image to the touch position
+        targetImage.rectTransform.anchoredPosition = localPoint;
+
+        // Find the UI hotbar by name and assign it to UiHotbar
+        GameObject hotbarObject = GameObject.Find("Icon" + gameObject.name);
+
+        if (hotbarObject != null)
+        {
+            UiHotbar = hotbarObject.transform;
+        }
+        else
+        {
+            Debug.LogError("Hotbar object not found in the scene.");
+        }
+
+        // Start the flying animation
+        StartCoroutine(specialEffect(targetImagePrefab));
+    }
+
+    private IEnumerator specialEffect(GameObject specialImage)
+    {
+        RectTransform specialImageRect = specialImage.GetComponent<RectTransform>();
+        Vector2 startPosition = specialImageRect.anchoredPosition;
+        Vector2 endPosition = new Vector2(0, 300);
+
+        // Move the image to the center of the screen
+        LeanTween.value(specialImage, 0f, 1f, 1f)
+            .setEase(LeanTweenType.easeInOutQuad)
+            .setOnUpdate((float t) =>
+            {
+                specialImageRect.anchoredPosition = Vector2.Lerp(startPosition, endPosition, t);
+            });
+
+        // Zoom the image
+        LeanTween.scale(specialImageRect, new Vector3(10f, 10f, 10f), 1f)
+            .setEase(LeanTweenType.easeInOutQuad);
+        gameManager.specialFound(gameObject.name, specialImage);
+
+
+
+
+        yield return null;
     }
 }

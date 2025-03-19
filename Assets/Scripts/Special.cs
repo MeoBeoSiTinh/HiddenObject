@@ -23,7 +23,7 @@ public class Special : MonoBehaviour
     {
         if (interactObject.name == target.name)
         {
-            resultObject.GetComponent<TargetFind>().CreateTargetImage(touchPosition);
+            resultObject.GetComponent<TargetFind>().SpecialTargetFound(touchPosition);
             resultObject.GetComponent<TargetFind>().CreateSpineAnimation(touchPosition);
             gameManager.TargetFound(target);
         }
