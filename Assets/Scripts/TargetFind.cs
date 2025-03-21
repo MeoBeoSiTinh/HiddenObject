@@ -1,5 +1,5 @@
 using System.Collections;
-using Unity.VisualScripting;
+
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,17 +12,18 @@ public class TargetFind : MonoBehaviour
     public GameObject spineAnimationPrefab; // Prefab for the Spine animation
     private float touchStartTime;
     public float touchThresholdTime = 0.2f; // Threshold time for touch
+    private GameObject SpecialUI;
     private void Start()
     {
         // Cache the main camera for performance
         mainCamera = Camera.main;
         Input.simulateMouseWithTouches = false;
-
         // Find the GameManager object by name and get the GameManager component
         GameObject gameManagerObject = GameObject.Find("GameManager");
         if (gameManagerObject != null)
         {
             gameManager = gameManagerObject.GetComponent<GameManager>();
+            SpecialUI = gameManager.specialFoundUi;
         }
         else
         {
@@ -78,11 +79,19 @@ public class TargetFind : MonoBehaviour
                     // Check if the hit object is the one this script is attached to
                     if (topmostHit.transform == transform)
                     {
-                        // Create the Spine animation at the touch position
-                        CreateSpineAnimation(touch.position);
-                        // Create the target image at the touch position
-                        CreateTargetImage(touch.position);
-
+                        
+                        if(gameObject.tag == "Special")
+                        {
+                            CreateSpineAnimation(touch.position);
+                            SpecialTargetFound(touch.position);
+                        }
+                        else
+                        {
+                            // Create the Spine animation at the touch position
+                            CreateSpineAnimation(touch.position);
+                            // Create the target image at the touch position
+                            CreateTargetImage(touch.position);
+                        }
                         
                     }
                 }
@@ -128,6 +137,7 @@ public class TargetFind : MonoBehaviour
 
         // Start the flying animation
         StartCoroutine(FlyToToolbar(targetImagePrefab));
+
     }
 
     public void CreateSpineAnimation(Vector2 touchPosition)
@@ -204,7 +214,7 @@ public class TargetFind : MonoBehaviour
         );
 
         // Move the image along the parabolic path with slow start and end
-        LeanTween.value(flyingImage, 0f, 1f, 1.3f) // Increased duration to 1.5s for smoother effect
+        LeanTween.value(flyingImage, 0f, 1f, 1f) // Increased duration to 1.5s for smoother effect
             .setEase(LeanTweenType.easeInOutQuad) // Starts slow, speeds up, then slows down
             .setOnUpdate((float t) =>
             {
@@ -220,9 +230,10 @@ public class TargetFind : MonoBehaviour
                 {
                     Debug.LogError("Error destroying flying image: " + e.Message);
                 }
+                gameObject.SetActive(false);
+
                 gameManager.TargetFound(gameObject);
             });
-
         Destroy(UILoctation);
 
         yield return null;
@@ -275,11 +286,16 @@ public class TargetFind : MonoBehaviour
         Image targetImage = targetImagePrefab.AddComponent<Image>();
         targetImagePrefab.transform.SetParent(GameObject.Find("Canvas").transform);
 
+        // Add Canvas component and override sorting layer
+        Canvas canvas = targetImagePrefab.AddComponent<Canvas>();
+        canvas.overrideSorting = true;
+        canvas.sortingOrder = 5002;
+
         // Set the size and sprite of the target image
         Sprite sourceSprite = gameObject.GetComponent<SpriteRenderer>().sprite;
         targetImage.sprite = sourceSprite;
         targetImage.rectTransform.sizeDelta = new Vector2(sourceSprite.rect.width, sourceSprite.rect.height);
-        targetImage.rectTransform.localScale = new Vector3(1f,1f,1f); // Adjust scale as needed
+        targetImage.rectTransform.localScale = new Vector3(1f, 1f, 1f); // Adjust scale as needed
 
         // Convert touch position to local position in the Canvas
         RectTransform canvasRect = GameObject.Find("Canvas").GetComponent<RectTransform>();
@@ -294,6 +310,22 @@ public class TargetFind : MonoBehaviour
         // Set the initial position of the target image to the touch position
         targetImage.rectTransform.anchoredPosition = localPoint;
 
+        // Create a separate GameObject for the shining effect
+        GameObject shiningEffect = new GameObject("ShiningEffect");
+        Image shiningImage = shiningEffect.AddComponent<Image>();
+        shiningEffect.transform.SetParent(targetImagePrefab.transform); // Make shiningEffect a child of targetImage
+
+        // Add Canvas component and override sorting layer for shining effect
+        Canvas shiningCanvas = shiningEffect.AddComponent<Canvas>();
+        shiningCanvas.overrideSorting = true;
+        shiningCanvas.sortingOrder = 5001;
+
+        // Set the source image for the shining effect
+        shiningImage.sprite = Resources.Load<Sprite>("shining/light");
+        shiningImage.rectTransform.sizeDelta = new Vector2(131, 131); // Adjust size as needed
+        shiningImage.rectTransform.localScale = new Vector3(1f, 1f, 1f); // Adjust scale as needed
+        shiningImage.rectTransform.anchoredPosition = Vector2.zero; // Center the shining effect in the parent
+
         // Find the UI hotbar by name and assign it to UiHotbar
         GameObject hotbarObject = GameObject.Find("Icon" + gameObject.name);
 
@@ -305,32 +337,46 @@ public class TargetFind : MonoBehaviour
         {
             Debug.LogError("Hotbar object not found in the scene.");
         }
-
         // Start the flying animation
-        StartCoroutine(specialEffect(targetImagePrefab));
+        StartCoroutine(SpecialEffect(targetImagePrefab, shiningEffect));
+
     }
 
-    private IEnumerator specialEffect(GameObject specialImage)
+    private IEnumerator SpecialEffect(GameObject specialImage, GameObject shiningEffect)
     {
+        // Get RectTransforms
         RectTransform specialImageRect = specialImage.GetComponent<RectTransform>();
+        RectTransform shiningRect = shiningEffect.GetComponent<RectTransform>();
+
+        // Store initial position
         Vector2 startPosition = specialImageRect.anchoredPosition;
-        Vector2 endPosition = new Vector2(0, 300);
+        Vector2 endPosition = new Vector2(0, 100);
 
         // Move the image to the center of the screen
         LeanTween.value(specialImage, 0f, 1f, 1f)
             .setEase(LeanTweenType.easeInOutQuad)
             .setOnUpdate((float t) =>
             {
-                specialImageRect.anchoredPosition = Vector2.Lerp(startPosition, endPosition, t);
+                Vector2 newPosition = Vector2.Lerp(startPosition, endPosition, t);
+                specialImageRect.anchoredPosition = newPosition;
             });
 
-        // Zoom the image
-        LeanTween.scale(specialImageRect, new Vector3(10f, 10f, 10f), 1f)
+        // Scale the parent image
+        LeanTween.scale(specialImageRect, new Vector3(6f, 6f, 6f), 1f)
             .setEase(LeanTweenType.easeInOutQuad);
-        gameManager.specialFound(gameObject.name, specialImage);
 
+        // Rotate the shining effect
+        LeanTween.rotateAroundLocal(shiningEffect, Vector3.forward, 360f, 8f) // Slowed down rotation speed
+            .setEase(LeanTweenType.easeInOutQuad)
+            .setLoopCount(-1); // Infinite loops
 
+        // Scale the child
+        LeanTween.scale(shiningRect, new Vector3(1.5f, 1.5f, 1.5f), 1f)
+            .setEase(LeanTweenType.easeInOutQuad);
 
+        // Call the game manager function
+        gameManager.specialFound(gameObject, specialImage);
+        gameObject.SetActive(false);
 
         yield return null;
     }

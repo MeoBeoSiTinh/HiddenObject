@@ -5,12 +5,14 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using static UnityEngine.GraphicsBuffer;
 
 public class GameManager : MonoBehaviour
 {
     public LevelData levelData;
     public int currentLevelIndex;
     private int currentStageIndex;
+    private int specialStageIndex;
     private GameObject currentLevelInstance;
     private List<MyTarget> targetList;
     private List<MyTarget> specialList;
@@ -86,8 +88,11 @@ public class GameManager : MonoBehaviour
         {
             allTargetsList.AddRange(stage.target);
         }
-        specialList = new List<MyTarget>(levelInfor.special);
-        allSpecialList = new List<MyTarget>(levelInfor.special);
+        foreach (var group in levelInfor.specialGroup)
+        {
+            allSpecialList.AddRange(group.special);
+        }
+        
         UpdateSpecialBar();
         LoadStage(0);
         mapHiding.SetActive(true);
@@ -195,32 +200,7 @@ public class GameManager : MonoBehaviour
         int targetIndex = allTargetsList.FindIndex(x => x.TargetName == target.name);
         if (targetIndex == -1)
         {
-            int specialIndex = allSpecialList.FindIndex(x => x.TargetName == target.name);
-            if (specialIndex == -1)
-            {
-                return;
-            }
-            else
-            {
-                specialList.RemoveAll(x => x.TargetName == target.name);
-                //change Hotbar color
-                Transform slot = SpecialSlotsParent.GetChild(specialIndex).GetChild(0);
-                Image bg = slot.GetComponentInChildren<Image>();
-                //assign asset to the target
-                Transform slot2 = SpecialSlotsParent.GetChild(specialIndex).GetChild(1);
-                DragAndDrop dragAndDrop = slot2.GetComponent<DragAndDrop>();
-                dragAndDrop.targetObject = target;
-                target.SetActive(false);
-                target.GetComponent<SpriteRenderer>().enabled = true;
-                if (bg != null)
-                {
-                    bg.color = new Color(1f, 1f, 0.5f); // Light yellow color  
-                }
-                else
-                {
-                    Debug.Log("vailon bug");
-                }
-            }
+            return;
         }
         else
         {
@@ -231,41 +211,77 @@ public class GameManager : MonoBehaviour
 
             //assign asset to the target
             Transform slot2 = toolbarSlotsParent.GetChild(targetIndex).GetChild(1);
-            target.SetActive(false);
-            target.GetComponent<SpriteRenderer>().enabled = true;
+            Image icon = slot2.GetComponent<Image>();
+            Color iconColor = icon.color;
+            iconColor.a = 0.5f; // Reduce transparency to 50%
+            icon.color = iconColor;
 
-            if (bg != null)
+            GameObject tick = new GameObject("tick");
+            tick.transform.SetParent(toolbarSlotsParent.GetChild(targetIndex).transform);
+            RectTransform tickRect = tick.AddComponent<RectTransform>();
+            Image tickImage = tick.AddComponent<Image>();
+            tickImage.sprite = Resources.Load<Sprite>("UI/tick");
+
+            // Set size equal to sprite size
+            if (tickImage.sprite != null)
             {
-                bg.color = new Color(1f, 1f, 0.5f); // Light yellow color  
+                tickRect.sizeDelta = new Vector2(tickImage.sprite.rect.width, tickImage.sprite.rect.height);
             }
+            tickRect.localPosition = new Vector3(0f, 0f, 0f);
+            tickRect.localScale = new Vector3(1f, 1f, 1f);
         }
-        if (targetList.Count == 0 && currentStageIndex + 1 >= levelData.data[currentLevelIndex].stage.Count && specialList.Count == 0)
-        {
-            allTargetsList.Clear();
-            clearHotBar();
-            Confetti.SetActive(true);
-            StartCoroutine(ShowLevelCompleteUIWithDelay());
-            return;
-        }
-        else if (targetList.Count == 0 && currentStageIndex + 1 < levelData.data[currentLevelIndex].stage.Count)
+        if (targetList.Count == 0 && currentStageIndex + 1 < levelData.data[currentLevelIndex].stage.Count)
         {
             LoadStage(currentStageIndex + 1);
         }
-
+        else if (targetList.Count == 0 && currentStageIndex + 1 >= levelData.data[currentLevelIndex].stage.Count)
+        {
+            loadSpecial(0);
+        }
     }
 
-    public void specialFound(string name, GameObject image)
+    public void specialFound(GameObject target, GameObject image)
     {
+
         specialFoundUi.SetActive(true);
-        specialFoundUi.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = name;
+        specialFoundUi.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = target.name;
+        int specialIndex = allSpecialList.FindIndex(x => x.TargetName == target.name);
+        if (specialIndex == -1)
+        {
+            return;
+        }
+        else
+        {
+            specialList.RemoveAll(x => x.TargetName == target.name);
+            //change Hotbar color
+            Transform slot = SpecialSlotsParent.GetChild(specialIndex).GetChild(0);
+            Image bg = slot.GetComponentInChildren<Image>();
+            //assign asset to the target
+            Transform slot2 = SpecialSlotsParent.GetChild(specialIndex).GetChild(1);
+            DragAndDrop dragAndDrop = slot2.GetComponent<DragAndDrop>();
+            dragAndDrop.targetObject = target;
+            if (bg != null)
+            {
+                bg.sprite = Resources.Load<Sprite>("UI/SpecialObjectBG2");
+            }
+            else
+            {
+                Debug.Log("vailon bug");
+            }
+        }
+        if (specialList.Count == 0 && specialStageIndex + 1 < levelData.data[currentLevelIndex].specialGroup.Count)
+        {
+            loadSpecial(specialStageIndex + 1);
+        }
         StartCoroutine(DestroyImageAfterDelay(image));
+
     }
 
     private IEnumerator DestroyImageAfterDelay(GameObject image)
     {
+        
         yield return new WaitForSeconds(3f); // Delay for 3 seconds
-        Destroy(image);
-        specialFoundUi.SetActive(false);
+        CloseSpecialFound(image);
     }
 
     private IEnumerator ShowLevelCompleteUIWithDelay()
@@ -275,9 +291,9 @@ public class GameManager : MonoBehaviour
     }
     public void UpdateSpecialBar()
     {
-        for (int i = 0; i < specialList.Count; i++)
+        for (int i = 0; i < allSpecialList.Count; i++)
         {
-            GameObject newSlotObject = new GameObject("Icon" + specialList[i].TargetName);
+            GameObject newSlotObject = new GameObject("Icon" + allSpecialList[i].TargetName);
             newSlotObject.transform.SetParent(SpecialSlotsParent);
             RectTransform rectTransform = newSlotObject.AddComponent<RectTransform>();
             rectTransform.sizeDelta = new Vector2(1, 1); // Set size of the slot
@@ -292,15 +308,16 @@ public class GameManager : MonoBehaviour
             backgroundRectTransform.localScale = new Vector3(120, 120, 120); // Set scale of the slot
             backgroundRectTransform.anchoredPosition3D = new Vector3(backgroundRectTransform.anchoredPosition3D.x, backgroundRectTransform.anchoredPosition3D.y, 0); // Set z position to 0
             Image background = backgroundObject.AddComponent<Image>();
-            background.sprite = Resources.Load<Sprite>("UI/HotbarslotUI");
+            background.sprite = Resources.Load<Sprite>("UI/SpecialObjectBG1");
 
             GameObject iconObject = new GameObject("Icon");
             iconObject.transform.SetParent(newSlotObject.transform);
             RectTransform iconRectTransform = iconObject.AddComponent<RectTransform>();
             iconRectTransform.sizeDelta = new Vector2(1, 1); // Set size of the icon  
-            iconRectTransform.localScale = new Vector3(85,85,85); // Set scale of the slot
+            iconRectTransform.localScale = new Vector3(85, 85, 85); // Set scale of the slot
             iconRectTransform.anchoredPosition3D = new Vector3(iconRectTransform.anchoredPosition3D.x, iconRectTransform.anchoredPosition3D.y, 0); // Set z position to 0
             Image image = iconObject.AddComponent<Image>();
+
 
             // Add CanvasGroup to iconObject  
             CanvasGroup canvasGroup = iconObject.AddComponent<CanvasGroup>();
@@ -309,18 +326,12 @@ public class GameManager : MonoBehaviour
             DragAndDrop dragAndDrop = iconObject.AddComponent<DragAndDrop>();
             dragAndDrop.backgroundCanvas = backgroundObject.transform; // Assign background to DragAndDrop  
 
-            Description description = iconObject.AddComponent<Description>();
-            description.description = specialList[i].Description;
-            description.uiPrefab = Resources.Load<GameObject>("UI/DescBox");
-
-            background.color = new Color(1f, 1f, 1f); // White color  
-
             // Set the sprite of the image to the target's icon  
-            if (i < specialList.Count)
-            {
-                image.sprite = specialList[i].TargetPrefab.GetComponent<SpriteRenderer>().sprite;
-            }
-
+            //if (i < specialList.Count)
+            //{
+            //    image.sprite = specialList[i].TargetPrefab.GetComponent<SpriteRenderer>().sprite;
+            //}
+            image.sprite = Resources.Load<Sprite>("UI/Lock");
             image.gameObject.SetActive(true);
         }
     }
@@ -383,9 +394,30 @@ public class GameManager : MonoBehaviour
         Camera.main.orthographicSize = 8; // Reset to default size
     }
 
+    public void loadSpecial(int index)
+    {
+        specialStageIndex = index;
+        MyLevelData levelInfor = levelData.data[currentLevelIndex];
+        if (levelInfor == null) return;
+
+        specialList = new List<MyTarget>(levelInfor.specialGroup[index].special);
+
+        foreach (var special in specialList)
+        {
+            int specialIndex = allSpecialList.FindIndex(x => x.TargetName == special.TargetName);
+            Transform icon = SpecialSlotsParent.GetChild(specialIndex).GetChild(1);
+            icon.GetComponent<Image>().sprite = allSpecialList[specialIndex].TargetPrefab.GetComponent<SpriteRenderer>().sprite;
+            GameObject.Find(special.TargetName).GetComponent<TargetFind>().enabled = true;
+        }
+    }
+
     public void clearHotBar()
     {
         foreach (Transform child in toolbarSlotsParent)
+        {
+            Destroy(child.gameObject);
+        }
+        foreach (Transform child in SpecialSlotsParent)
         {
             Destroy(child.gameObject);
         }
@@ -417,6 +449,20 @@ public class GameManager : MonoBehaviour
             isHotBarMinimized = true;
         }        
 
+    }
+
+    public void CloseSpecialFound(GameObject image)
+    {
+        Destroy(image);
+        specialFoundUi.SetActive(false);
+        if (specialList.Count == 0 && specialStageIndex + 1 >= levelData.data[currentLevelIndex].specialGroup.Count)
+        {
+            allSpecialList.Clear();
+            allTargetsList.Clear();
+            clearHotBar();
+            Confetti.SetActive(true);
+            StartCoroutine(ShowLevelCompleteUIWithDelay());
+        }
     }
 
     public void OnHomeClicked()

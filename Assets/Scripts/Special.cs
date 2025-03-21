@@ -25,7 +25,6 @@ public class Special : MonoBehaviour
         {
             resultObject.GetComponent<TargetFind>().SpecialTargetFound(touchPosition);
             resultObject.GetComponent<TargetFind>().CreateSpineAnimation(touchPosition);
-            gameManager.TargetFound(target);
         }
         else
             return;

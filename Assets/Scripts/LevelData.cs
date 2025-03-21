@@ -14,7 +14,7 @@ public class MyLevelData
     public string LevelName;
     public List<MyStage> stage;
     public GameObject LevelPrefab;
-    public List<MyTarget> special;
+    public List<SpecialGroup> specialGroup;
 
 }
 
@@ -31,4 +31,10 @@ public class MyStage
 {
     public string StageName;
     public List<MyTarget> target;
+}
+
+[System.Serializable]
+public class SpecialGroup
+{
+    public List<MyTarget> special;
 }
