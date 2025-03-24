@@ -47,10 +47,14 @@ MonoBehaviour:
     LevelPrefab: {fileID: 4200273370681321277, guid: aff4ffef6aa37804eb9706958dacaea3, type: 3}
     specialGroup:
     - special:
-      - TargetName: sung san
-        TargetPrefab: {fileID: 5066771720048516272, guid: 0fe120d780792ee48ba3dfdf1c06a10d, type: 3}
-        Description: catch fish
+      - TargetName: fishing rod
+        TargetPrefab: {fileID: 1555795214404944167, guid: c7dd689c82e93d0449a0a72f67146dd9, type: 3}
+        Description: somewhere near the pond
     - special:
       - TargetName: ca
         TargetPrefab: {fileID: 2654469614985203489, guid: d7e5d33e26c84c04ba6f96c25e516442, type: 3}
-        Description: ca
+        Description: need tools
+    - special:
+      - TargetName: Indian
+        TargetPrefab: {fileID: 801781403726294610, guid: 6a8f6496a54740c46bdf15ae787d0b09, type: 3}
+        Description: Hiding but hungry

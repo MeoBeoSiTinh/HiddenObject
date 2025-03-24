@@ -3,7 +3,8 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
-public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+
+public class DragAndDrop : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     private RectTransform rectTransform;
     private CanvasGroup canvasGroup;
@@ -13,6 +14,11 @@ public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     public Transform backgroundCanvas; // Reference to the background canvas
     private CameraHandle cam;
 
+    private bool isDragging = false;
+    private Coroutine holdCoroutine;
+    public float holdDuration = 0f;
+    private Camera eventCamera;
+
     void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
@@ -21,57 +27,97 @@ public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         parentTransform = rectTransform.parent; // Store the original parent
     }
 
-    public void OnBeginDrag(PointerEventData eventData)
+    public void OnPointerDown(PointerEventData eventData)
     {
-        if (targetObject == null) return; // Only allow dragging if targetObject is not null
+        if (targetObject == null) return;
 
+        eventCamera = eventData.pressEventCamera;
+        startPosition = rectTransform.anchoredPosition; // Store the initial position on pointer down
+        holdCoroutine = StartCoroutine(HoldRoutine(eventData));
+    }
+
+    private IEnumerator HoldRoutine(PointerEventData eventData)
+    {
+        float timer = 0;
+        Vector2 initialTouchPosition = eventData.position; // Store the initial touch position
+
+        while (timer < holdDuration)
+        {
+            if (targetObject == null)
+                yield break;
+
+            // Check if the touch position has changed
+            //if ((Vector2)Input.mousePosition != initialTouchPosition)
+            //{
+            //    Debug.Log("Touch position changed, cancelling hold");
+            //    yield break;
+            //}
+
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        if (targetObject == null)
+            yield break;
+
+        StartDragging();
+    }
+
+    private void StartDragging()
+    {
+        isDragging = true;
         canvasGroup.blocksRaycasts = false;
         startPosition = rectTransform.anchoredPosition;
-
-        // Disable CameraHandle script from the main camera
+        rectTransform.SetParent(backgroundCanvas);
         cam.uiDragging = true;
     }
 
-    public void OnDrag(PointerEventData eventData)
+    public void OnPointerUp(PointerEventData eventData)
     {
-        if (targetObject == null) return; // Only allow dragging if targetObject is not null
-
-        if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            rectTransform.parent as RectTransform,
-            eventData.position,
-            eventData.pressEventCamera,
-            out Vector2 localPoint))
+        if (holdCoroutine != null)
         {
-            rectTransform.localPosition = localPoint;
+            StopCoroutine(holdCoroutine);
+            holdCoroutine = null;
+        }
+
+        if (isDragging)
+        {
+            EndDragging(eventData);
+        }
+
+        isDragging = false;
+    }
+
+    void Update()
+    {
+        if (isDragging)
+        {
+            // Update position based on current mouse position
+            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                rectTransform.parent as RectTransform,
+                Input.mousePosition,
+                eventCamera,
+                out Vector2 localPoint))
+            {
+                rectTransform.localPosition = localPoint;
+            }
         }
     }
 
-    public void OnEndDrag(PointerEventData eventData)
+    private void EndDragging(PointerEventData eventData)
     {
-        if (targetObject == null) return; // Only allow dragging if targetObject is not null
-
-        // Re-enable CameraHandle script
+        canvasGroup.blocksRaycasts = true;
         cam.uiDragging = false;
 
-        canvasGroup.blocksRaycasts = true;
-
-        // Check if the drop position is valid (e.g., over the game scene)
+        // Check if dropping over the game scene
         if (!EventSystem.current.IsPointerOverGameObject())
         {
-            Vector2 worldPosition = Camera.main.ScreenToWorldPoint(eventData.position);
-            // Change the background canvas color
-            //if (backgroundCanvas != null)
-            //{
-            //    backgroundCanvas.GetComponent<Image>().color = Color.green; // Change to desired color
-            //}
-            PointerEventData pointerEventData = new PointerEventData(EventSystem.current);
-            pointerEventData.position = eventData.position;
-            List<RaycastResult> raycastResults = new List<RaycastResult>();
+            Vector2 worldPosition = eventCamera.ScreenToWorldPoint(eventData.position);
             RaycastHit2D[] hits = Physics2D.RaycastAll(worldPosition, Vector2.zero);
 
             if (hits.Length > 0)
             {
-                // Sort hits by sorting layer and sorting order
+                // Sorting logic here (same as original)
                 System.Array.Sort(hits, (a, b) =>
                 {
                     SpriteRenderer rendererA = a.collider.GetComponent<SpriteRenderer>();
@@ -79,41 +125,24 @@ public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
                     if (rendererA != null && rendererB != null)
                     {
-                        // Compare sorting layers
                         int layerComparison = SortingLayer.GetLayerValueFromID(rendererA.sortingLayerID)
                             .CompareTo(SortingLayer.GetLayerValueFromID(rendererB.sortingLayerID));
-
-                        if (layerComparison != 0)
-                            return layerComparison;
-
-                        // Compare sorting orders within the same layer
+                        if (layerComparison != 0) return layerComparison;
                         return rendererB.sortingOrder.CompareTo(rendererA.sortingOrder);
                     }
-
-                    // If no SpriteRenderer, fall back to distance
                     return a.distance.CompareTo(b.distance);
                 });
 
-                // Get the topmost hit
                 RaycastHit2D topmostHit = hits[0];
                 Special special = topmostHit.collider.GetComponent<Special>();
                 if (special != null)
                 {
-                    Debug.Log("Special object found");
                     special.specialFound(targetObject, eventData.position);
                 }
             }
-
-
-        }
-        else
-        {
-            return;
-            
         }
 
-
-        // Return the UI element to its original position
+        // Reset UI element
         rectTransform.SetParent(parentTransform);
         rectTransform.anchoredPosition = startPosition;
     }

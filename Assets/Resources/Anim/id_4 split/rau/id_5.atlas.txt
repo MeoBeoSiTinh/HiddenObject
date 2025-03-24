@@ -1,0 +1,6 @@
+id_5.png
+size:56,20
+filter:Linear,Linear
+pma:true
+rau1
+bounds:2,2,51,15

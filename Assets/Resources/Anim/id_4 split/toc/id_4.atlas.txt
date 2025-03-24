@@ -1,0 +1,10 @@
+id_4.png
+size:204,152
+filter:Linear,Linear
+pma:true
+toc_1
+bounds:2,2,148,107
+rotate:90
+toc_2
+bounds:111,5,145,91
+rotate:90

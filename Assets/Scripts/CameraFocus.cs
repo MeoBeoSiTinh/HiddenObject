@@ -5,8 +5,8 @@ using System.Collections.Generic;
 public class CameraFocus : MonoBehaviour
 {
     public Camera mainCamera; // Assign your 2D camera in the Inspector
-    public float activationDistance = 10f;
-    public float proximityRadius = 5f;
+    public float activationDistance = 2f;
+    public float proximityRadius = 1.4f;
     private List<GameObject> dynamicObjects = new List<GameObject>(); // Initialize the list to store all relevant 2D objects
 
     public void Start()
@@ -16,6 +16,10 @@ public class CameraFocus : MonoBehaviour
 
     private void Update()
     {
+        // Scale activationDistance and proximityRadius with camera size
+        float scaledActivationDistance = activationDistance * mainCamera.orthographicSize;
+        float scaledProximityRadius = proximityRadius * mainCamera.orthographicSize;
+
         // Loop through all dynamic objects and enable/disable them
         foreach (GameObject obj in dynamicObjects)
         {
@@ -24,7 +28,7 @@ public class CameraFocus : MonoBehaviour
                 continue;
             }
 
-            if (IsObjectNearCamera(obj) || IsObjectVisibleToCamera(obj))
+            if (IsObjectNearCamera(obj, scaledProximityRadius) || IsObjectVisibleToCamera(obj))
             {
                 EnableObject(obj);
             }
@@ -35,11 +39,11 @@ public class CameraFocus : MonoBehaviour
         }
     }
 
-    private bool IsObjectNearCamera(GameObject obj)
+    private bool IsObjectNearCamera(GameObject obj, float scaledProximityRadius)
     {
-        // Check if the object is within the proximity radius of the camera
+        // Check if the object is within the scaled proximity radius of the camera
         float distance = Vector2.Distance(mainCamera.transform.position, obj.transform.position);
-        return distance <= proximityRadius;
+        return distance <= scaledProximityRadius;
     }
 
     private bool IsObjectVisibleToCamera(GameObject obj)

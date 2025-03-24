@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour
     public Transform toolbarSlotsParent;
     public Transform SpecialSlotsParent;
     public GameObject specialFoundUi;
+    public GameObject DescBox;
     public bool isHotBarMinimized = false;
 
 
@@ -260,6 +261,7 @@ public class GameManager : MonoBehaviour
             Transform slot2 = SpecialSlotsParent.GetChild(specialIndex).GetChild(1);
             DragAndDrop dragAndDrop = slot2.GetComponent<DragAndDrop>();
             dragAndDrop.targetObject = target;
+
             if (bg != null)
             {
                 bg.sprite = Resources.Load<Sprite>("UI/SpecialObjectBG2");
@@ -326,11 +328,9 @@ public class GameManager : MonoBehaviour
             DragAndDrop dragAndDrop = iconObject.AddComponent<DragAndDrop>();
             dragAndDrop.backgroundCanvas = backgroundObject.transform; // Assign background to DragAndDrop  
 
-            // Set the sprite of the image to the target's icon  
-            //if (i < specialList.Count)
-            //{
-            //    image.sprite = specialList[i].TargetPrefab.GetComponent<SpriteRenderer>().sprite;
-            //}
+            Description description = iconObject.AddComponent<Description>();
+            description.DescBox = DescBox;
+
             image.sprite = Resources.Load<Sprite>("UI/Lock");
             image.gameObject.SetActive(true);
         }
@@ -372,9 +372,7 @@ public class GameManager : MonoBehaviour
             //DragAndDrop dragAndDrop = iconObject.AddComponent<DragAndDrop>();
             //dragAndDrop.backgroundCanvas = backgroundObject.transform; // Assign background to DragAndDrop  
 
-            //Description description = iconObject.AddComponent<Description>();
-            //description.description = targetList[i].Description;
-            //description.uiPrefab = Resources.Load<GameObject>("UI/DescBox");
+            
 
             background.color = new Color(1f, 1f, 1f); // White color  
 
@@ -408,6 +406,7 @@ public class GameManager : MonoBehaviour
             Transform icon = SpecialSlotsParent.GetChild(specialIndex).GetChild(1);
             icon.GetComponent<Image>().sprite = allSpecialList[specialIndex].TargetPrefab.GetComponent<SpriteRenderer>().sprite;
             GameObject.Find(special.TargetName).GetComponent<TargetFind>().enabled = true;
+            icon.GetComponent<Description>().description = special.Description;
         }
     }
 
@@ -460,6 +459,7 @@ public class GameManager : MonoBehaviour
             allSpecialList.Clear();
             allTargetsList.Clear();
             clearHotBar();
+            DescBox.SetActive(false);
             Confetti.SetActive(true);
             StartCoroutine(ShowLevelCompleteUIWithDelay());
         }

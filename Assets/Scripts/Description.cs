@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -7,10 +8,10 @@ using UnityEngine.UI;
 
 public class Description : MonoBehaviour, IPointerDownHandler
 {
-    public GameObject uiPrefab; // Assign your UI prefab in the Inspector
+    public GameObject DescBox; // Assign your UI prefab in the Inspector
     private Canvas canvas;
     public string description;
-    public float fadeDuration = 0.5f; // Duration of the fade effect
+    public Boolean isUnlocked = false;
 
     private void Start()
     {
@@ -20,35 +21,49 @@ public class Description : MonoBehaviour, IPointerDownHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        DescBox.transform.GetChild(0).GetChild(0).GetComponent<UnlockHint>().targetObject = gameObject;
+
         // Convert screen touch position to Canvas local position
-        Vector2 localPosition;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            canvas.GetComponent<RectTransform>(),
+            canvas.transform as RectTransform,
             eventData.position,
             canvas.worldCamera,
-            out localPosition
+            out Vector2 localPoint
         );
 
-        // Instantiate the prefab and set its position
-        GameObject newUIElement = Instantiate(uiPrefab, canvas.transform);
-        RectTransform rectTransform = newUIElement.GetComponent<RectTransform>();
-        TextMeshProUGUI text = newUIElement.GetComponentInChildren<TextMeshProUGUI>();
-        text.text = description;
-
-        if (rectTransform != null)
+        // Set the x position of DescBox to the local point's x position
+        Vector3 newPosition = DescBox.transform.localPosition;
+        newPosition.x = localPoint.x;
+        DescBox.transform.localPosition = newPosition;
+        if (description != null)
         {
-            // Adjust the position to be above the touched UI object
-            localPosition.y += rectTransform.rect.height;
-            localPosition.x += rectTransform.rect.width / 4;
-            rectTransform.anchoredPosition = localPosition;
+            if (isUnlocked)
+            {
+                TextMeshProUGUI desc = DescBox.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
+                desc.text = description;
+                Transform box = DescBox.transform.GetChild(0);
+                box.gameObject.SetActive(false);
+                Transform box1 = DescBox.transform.GetChild(1);
+                box1.gameObject.SetActive(true);
+            }
+            else
+            {
+                Transform box = DescBox.transform.GetChild(0);
+                box.gameObject.SetActive(true);
+                Transform box1 = DescBox.transform.GetChild(1);
+                box1.gameObject.SetActive(false);
+            }
         }
         else
         {
-            Debug.LogError("The prefab does not have a RectTransform component.");
-        }
+            TextMeshProUGUI desc = DescBox.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
+            desc.text = "Find all previous objects first!";
+            Transform box = DescBox.transform.GetChild(0);
+            box.gameObject.SetActive(false);
+            Transform box1 = DescBox.transform.GetChild(1);
+            box1.gameObject.SetActive(true);
 
-        // Start the fade out animation using LeanTween after a delay of 2 seconds
-        CanvasGroup canvasGroup = newUIElement.AddComponent<CanvasGroup>();
-        LeanTween.alphaCanvas(canvasGroup, 0, fadeDuration).setDelay(1.5f).setOnComplete(() => Destroy(newUIElement));
+        }
+        DescBox.SetActive(true);
     }
 }
