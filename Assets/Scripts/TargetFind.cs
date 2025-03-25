@@ -176,10 +176,6 @@ public class TargetFind : MonoBehaviour
     private IEnumerator FlyToToolbar(GameObject flyingImage)
     {
         gameObject.GetComponent<SpriteRenderer>().enabled = false;
-        if (gameManager.isHotBarMinimized)
-        {
-            gameManager.OnMinimizeClicked();
-        }
 
         RectTransform flyingImageRect = flyingImage.GetComponent<RectTransform>();
         Vector2 startPosition = flyingImageRect.anchoredPosition;
@@ -192,6 +188,7 @@ public class TargetFind : MonoBehaviour
         // Step 4: Convert the world position back to the new anchored position
         RectTransform parentRect = hotbarRect.parent as RectTransform;
         GameObject UILoctation = CreateEmptyUIElementAtParentRectPosition(parentRect);
+        
         Vector2 endPosition;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
             parentRect,
@@ -203,6 +200,11 @@ public class TargetFind : MonoBehaviour
         RectTransform uiLocaction = GameObject.Find("UILocation").GetComponent<RectTransform>();
         endPosition.y = uiLocaction.anchoredPosition.y;
         endPosition.x += parentRect.anchoredPosition.x;
+        if (gameManager.isHotBarMinimized)
+        {
+            endPosition.y += GameObject.Find("Hotbar").GetComponent<RectTransform>().rect.height;
+            gameManager.OnMinimizeClicked();
+        }
 
         // Define control points for an upward-then-downward parabola
         Vector2 midPoint = (startPosition + endPosition) * 0.5f;
@@ -294,7 +296,6 @@ public class TargetFind : MonoBehaviour
         // Set the size and sprite of the target image
         Sprite sourceSprite = gameObject.GetComponent<SpriteRenderer>().sprite;
         targetImage.sprite = sourceSprite;
-        targetImage.rectTransform.sizeDelta = new Vector2(sourceSprite.rect.width, sourceSprite.rect.height);
         targetImage.rectTransform.localScale = new Vector3(1f, 1f, 1f); // Adjust scale as needed
 
         // Convert touch position to local position in the Canvas
@@ -372,11 +373,14 @@ public class TargetFind : MonoBehaviour
 
         // Scale the child
         LeanTween.scale(shiningRect, new Vector3(1.5f, 1.5f, 1.5f), 1f)
-            .setEase(LeanTweenType.easeInOutQuad);
+            .setEase(LeanTweenType.easeInOutQuad).setOnComplete(() =>
+            {
+                gameObject.SetActive(false);
+            });
 
         // Call the game manager function
         gameManager.specialFound(gameObject, specialImage);
-        gameObject.SetActive(false);
+        
 
         yield return null;
     }

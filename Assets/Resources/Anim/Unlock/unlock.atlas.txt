@@ -1,0 +1,15 @@
+unlock.png
+size:472,144
+filter:Linear,Linear
+pma:true
+lock1_1
+bounds:164,2,140,116
+rotate:90
+lock1_2
+bounds:2,6,160,136
+lock2_1
+bounds:387,31,111,83
+rotate:90
+lock2_2
+bounds:282,11,131,103
+rotate:90

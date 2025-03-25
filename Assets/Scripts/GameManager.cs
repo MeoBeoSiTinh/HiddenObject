@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using static UnityEngine.GraphicsBuffer;
+using Spine.Unity;
 
 public class GameManager : MonoBehaviour
 {
@@ -271,10 +272,7 @@ public class GameManager : MonoBehaviour
                 Debug.Log("vailon bug");
             }
         }
-        if (specialList.Count == 0 && specialStageIndex + 1 < levelData.data[currentLevelIndex].specialGroup.Count)
-        {
-            loadSpecial(specialStageIndex + 1);
-        }
+        
         StartCoroutine(DestroyImageAfterDelay(image));
 
     }
@@ -282,8 +280,12 @@ public class GameManager : MonoBehaviour
     private IEnumerator DestroyImageAfterDelay(GameObject image)
     {
         
-        yield return new WaitForSeconds(3f); // Delay for 3 seconds
+        yield return new WaitForSeconds(2.5f); // Delay for 3 seconds
         CloseSpecialFound(image);
+        if (specialList.Count == 0 && specialStageIndex + 1 < levelData.data[currentLevelIndex].specialGroup.Count)
+        {
+            loadSpecial(specialStageIndex + 1);
+        }
     }
 
     private IEnumerator ShowLevelCompleteUIWithDelay()
@@ -320,6 +322,13 @@ public class GameManager : MonoBehaviour
             iconRectTransform.anchoredPosition3D = new Vector3(iconRectTransform.anchoredPosition3D.x, iconRectTransform.anchoredPosition3D.y, 0); // Set z position to 0
             Image image = iconObject.AddComponent<Image>();
 
+            GameObject unlockPrefab = Resources.Load<GameObject>("anim/unlock/unlock");
+            GameObject unlockObject = Instantiate(unlockPrefab);
+            unlockObject.transform.SetParent(newSlotObject.transform);
+            RectTransform unlockRectTransform = unlockObject.AddComponent<RectTransform>();
+            unlockRectTransform.sizeDelta = new Vector2(1, 1); // Set size of the icon
+            unlockRectTransform.localScale = new Vector3(50, 50, 50); // Set scale of the slot
+            unlockRectTransform.anchoredPosition3D = new Vector3(unlockRectTransform.anchoredPosition3D.x, unlockRectTransform.anchoredPosition3D.y, 0); // Set z position to 0
 
             // Add CanvasGroup to iconObject  
             CanvasGroup canvasGroup = iconObject.AddComponent<CanvasGroup>();
@@ -331,8 +340,10 @@ public class GameManager : MonoBehaviour
             Description description = iconObject.AddComponent<Description>();
             description.DescBox = DescBox;
 
-            image.sprite = Resources.Load<Sprite>("UI/Lock");
+            image.sprite = allSpecialList[i].TargetPrefab.GetComponent<SpriteRenderer>().sprite;
             image.gameObject.SetActive(true);
+            iconObject.SetActive(false);
+
         }
     }
 
@@ -400,13 +411,35 @@ public class GameManager : MonoBehaviour
 
         specialList = new List<MyTarget>(levelInfor.specialGroup[index].special);
 
+        List<int> SpecialIndexList = new List<int>();
         foreach (var special in specialList)
         {
             int specialIndex = allSpecialList.FindIndex(x => x.TargetName == special.TargetName);
+            SpecialIndexList.Add(specialIndex);
             Transform icon = SpecialSlotsParent.GetChild(specialIndex).GetChild(1);
-            icon.GetComponent<Image>().sprite = allSpecialList[specialIndex].TargetPrefab.GetComponent<SpriteRenderer>().sprite;
+            Transform Lock = SpecialSlotsParent.GetChild(specialIndex).GetChild(2);
+
+            SkeletonAnimation skeletonAnimation = Lock.GetComponent<SkeletonAnimation>();
+            if (skeletonAnimation != null)
+            {
+                skeletonAnimation.AnimationName = "unlock";
+            }
+
             GameObject.Find(special.TargetName).GetComponent<TargetFind>().enabled = true;
             icon.GetComponent<Description>().description = special.Description;
+        }
+
+        StartCoroutine(ActivateIconsWithDelay(SpecialIndexList));
+    }
+
+    private IEnumerator ActivateIconsWithDelay(List<int> specialIndexList)
+    {
+        yield return new WaitForSeconds(1.5f); // Wait for 1.5 seconds
+
+        foreach (var specialIndex in specialIndexList)
+        {
+            Transform icon = SpecialSlotsParent.GetChild(specialIndex).GetChild(1);
+            icon.gameObject.SetActive(true);
         }
     }
 

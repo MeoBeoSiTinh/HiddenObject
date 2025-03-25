@@ -20,12 +20,21 @@ public class stove : MonoBehaviour
     public void play(GameObject target, Vector2 touchPosition)
     {
         Transform smoke = transform.GetChild(0);
+        Transform man = transform.GetChild(1);
+        // Activate smoke
         smoke.gameObject.SetActive(true);
-        LeanTween.scale(smoke.gameObject, new Vector3(1.5f, 1.5f, 1.5f), 1f).setEase(LeanTweenType.easeOutQuad).setOnComplete(() =>
-        {
-            smoke.gameObject.SetActive(false);
-            gameObject.GetComponent<Special>().resultObject.GetComponent<TargetFind>().SpecialTargetFound(touchPosition);
-            gameObject.GetComponent<Special>().resultObject.GetComponent<TargetFind>().CreateSpineAnimation(touchPosition);
-        });
+
+        // Original smoke animation
+        LeanTween.scale(smoke.gameObject, new Vector3(1.5f, 1.5f, 1.5f), 1f)
+            .setEase(LeanTweenType.easeOutQuad).setOnComplete(() =>
+            {
+                LeanTween.moveLocal(man.gameObject, new Vector3(-0.4f, 0.4f, 0f), 1.5f).setEase(LeanTweenType.easeOutQuad)
+                .setOnComplete(() =>
+                {
+
+                    smoke.gameObject.SetActive(false);
+                    gameObject.GetComponent<Special>().resultObject.GetComponent<BoxCollider2D>().enabled = true;
+                });
+            });
     }
 }

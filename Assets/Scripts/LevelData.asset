@@ -20,11 +20,17 @@ MonoBehaviour:
       - TargetName: fire
         TargetPrefab: {fileID: 919177151280423022, guid: 1b9da0d34d99dbc45a422be12c4e22be, type: 3}
         Description: burning shjt
+      - TargetName: sung san
+        TargetPrefab: {fileID: 2569139088975598662, guid: cf11ba68f8c89e3439b8ed9c06316dce, type: 3}
+        Description: gun
     - StageName: 2
       target:
       - TargetName: soc
         TargetPrefab: {fileID: 2339255886218969185, guid: cd3c029273e6f244fa213489233f8eae, type: 3}
         Description: scares of people
+      - TargetName: soi
+        TargetPrefab: {fileID: 5342393655794998087, guid: f1d2ea765185e394a854bf6314ba6015, type: 3}
+        Description: nuts
     - StageName: 3
       target:
       - TargetName: toc
@@ -33,26 +39,29 @@ MonoBehaviour:
       - TargetName: trung chim
         TargetPrefab: {fileID: 2280094934590391909, guid: 4420005710a283f4096acea18c7a50c2, type: 3}
         Description: CHIM
+      - TargetName: vot
+        TargetPrefab: {fileID: 4999668208208001884, guid: 641dd6a0109cf164783fbbc2f7894347, type: 3}
+        Description: vot
     - StageName: 4
       target:
       - TargetName: "C\xE0nh c\xE2y"
         TargetPrefab: {fileID: 2233797479234088975, guid: f957959ccaa20dc4cacd16e79e2b2338, type: 3}
         Description: canh` cay
-      - TargetName: not fire
-        TargetPrefab: {fileID: 5875783244036296393, guid: e8623a64bbb8ea7489b1c397227d8f28, type: 3}
-        Description: Del chay'
       - TargetName: dog
         TargetPrefab: {fileID: 2317503772019206534, guid: bfd01a5ebe5e4b8428fa44bc0465e25d, type: 3}
         Description: Cho'
+      - TargetName: beep
+        TargetPrefab: {fileID: 8632105513286276401, guid: 7f9546f1da1006f4a8b9464b6f2ded98, type: 3}
+        Description: beep
     LevelPrefab: {fileID: 4200273370681321277, guid: aff4ffef6aa37804eb9706958dacaea3, type: 3}
     specialGroup:
     - special:
       - TargetName: fishing rod
-        TargetPrefab: {fileID: 1555795214404944167, guid: c7dd689c82e93d0449a0a72f67146dd9, type: 3}
-        Description: somewhere near the pond
+        TargetPrefab: {fileID: 9117161570159664264, guid: c7dd689c82e93d0449a0a72f67146dd9, type: 3}
+        Description: hiding behind a tree
     - special:
-      - TargetName: ca
-        TargetPrefab: {fileID: 2654469614985203489, guid: d7e5d33e26c84c04ba6f96c25e516442, type: 3}
+      - TargetName: fish
+        TargetPrefab: {fileID: 7165558179942704915, guid: d7e5d33e26c84c04ba6f96c25e516442, type: 3}
         Description: need tools
     - special:
       - TargetName: Indian
