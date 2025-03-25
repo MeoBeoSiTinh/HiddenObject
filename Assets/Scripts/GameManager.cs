@@ -57,6 +57,7 @@ public class GameManager : MonoBehaviour
             i++;
         }
         gadgetManager = GameObject.Find("GadgetManager").GetComponent<GadgetManager>();
+        CreateEmptyUIElementAtParentRectPosition(toolbarSlotsParent.GetComponent<RectTransform>());
     }
 
     public void LoadLevel(int levelIndex)
@@ -531,5 +532,32 @@ public class GameManager : MonoBehaviour
         }
         gadgetManager.Compass(targets);
     }
-    
+
+    private GameObject CreateEmptyUIElementAtParentRectPosition(RectTransform parentRect)
+    {
+        // Create an empty GameObject
+        GameObject emptyUIElement = new GameObject("UILocation");
+
+        // Add RectTransform component
+        RectTransform rectTransform = emptyUIElement.AddComponent<RectTransform>();
+
+
+        // Get the world position of the parentRect
+        Vector3 parentWorldPosition = parentRect.TransformPoint(parentRect.rect.center);
+
+        // Convert the world position to local position in the Canvas
+        RectTransform canvasRect = GameObject.Find("Canvas").GetComponent<RectTransform>();
+        Vector2 localPoint;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            canvasRect,
+            RectTransformUtility.WorldToScreenPoint(null, parentWorldPosition),
+            null,
+            out localPoint
+        );
+        // Set the anchored position of the empty UI element to the local point
+        rectTransform.anchoredPosition = localPoint;
+
+        return emptyUIElement;
+    }
+
 }

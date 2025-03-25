@@ -175,6 +175,10 @@ public class TargetFind : MonoBehaviour
 
     private IEnumerator FlyToToolbar(GameObject flyingImage)
     {
+        if (gameManager.isHotBarMinimized)
+        {
+            gameManager.OnMinimizeClicked();
+        }
         gameObject.GetComponent<SpriteRenderer>().enabled = false;
 
         RectTransform flyingImageRect = flyingImage.GetComponent<RectTransform>();
@@ -187,7 +191,6 @@ public class TargetFind : MonoBehaviour
         Vector3 hotbarWorldPosition = hotbarRect.TransformPoint(hotbarRect.rect.center);
         // Step 4: Convert the world position back to the new anchored position
         RectTransform parentRect = hotbarRect.parent as RectTransform;
-        GameObject UILoctation = CreateEmptyUIElementAtParentRectPosition(parentRect);
         
         Vector2 endPosition;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
@@ -200,11 +203,6 @@ public class TargetFind : MonoBehaviour
         RectTransform uiLocaction = GameObject.Find("UILocation").GetComponent<RectTransform>();
         endPosition.y = uiLocaction.anchoredPosition.y;
         endPosition.x += parentRect.anchoredPosition.x;
-        if (gameManager.isHotBarMinimized)
-        {
-            endPosition.y += GameObject.Find("Hotbar").GetComponent<RectTransform>().rect.height;
-            gameManager.OnMinimizeClicked();
-        }
 
         // Define control points for an upward-then-downward parabola
         Vector2 midPoint = (startPosition + endPosition) * 0.5f;
@@ -221,6 +219,7 @@ public class TargetFind : MonoBehaviour
             .setOnUpdate((float t) =>
             {
                 flyingImageRect.anchoredPosition = CalculateQuadraticBezierPoint(t, startPosition, controlPoint, endPosition);
+
             })
             .setOnComplete(() =>
             {
@@ -236,7 +235,6 @@ public class TargetFind : MonoBehaviour
 
                 gameManager.TargetFound(gameObject);
             });
-        Destroy(UILoctation);
 
         yield return null;
     }
@@ -254,33 +252,7 @@ public class TargetFind : MonoBehaviour
 
         return point;
     }
-    private GameObject CreateEmptyUIElementAtParentRectPosition(RectTransform parentRect)
-    {
-        // Create an empty GameObject
-        GameObject emptyUIElement = new GameObject("UILocation");
-
-        // Add RectTransform component
-        RectTransform rectTransform = emptyUIElement.AddComponent<RectTransform>();
-
-
-        // Get the world position of the parentRect
-        Vector3 parentWorldPosition = parentRect.TransformPoint(parentRect.rect.center);
-
-        // Convert the world position to local position in the Canvas
-        RectTransform canvasRect = GameObject.Find("Canvas").GetComponent<RectTransform>();
-        Vector2 localPoint;
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            canvasRect,
-            RectTransformUtility.WorldToScreenPoint(null, parentWorldPosition),
-            null,
-            out localPoint
-        );
-
-        // Set the anchored position of the empty UI element to the local point
-        rectTransform.anchoredPosition = localPoint;
-        return emptyUIElement;
-    }
-
+    
     public void SpecialTargetFound(Vector2 touchPosition)
     {
         // Instantiate the target image prefab
