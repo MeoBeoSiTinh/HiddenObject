@@ -246,13 +246,13 @@ public class CameraHandle : MonoBehaviour
             case 2:
                 minX = backgroundBounds.min.x + horzExtent;
                 maxX = backgroundBounds.max.x - horzExtent;
-                minY = backgroundBounds.min.y + vertExtent - 5 / 2;
+                minY = backgroundBounds.min.y + vertExtent - 1 / 4 * cam.orthographicSize;
                 maxY = backgroundBounds.max.y - vertExtent;
                 break;
             case 3:
                 minX = backgroundBounds.min.x + horzExtent;
                 maxX = backgroundBounds.max.x - horzExtent;
-                minY = backgroundBounds.min.y + vertExtent - 5 / 2;
+                minY = backgroundBounds.min.y + vertExtent - 1 / 4 * cam.orthographicSize;
                 maxY = backgroundBounds.max.y - vertExtent;
                 break;
             default:
