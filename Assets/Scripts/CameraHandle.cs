@@ -7,15 +7,21 @@ using UnityEngine.InputSystem;
 public class CameraHandle : MonoBehaviour
 {
     public GameObject camera_GameObject;
-    public GameObject background_GameObject; // Add a reference to the background GameObject
+    public GameObject background_GameObject;
     private float prevMagnitude = 0;
     private float touchCount = 0;
     bool isZooming;
     public bool uiDragging = false;
     private Camera cam;
-    private float dragSpeed = 0.5f; // Adjust drag speed for smoothness
-    private float zoomSpeed = 0.01f; // Adjust zoom speed for smoothness
-    private float zoomVelocity = 0.1f; // Velocity for smooth zooming
+    private float dragSpeed = 0.5f;
+    private float zoomSpeed = 0.01f;
+    private float zoomVelocity = 0.1f;
+
+    // Bounce effect variables
+    private bool isBouncing = false;
+    private Vector3 bounceDirection;
+    private float bounceDecay = 0.9f; // How quickly the bounce settles (0.8-0.95 feels good)
+    private float bounceIntensity = 0.3f; // How strong the bounce is
 
     // Define the stages
     public int currentStage;
@@ -27,27 +33,14 @@ public class CameraHandle : MonoBehaviour
     void Start()
     {
         cam = camera_GameObject.GetComponent<Camera>();
-        var touch0contact = new InputAction
-        (
-            type: InputActionType.Button,
-            binding: "<Touchscreen>/touch0/press"
-        );
+
+        var touch0contact = new InputAction(type: InputActionType.Button, binding: "<Touchscreen>/touch0/press");
+        var touch1contact = new InputAction(type: InputActionType.Button, binding: "<Touchscreen>/touch1/press");
         touch0contact.Enable();
-        var touch1contact = new InputAction
-        (
-            type: InputActionType.Button,
-            binding: "<Touchscreen>/touch1/press"
-        );
         touch1contact.Enable();
 
-        touch0contact.performed += _ =>
-        {
-            touchCount++;
-        };
-        touch1contact.performed += _ =>
-        {
-            touchCount++;
-        };
+        touch0contact.performed += _ => touchCount++;
+        touch1contact.performed += _ => touchCount++;
         touch0contact.canceled += _ =>
         {
             touchCount--;
@@ -61,40 +54,27 @@ public class CameraHandle : MonoBehaviour
             isZooming = false;
         };
 
-        var touch0Pos = new InputAction
-        (
-            type: InputActionType.Value,
-            binding: "<Touchscreen>/touch0/position"
-        );
+        var touch0Pos = new InputAction(type: InputActionType.Value, binding: "<Touchscreen>/touch0/position");
+        var touch1Pos = new InputAction(type: InputActionType.Value, binding: "<Touchscreen>/touch1/position");
         touch0Pos.Enable();
-        var touch1Pos = new InputAction
-        (
-            type: InputActionType.Value,
-            binding: "<Touchscreen>/touch1/position"
-        );
         touch1Pos.Enable();
+
         touch1Pos.performed += _ =>
         {
             if (touchCount != 2 || IsPointerOverUI(touch0Pos.ReadValue<Vector2>()) || IsPointerOverUI(touch1Pos.ReadValue<Vector2>()) || uiDragging)
-            {
                 return;
-            }
+
             var magnitude = (touch1Pos.ReadValue<Vector2>() - touch0Pos.ReadValue<Vector2>()).magnitude;
             if (prevMagnitude == 0)
-            {
                 prevMagnitude = magnitude;
-            }
+
             var difference = prevMagnitude - magnitude;
             prevMagnitude = magnitude;
             cameraZoom(difference * zoomSpeed);
             isZooming = true;
         };
 
-        var touch0Drag = new InputAction
-        (
-            type: InputActionType.Value,
-            binding: "<Touchscreen>/touch0/delta"
-        );
+        var touch0Drag = new InputAction(type: InputActionType.Value, binding: "<Touchscreen>/touch0/delta");
         touch0Drag.Enable();
         touch0Drag.performed += ctx =>
         {
@@ -110,16 +90,12 @@ public class CameraHandle : MonoBehaviour
 
     private bool IsPointerOverUI(Vector2 touchPosition)
     {
-        PointerEventData eventData = new PointerEventData(EventSystem.current)
-        {
-            position = touchPosition
-        };
+        PointerEventData eventData = new PointerEventData(EventSystem.current) { position = touchPosition };
         List<RaycastResult> results = new List<RaycastResult>();
         EventSystem.current.RaycastAll(eventData, results);
-        return results.Count > 0; // Returns true if any UI element is hit
+        return results.Count > 0;
     }
 
-    // Update is called once per frame
     void Update()
     {
         switch (currentStage)
@@ -139,21 +115,33 @@ public class CameraHandle : MonoBehaviour
                 maxZoom = 25f;
                 break;
         }
+
+        // Apply bounce effect if active
+        if (isBouncing)
+        {
+            camera_GameObject.transform.position += bounceDirection * bounceIntensity;
+            bounceDirection *= bounceDecay; // Reduce bounce over time
+
+            // Stop bouncing when barely moving
+            if (bounceDirection.magnitude < 0.02f)
+            {
+                isBouncing = false;
+            }
+        }
     }
 
     private void cameraZoom(float increment)
     {
         Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize + increment, minZoom, maxZoom);
         cam.orthographicSize = Mathf.SmoothDamp(cam.orthographicSize, cam.orthographicSize + increment, ref zoomVelocity, 0.2f, Mathf.Infinity, Time.deltaTime);
-        RestrictCameraPosition(); // Restrict the camera position after zooming
+        RestrictCameraPosition();
     }
 
     public void RestrictCameraPosition()
     {
         if (background_GameObject == null)
-        {
             return;
-        }
+
         Camera cam = camera_GameObject.GetComponent<Camera>();
         Bounds backgroundBounds = background_GameObject.GetComponent<SpriteRenderer>().bounds;
 
@@ -205,18 +193,25 @@ public class CameraHandle : MonoBehaviour
                 break;
         }
 
-        // Clamp the camera's position to stay within the bounds
-        Vector3 pos = cam.transform.position;
-        pos.x = Mathf.Clamp(pos.x, minX, maxX);
-        pos.y = Mathf.Clamp(pos.y, minY, maxY);
-        cam.transform.position = pos;
+        // CLAMP FIRST (original behavior)
+        Vector3 oldPos = camera_GameObject.transform.position;
+        Vector3 clampedPos = oldPos;
+        clampedPos.x = Mathf.Clamp(clampedPos.x, minX, maxX);
+        clampedPos.y = Mathf.Clamp(clampedPos.y, minY, maxY);
+        camera_GameObject.transform.position = clampedPos;
+
+        // Calculate bounce direction if we hit a border
+        if ( clampedPos != oldPos)
+        {
+            isBouncing = true;
+            bounceDirection = (clampedPos - oldPos).normalized * 0.5f; // Small initial pushback
+        }
     }
+
     public bool IsCameraTouchingBorder()
     {
         if (background_GameObject == null)
-        {
             return false;
-        }
 
         Camera cam = camera_GameObject.GetComponent<Camera>();
         Bounds backgroundBounds = background_GameObject.GetComponent<SpriteRenderer>().bounds;
@@ -266,5 +261,4 @@ public class CameraHandle : MonoBehaviour
         Vector3 pos = cam.transform.position;
         return pos.x <= minX || pos.x >= maxX || pos.y <= minY || pos.y >= maxY;
     }
-
 }
