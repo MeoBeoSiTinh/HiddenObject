@@ -37,9 +37,44 @@ public class GameManager : MonoBehaviour
     public Transform SpecialSlotsParent;
     public GameObject specialFoundUi;
     public GameObject DescBox;
+    public Transform PlayerInfo;
     public bool isHotBarMinimized = false;
 
 
+    [Header("PlayerData")]
+    public string username = "Meobeo";
+
+
+    private class SaveObject
+    {
+        public string username;
+    }
+    public void Awake()
+    {
+        SaveSystem.Init();
+        Load();
+        Transform name = PlayerInfo.GetChild(0).GetChild(0);
+        name.GetComponent<TextMeshProUGUI>().text = username;
+
+    }
+
+    public void Save() {
+        SaveObject saveObject = new SaveObject
+        {
+            username = username
+        };
+        string json = JsonUtility.ToJson(saveObject);
+        SaveSystem.Save(json);
+    }
+    public void Load()
+    {
+        string saveString = SaveSystem.Load();
+        if (saveString != null)
+        {
+            SaveObject saveObject = JsonUtility.FromJson<SaveObject>(saveString);
+            username = saveObject.username;
+        }
+    }
     public void Start()
     {
         int i = 1;
@@ -53,7 +88,6 @@ public class GameManager : MonoBehaviour
             Button levelButton = LevelHolder.AddComponent<Button>();
             int levelIndex = i - 1; // Capture the current value of i
             levelButton.onClick.AddListener(() => LoadLevel(levelIndex));
-
             i++;
         }
         gadgetManager = GameObject.Find("GadgetManager").GetComponent<GadgetManager>();
@@ -62,7 +96,7 @@ public class GameManager : MonoBehaviour
 
     public void LoadLevel(int levelIndex)
     {
-
+        
         if (levelIndex < 0 || levelIndex + 1 > levelData.data.Count)
         {
             DeleteCurrentLevel();
