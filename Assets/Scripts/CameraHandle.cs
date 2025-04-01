@@ -104,14 +104,6 @@ public class CameraHandle : MonoBehaviour
                 break;
             case 1:
                 minZoom = 2.5f;
-                maxZoom = 14f;
-                break;
-            case 2:
-                minZoom = 2.5f;
-                maxZoom = 25f;
-                break;
-            case 3:
-                minZoom = 2.5f;
                 maxZoom = 25f;
                 break;
         }
@@ -145,15 +137,15 @@ public class CameraHandle : MonoBehaviour
         Camera cam = camera_GameObject.GetComponent<Camera>();
         Bounds backgroundBounds = background_GameObject.GetComponent<SpriteRenderer>().bounds;
 
-        // Calculate the maximum orthographic size based on the background bounds
+        // Calculate the maximum orthographic size based on the background bounds  
         float maxOrthographicSize = Mathf.Min(backgroundBounds.size.x * Screen.height / Screen.width, backgroundBounds.size.y) / 2;
         cam.orthographicSize = Mathf.Clamp(cam.orthographicSize, minZoom, Mathf.Min(maxZoom, maxOrthographicSize));
 
-        // Calculate the camera's viewable area
+        // Calculate the camera's viewable area  
         float vertExtent = cam.orthographicSize;
         float horzExtent = vertExtent * Screen.width / Screen.height;
 
-        // Calculate the bounds for each stage
+        // Calculate the bounds for each stage  
         float stageWidth = backgroundBounds.size.x / 2;
         float stageHeight = backgroundBounds.size.y / 2;
 
@@ -162,24 +154,12 @@ public class CameraHandle : MonoBehaviour
         switch (currentStage)
         {
             case 0:
-                minX = backgroundBounds.min.x + horzExtent;
-                maxX = backgroundBounds.min.x + stageWidth - horzExtent + 2;
-                minY = backgroundBounds.max.y - stageHeight + vertExtent - 6;
-                maxY = backgroundBounds.max.y - vertExtent;
+                minX = backgroundBounds.center.x - stageWidth / 3;
+                maxX = backgroundBounds.center.x + stageWidth / 3;
+                minY = backgroundBounds.center.y - stageHeight / 3;
+                maxY = backgroundBounds.center.y + stageHeight / 3;
                 break;
             case 1:
-                minX = backgroundBounds.min.x + horzExtent;
-                maxX = backgroundBounds.max.x - horzExtent;
-                minY = backgroundBounds.max.y - stageHeight + vertExtent - 6;
-                maxY = backgroundBounds.max.y - vertExtent;
-                break;
-            case 2:
-                minX = backgroundBounds.min.x + horzExtent;
-                maxX = backgroundBounds.max.x - horzExtent;
-                minY = backgroundBounds.min.y + vertExtent - 1 / 4 * cam.orthographicSize;
-                maxY = backgroundBounds.max.y - vertExtent;
-                break;
-            case 3:
                 minX = backgroundBounds.min.x + horzExtent;
                 maxX = backgroundBounds.max.x - horzExtent;
                 minY = backgroundBounds.min.y + vertExtent - 1 / 4 * cam.orthographicSize;
@@ -193,18 +173,18 @@ public class CameraHandle : MonoBehaviour
                 break;
         }
 
-        // CLAMP FIRST (original behavior)
+        // CLAMP FIRST (original behavior)  
         Vector3 oldPos = camera_GameObject.transform.position;
         Vector3 clampedPos = oldPos;
         clampedPos.x = Mathf.Clamp(clampedPos.x, minX, maxX);
         clampedPos.y = Mathf.Clamp(clampedPos.y, minY, maxY);
         camera_GameObject.transform.position = clampedPos;
 
-        // Calculate bounce direction if we hit a border
-        if ( clampedPos != oldPos)
+        // Calculate bounce direction if we hit a border  
+        if (clampedPos != oldPos)
         {
             isBouncing = true;
-            bounceDirection = (clampedPos - oldPos).normalized * 0.5f; // Small initial pushback
+            bounceDirection = (clampedPos - oldPos).normalized * 0.5f; // Small initial pushback  
         }
     }
 
@@ -227,24 +207,12 @@ public class CameraHandle : MonoBehaviour
         switch (currentStage)
         {
             case 0:
-                minX = backgroundBounds.min.x + horzExtent;
-                maxX = backgroundBounds.min.x + stageWidth - horzExtent + 2;
-                minY = backgroundBounds.max.y - stageHeight + vertExtent - 6;
-                maxY = backgroundBounds.max.y - vertExtent;
+                minX = backgroundBounds.center.x - stageWidth / 3;
+                maxX = backgroundBounds.center.x + stageWidth / 3;
+                minY = backgroundBounds.center.y - stageHeight / 3;
+                maxY = backgroundBounds.center.y + stageHeight / 3;
                 break;
             case 1:
-                minX = backgroundBounds.min.x + horzExtent;
-                maxX = backgroundBounds.max.x - horzExtent;
-                minY = backgroundBounds.max.y - stageHeight + vertExtent - 6;
-                maxY = backgroundBounds.max.y - vertExtent;
-                break;
-            case 2:
-                minX = backgroundBounds.min.x + horzExtent;
-                maxX = backgroundBounds.max.x - horzExtent;
-                minY = backgroundBounds.min.y + vertExtent - 1 / 4 * cam.orthographicSize;
-                maxY = backgroundBounds.max.y - vertExtent;
-                break;
-            case 3:
                 minX = backgroundBounds.min.x + horzExtent;
                 maxX = backgroundBounds.max.x - horzExtent;
                 minY = backgroundBounds.min.y + vertExtent - 1 / 4 * cam.orthographicSize;
