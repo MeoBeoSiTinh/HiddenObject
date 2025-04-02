@@ -232,6 +232,8 @@ public class GameManager : MonoBehaviour
             //assign asset to the target
             Transform slot2 = toolbarSlotsParent.GetChild(targetIndex).GetChild(0);
             Image icon = slot2.GetComponent<Image>();
+            Color iconColor = icon.color;
+            icon.color = Color.green;
 
         }
         if (targetList.Count == 0 && currentStageIndex + 1 < levelData.data[currentLevelIndex].stage.Count)
@@ -352,7 +354,7 @@ public class GameManager : MonoBehaviour
             iconObject.transform.SetParent(newSlotObject.transform);
             RectTransform iconRectTransform = iconObject.AddComponent<RectTransform>();
             iconRectTransform.sizeDelta = new Vector2(1, 1); // Set size of the icon  
-            iconRectTransform.localScale = new Vector3(85,85,85); // Set scale of the slot
+            iconRectTransform.localScale = new Vector3(85,85,85); // Set scale of the icon
             iconRectTransform.anchoredPosition3D = new Vector3(iconRectTransform.anchoredPosition3D.x, iconRectTransform.anchoredPosition3D.y, 0); // Set z position to 0
             Image image = iconObject.AddComponent<Image>();
 
