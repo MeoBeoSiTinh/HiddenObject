@@ -5,6 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - Special
+  - HotBarUI
+  - Normal
+  - Background
+  - Openable
+  - Crafter
   layers:
   - Default
   - TransparentFX

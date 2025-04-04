@@ -30,8 +30,8 @@ public class Special : MonoBehaviour
             }
             else
             {
-                resultObject.GetComponent<TargetFind>().SpecialTargetFound(touchPosition);
-                resultObject.GetComponent<TargetFind>().CreateSpineAnimation(touchPosition);
+                resultObject.GetComponent<ObjectTouch>().SpecialTargetFound(touchPosition);
+                resultObject.GetComponent<ObjectTouch>().CreateSpineAnimation(touchPosition);
             }
         }
         else

@@ -35,8 +35,8 @@ public class fish : MonoBehaviour
                             {
                                 LeanTween.rotateZ(group.gameObject, -50f, 0.3f).setOnComplete(() =>
                                 {
-                                    gameObject.GetComponent<Special>().resultObject.GetComponent<TargetFind>().SpecialTargetFound(touchPosition);
-                                    gameObject.GetComponent<Special>().resultObject.GetComponent<TargetFind>().CreateSpineAnimation(touchPosition);
+                                    gameObject.GetComponent<Special>().resultObject.GetComponent<ObjectTouch>().SpecialTargetFound(touchPosition);
+                                    gameObject.GetComponent<Special>().resultObject.GetComponent<ObjectTouch>().CreateSpineAnimation(touchPosition);
                                 });
                             });
                         });

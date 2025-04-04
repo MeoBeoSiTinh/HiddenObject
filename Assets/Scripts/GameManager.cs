@@ -38,11 +38,15 @@ public class GameManager : MonoBehaviour
     public GameObject specialFoundUi;
     public GameObject DescBox;
     public Transform PlayerInfo;
-    public bool isHotBarMinimized = false;
+    public GameObject CrafterMenu;
 
 
     [Header("PlayerData")]
     public string username = "Meobeo";
+
+    [Header("Boolean")]
+    public bool isHotBarMinimized = false;
+    public bool isCrafting = false;
 
 
     private class SaveObject
@@ -149,7 +153,7 @@ public class GameManager : MonoBehaviour
         targetList = new List<MyTarget>(levelInfor.stage[stageIndex].target);
         for (int i = 0; i < targetList.Count; i++)
         {
-            GameObject.Find(targetList[i].TargetName).GetComponent<TargetFind>().enabled = true;
+            GameObject.Find(targetList[i].TargetName).GetComponent<ObjectTouch>().enabled = true;
         }
 
         // Disable the child of mapHiding with index equal to stageIndex - 1
@@ -228,12 +232,11 @@ public class GameManager : MonoBehaviour
             //change Hotbar color
             Transform slot = toolbarSlotsParent.GetChild(targetIndex);
             Image bg = slot.GetComponentInChildren<Image>();
-
+            bg.color = Color.green;
             //assign asset to the target
             Transform slot2 = toolbarSlotsParent.GetChild(targetIndex).GetChild(0);
             Image icon = slot2.GetComponent<Image>();
-            Color iconColor = icon.color;
-            icon.color = Color.green;
+
 
         }
         if (targetList.Count == 0 && currentStageIndex + 1 < levelData.data[currentLevelIndex].stage.Count)
@@ -419,6 +422,32 @@ public class GameManager : MonoBehaviour
             icon.gameObject.SetActive(true);
         }
     }
+    private GameObject CreateEmptyUIElementAtParentRectPosition(RectTransform parentRect)
+    {
+        // Create an empty GameObject
+        GameObject emptyUIElement = new GameObject("UILocation");
+
+        // Add RectTransform component
+        RectTransform rectTransform = emptyUIElement.AddComponent<RectTransform>();
+
+
+        // Get the world position of the parentRect
+        Vector3 parentWorldPosition = parentRect.TransformPoint(parentRect.rect.center);
+
+        // Convert the world position to local position in the Canvas
+        RectTransform canvasRect = GameObject.Find("Canvas").GetComponent<RectTransform>();
+        Vector2 localPoint;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            canvasRect,
+            RectTransformUtility.WorldToScreenPoint(null, parentWorldPosition),
+            null,
+            out localPoint
+        );
+        // Set the anchored position of the empty UI element to the local point
+        rectTransform.anchoredPosition = localPoint;
+
+        return emptyUIElement;
+    }
 
     public void clearHotBar()
     {
@@ -509,31 +538,10 @@ public class GameManager : MonoBehaviour
         gadgetManager.Compass(targets);
     }
 
-    private GameObject CreateEmptyUIElementAtParentRectPosition(RectTransform parentRect)
+    public void OpenCrafter()
     {
-        // Create an empty GameObject
-        GameObject emptyUIElement = new GameObject("UILocation");
-
-        // Add RectTransform component
-        RectTransform rectTransform = emptyUIElement.AddComponent<RectTransform>();
-
-
-        // Get the world position of the parentRect
-        Vector3 parentWorldPosition = parentRect.TransformPoint(parentRect.rect.center);
-
-        // Convert the world position to local position in the Canvas
-        RectTransform canvasRect = GameObject.Find("Canvas").GetComponent<RectTransform>();
-        Vector2 localPoint;
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            canvasRect,
-            RectTransformUtility.WorldToScreenPoint(null, parentWorldPosition),
-            null,
-            out localPoint
-        );
-        // Set the anchored position of the empty UI element to the local point
-        rectTransform.anchoredPosition = localPoint;
-
-        return emptyUIElement;
+        CrafterMenu.SetActive(true);
     }
+    
 
 }

@@ -21,7 +21,7 @@ public class CameraHandle : MonoBehaviour
     private bool isBouncing = false;
     private Vector3 bounceDirection;
     private float bounceDecay = 0.9f; // How quickly the bounce settles (0.8-0.95 feels good)
-    private float bounceIntensity = 0.3f; // How strong the bounce is
+    private float bounceIntensity = 0.4f; // How strong the bounce is
 
     // Define the stages
     public int currentStage;
@@ -109,7 +109,7 @@ public class CameraHandle : MonoBehaviour
         }
 
         // Apply bounce effect if active
-        if (isBouncing)
+        if (isBouncing && touchCount == 0)
         {
             camera_GameObject.transform.position += bounceDirection * bounceIntensity;
             bounceDirection *= bounceDecay; // Reduce bounce over time
