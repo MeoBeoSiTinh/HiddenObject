@@ -7,6 +7,8 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using static UnityEngine.GraphicsBuffer;
 using Spine.Unity;
+using System.Linq;
+using Unity.VisualScripting;
 
 public class GameManager : MonoBehaviour
 {
@@ -16,10 +18,10 @@ public class GameManager : MonoBehaviour
     private int specialStageIndex;
     private GameObject currentLevelInstance;
     private List<MyTarget> targetList;
-    private List<MyTarget> specialList;
-    public List<MyTarget> allTargetsList; // New list to contain all targets in every stage
-    public List<MyTarget> allSpecialList; // New list to contain all special targets
-
+    public List<MyTarget> specialList;
+    public List<MyTarget> allTargetsList;
+    public List<MyTarget> allSpecialList;
+    public List<string> CraftSelected;
     public GameObject mapHiding;
     public float targetSize; // Size of the camera zoom out
     public GameObject CameraRenderer;
@@ -55,10 +57,10 @@ public class GameManager : MonoBehaviour
     }
     public void Awake()
     {
-        SaveSystem.Init();
-        Load();
-        Transform name = PlayerInfo.GetChild(0).GetChild(0);
-        name.GetComponent<TextMeshProUGUI>().text = username;
+        //SaveSystem.Init();
+        //Load();
+        //Transform name = PlayerInfo.GetChild(0).GetChild(0);
+        //name.GetComponent<TextMeshProUGUI>().text = username;
 
     }
 
@@ -129,8 +131,8 @@ public class GameManager : MonoBehaviour
         {
             allTargetsList.AddRange(stage.target);
         }
+        specialList.AddRange(levelInfor.special);
         allSpecialList.AddRange(levelInfor.special);
-        
         UpdateSpecialBar();
         UpdateHotBar();
         LoadStage(0);
@@ -236,6 +238,8 @@ public class GameManager : MonoBehaviour
             //assign asset to the target
             Transform slot2 = toolbarSlotsParent.GetChild(targetIndex).GetChild(0);
             Image icon = slot2.GetComponent<Image>();
+            CraftSelect craftSelect = slot2.GetComponent<CraftSelect>();
+            craftSelect.selectedObject = target;
 
 
         }
@@ -363,12 +367,7 @@ public class GameManager : MonoBehaviour
 
             CanvasGroup canvasGroup = iconObject.AddComponent<CanvasGroup>();
 
-            // Add DragAndDrop script to iconObject  
-            //DragAndDrop dragAndDrop = iconObject.AddComponent<DragAndDrop>();
-            //dragAndDrop.backgroundCanvas = backgroundObject.transform; // Assign background to DragAndDrop  
-
-            
-
+            CraftSelect craftSelect = iconObject.AddComponent<CraftSelect>();
 
 
             image.sprite = allTargetsList[i].TargetPrefab.GetComponent<SpriteRenderer>().sprite;
@@ -492,6 +491,11 @@ public class GameManager : MonoBehaviour
     public void CloseSpecialFound(GameObject image)
     {
         Destroy(image);
+        ClearIngameMenu();
+    }
+
+    public void ClearIngameMenu()
+    {
         specialFoundUi.SetActive(false);
         if (specialList.Count == 0 && specialStageIndex + 1 >= levelData.data[currentLevelIndex].special.Count)
         {
@@ -543,5 +547,35 @@ public class GameManager : MonoBehaviour
         CrafterMenu.SetActive(true);
     }
     
+    public void OnCraftClicked()
+    {
+        MyLevelData levelInfor = levelData.data[currentLevelIndex];
+        Boolean craftable = false;
+        foreach (craftRecipe recipe in levelInfor.recipe)
+        {
+            Debug.Log("Selected: " + CraftSelected[0]);
+            Debug.Log("Required: " + recipe.ingredients[0]);
+            craftable = CraftSelected.All(recipe.ingredients.Contains) && CraftSelected.Count == recipe.ingredients.Count;
+            if (craftable)
+            {
+                Camera mainCamera = Camera.main;
+
+                // Calculate the center position of the main camera
+                Vector3 centerPosition = mainCamera.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, mainCamera.nearClipPlane));
+
+                // Instantiate the result object at the center position
+                GameObject resultObject = Instantiate(recipe.Result, centerPosition, Quaternion.identity);
+                resultObject.name = recipe.Result.name;
+                resultObject.GetComponent<ObjectTouch>().SpecialTargetFound(mainCamera.ScreenToWorldPoint(new Vector2(0,0)));
+
+                CrafterMenu.SetActive(false);
+            }
+            else
+            {
+                Debug.Log("Not Craftable");
+            }
+        }
+        
+    }
 
 }

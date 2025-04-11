@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5325524426128726640}
   - component: {fileID: 9072718146543557750}
-  - component: {fileID: 9124637436567630239}
   - component: {fileID: 8431955533322138865}
+  - component: {fileID: 3251939694094772558}
   m_Layer: 0
   m_Name: fishing rod
   m_TagString: Special
@@ -86,21 +86,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &9124637436567630239
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9117161570159664264}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 272db8b58ec55664b8815340f9c2e28e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  UiHotbar: {fileID: 0}
-  spineAnimationPrefab: {fileID: 1389588780676235433, guid: 258fa316bdd9fb542b83d3727d65e8af, type: 3}
-  touchThresholdTime: 0.2
 --- !u!61 &8431955533322138865
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -146,3 +131,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 8.486139, y: 8.877972}
   m_EdgeRadius: 0
+--- !u!114 &3251939694094772558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9117161570159664264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb757d534d611e84fac072f61ca4405b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UiHotbar: {fileID: 0}
+  wrongImage: {fileID: 4935127338822683817, guid: b38f55ef37c30844c938b0c2d18997d9, type: 3}
+  spineAnimationPrefab: {fileID: 1389588780676235433, guid: 258fa316bdd9fb542b83d3727d65e8af, type: 3}
+  touchThresholdTime: 0.2

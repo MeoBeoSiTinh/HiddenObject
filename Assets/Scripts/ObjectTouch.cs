@@ -14,7 +14,7 @@ public class ObjectTouch : MonoBehaviour
     public GameObject spineAnimationPrefab; // Prefab for the Spine animation
     private float touchStartTime;
     public float touchThresholdTime = 0.2f; // Threshold time for touch
-    private void Start()
+    private void Awake()
     {
         // Cache the main camera for performance
         mainCamera = Camera.main;
@@ -78,7 +78,7 @@ public class ObjectTouch : MonoBehaviour
 
                     // Get the topmost hit
                     RaycastHit2D topmostHit = hits[0];
-
+                    Debug.Log(topmostHit.collider.gameObject.tag);
                     // Check if the hit object is the one this script is attached to
                     if (topmostHit.transform == transform)
                     {
@@ -99,7 +99,6 @@ public class ObjectTouch : MonoBehaviour
                                 StartCoroutine(DestroyAfterDelay(0.05f));
                                 break;
                             case "Crafter":
-                                Debug.Log("Crafter");
                                 gameObject.GetComponent<Crafter>().ShowRecipe();
                                 break;
                         }
@@ -311,6 +310,7 @@ public class ObjectTouch : MonoBehaviour
 
         // Find the UI hotbar by name and assign it to UiHotbar
         GameObject hotbarObject = GameObject.Find("Icon" + gameObject.name);
+        Debug.Log("Icon" + gameObject.name);
 
         if (hotbarObject != null)
         {
