@@ -180,7 +180,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: = ?
+  m_text: ' = ?'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3343,6 +3343,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelData: {fileID: 11400000, guid: f7bc66233d8f0fd4da271354e978f7b1, type: 2}
   currentLevelIndex: 0
+  specialList: []
   allTargetsList: []
   allSpecialList: []
   CraftSelected: []
@@ -3362,7 +3363,7 @@ MonoBehaviour:
   specialFoundUi: {fileID: 1064498420}
   DescBox: {fileID: 656708329}
   PlayerInfo: {fileID: 750207333}
-  CrafterMenu: {fileID: 665910552}
+  Dialogue: {fileID: 665910552}
   username: Meobeo
   isHotBarMinimized: 0
   isCrafting: 0

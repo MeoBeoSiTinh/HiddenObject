@@ -14,12 +14,11 @@ public class Crafter : MonoBehaviour
     public void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        CrafterMenu = gameManager.CrafterMenu;
+        CrafterMenu = gameManager.Dialogue;
         cam = Camera.main;
     }
     public void ShowRecipe()
     {
-        gameManager.OpenCrafter();
         Vector3 targetPosition = gameObject.transform.position;
         targetPosition.z = cam.transform.position.z;
         targetPosition.x = targetPosition.x + 0.5f;
@@ -48,7 +47,7 @@ public class Crafter : MonoBehaviour
             Camera.main.orthographicSize = Mathf.Lerp(startSize, 4f, t);
             yield return null; // Wait for the next frame
         }
-
+        gameManager.OpenCrafter();
         // Ensure the camera reaches the exact target position and zoom level
         Camera.main.transform.position = targetPosition;
         Camera.main.orthographicSize = 4f;

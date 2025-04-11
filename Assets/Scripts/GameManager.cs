@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
     public GameObject specialFoundUi;
     public GameObject DescBox;
     public Transform PlayerInfo;
-    public GameObject CrafterMenu;
+    public GameObject Dialogue;
 
 
     [Header("PlayerData")]
@@ -263,12 +263,10 @@ public class GameManager : MonoBehaviour
         {
             specialList.RemoveAll(x => x.TargetName == target.name);
             //change Hotbar color
-            Transform slot = SpecialSlotsParent.GetChild(specialIndex).GetChild(0);
+            Transform slot = SpecialSlotsParent.GetChild(specialIndex);
             Image bg = slot.GetComponentInChildren<Image>();
             //assign asset to the target
-            Transform slot2 = SpecialSlotsParent.GetChild(specialIndex).GetChild(1);
-            DragAndDrop dragAndDrop = slot2.GetComponent<DragAndDrop>();
-            dragAndDrop.targetObject = target;
+            Transform slot2 = SpecialSlotsParent.GetChild(specialIndex).GetChild(0);
 
             if (bg != null)
             {
@@ -544,7 +542,7 @@ public class GameManager : MonoBehaviour
 
     public void OpenCrafter()
     {
-        CrafterMenu.SetActive(true);
+        Dialogue.SetActive(true);
     }
     
     public void OnCraftClicked()
@@ -566,9 +564,9 @@ public class GameManager : MonoBehaviour
                 // Instantiate the result object at the center position
                 GameObject resultObject = Instantiate(recipe.Result, centerPosition, Quaternion.identity);
                 resultObject.name = recipe.Result.name;
-                resultObject.GetComponent<ObjectTouch>().SpecialTargetFound(mainCamera.ScreenToWorldPoint(new Vector2(0,0)));
+                resultObject.GetComponent<ObjectTouch>().SpecialTargetFound(mainCamera.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, mainCamera.nearClipPlane)));
 
-                CrafterMenu.SetActive(false);
+                Dialogue.SetActive(false);
             }
             else
             {
