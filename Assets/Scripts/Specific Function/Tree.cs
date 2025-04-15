@@ -5,19 +5,29 @@ using UnityEngine;
 public class Tree : MonoBehaviour
 {
     [Header("Sway Settings")]
-    public float swaySpeed = 1f;
+
     public float maxSwayAngle = 4f;
 
     private Vector3 basePosition;  // The fixed base position
     private float treeHeight;     // Distance from base to object center
     private Quaternion startRot;  // Initial rotation
+    private float swaySpeed;      // Random sway speed
 
     void Start()
     {
-        // Store initial state
-        startRot = transform.rotation;
+        // Store initial position
         basePosition = GetBasePosition();
         treeHeight = transform.position.y - basePosition.y;
+
+        // Store initial rotation PROPERLY
+        startRot = transform.rotation;
+
+        // Add random initial tilt (in Euler angles, not Quaternion)
+        float randomZRotation = Random.Range(-1, 1);
+        startRot = Quaternion.Euler(0, 0, randomZRotation);
+
+        // Random sway speed
+        swaySpeed = Random.Range(1f, 2f);
     }
 
     void Update()
