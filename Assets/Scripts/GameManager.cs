@@ -173,9 +173,14 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator MoveCameraToStage(int stageIndex)
     {
-        if (stageIndex == 0)
+        switch (stageIndex)
         {
-            yield break;
+            case 0:
+                yield break;
+            case 1:
+                targetSize = 12f; break;
+            case 2:
+                targetSize = 20f; break;
         }
         float duration = 1f; // Duration of the camera movement in seconds
         float elapsedTime = 0f;
@@ -564,6 +569,7 @@ public class GameManager : MonoBehaviour
                 // Instantiate the result object at the center position
                 GameObject resultObject = Instantiate(recipe.Result, centerPosition, Quaternion.identity);
                 resultObject.name = recipe.Result.name;
+
                 resultObject.GetComponent<ObjectTouch>().SpecialTargetFound(mainCamera.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, mainCamera.nearClipPlane)));
 
                 Dialogue.SetActive(false);

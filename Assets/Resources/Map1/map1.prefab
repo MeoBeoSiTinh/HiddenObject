@@ -685,7 +685,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &90910100901009022
 GameObject:
@@ -1036,7 +1035,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &150880794383899327
 GameObject:
@@ -1639,7 +1637,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &270559270836669046
 GameObject:
@@ -1822,7 +1819,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &290962669738133734
 GameObject:
@@ -4003,7 +3999,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &655735437301405350
 GameObject:
@@ -4522,7 +4517,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &732043777096236374
 GameObject:
@@ -4621,7 +4615,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &738973786449570793
 GameObject:
@@ -5308,7 +5301,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &858645758284074345
 GameObject:
@@ -5659,7 +5651,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &941789116674770417
 GameObject:
@@ -6262,7 +6253,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &1073518112242930864
 GameObject:
@@ -6361,7 +6351,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &1097804880423522038
 GameObject:
@@ -7552,7 +7541,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &1366219359828108944
 GameObject:
@@ -8407,7 +8395,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &1563099969834017438
 GameObject:
@@ -8674,7 +8661,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &1620975947970374474
 GameObject:
@@ -9669,7 +9655,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &1792983772710764966
 GameObject:
@@ -10104,7 +10089,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &1908654712125329919
 GameObject:
@@ -10455,7 +10439,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &1990961955898061512
 GameObject:
@@ -10554,7 +10537,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &2024289762673940600
 GameObject:
@@ -11196,7 +11178,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &2126394384609368040
 GameObject:
@@ -11295,7 +11276,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &2127905911701457241
 GameObject:
@@ -12622,7 +12602,7 @@ Transform:
   m_GameObject: {fileID: 2373497100051487516}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.0000019073486, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -13315,7 +13295,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &2489194096055442714
 GameObject:
@@ -15010,7 +14989,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &2934146174799409166
 GameObject:
@@ -15193,7 +15171,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &2939564090612745607
 GameObject:
@@ -15796,7 +15773,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &3022723778401052419
 GameObject:
@@ -16735,7 +16711,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &3226672262593166947
 GameObject:
@@ -16834,7 +16809,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &3244963975803883400
 GameObject:
@@ -17017,7 +16991,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &3259721596584562975
 GameObject:
@@ -17788,7 +17761,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &3407344183400856499
 GameObject:
@@ -17971,7 +17943,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &3500026078159832529
 GameObject:
@@ -18445,7 +18416,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &3610677580453431931
 GameObject:
@@ -19132,7 +19102,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &3668551811681155669
 GameObject:
@@ -19231,7 +19200,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &3691810398365609170
 GameObject:
@@ -19330,7 +19298,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &3706612420864830790
 GameObject:
@@ -19429,7 +19396,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &3709831116760898819
 GameObject:
@@ -19528,7 +19494,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &3738325385400722737
 GameObject:
@@ -20714,7 +20679,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &3989645378388221705
 GameObject:
@@ -20897,7 +20861,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &4041093339808100462
 GameObject:
@@ -21164,7 +21127,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &4060135392207056914
 GameObject:
@@ -21393,7 +21355,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &4182388648090239100
 GameObject:
@@ -22584,7 +22545,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &4407168975786181459
 GameObject:
@@ -22767,7 +22727,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &4447831110386142570
 GameObject:
@@ -22866,7 +22825,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &4452287645967594926
 GameObject:
@@ -22965,7 +22923,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &4454894694335653648
 GameObject:
@@ -23232,7 +23189,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &4495345943418489238
 GameObject:
@@ -23415,7 +23371,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &4528239309906832183
 GameObject:
@@ -23514,7 +23469,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &4529108128416889198
 GameObject:
@@ -23697,7 +23651,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &4539330948210525410
 GameObject:
@@ -23880,7 +23833,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &4571732476690751671
 GameObject:
@@ -25229,7 +25181,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &4764609142364800404
 GameObject:
@@ -25748,7 +25699,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &4829645214065132419
 GameObject:
@@ -26603,7 +26553,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &4937263220430598108
 GameObject:
@@ -27840,7 +27789,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &5239166313835915195
 GameObject:
@@ -28023,7 +27971,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &5250149566308106846
 GameObject:
@@ -28290,7 +28237,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &5318054580314651707
 GameObject:
@@ -28389,7 +28335,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &5319773773524729592
 GameObject:
@@ -28488,7 +28433,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &5323288700408273310
 GameObject:
@@ -28671,7 +28615,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &5341651372368328632
 GameObject:
@@ -28854,7 +28797,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &5350852856810186212
 GameObject:
@@ -30381,7 +30323,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &5616915149690018441
 GameObject:
@@ -30480,7 +30421,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &5673523765648082164
 GameObject:
@@ -30831,7 +30771,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &5678221857029593693
 GameObject:
@@ -31350,7 +31289,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &5734855082001296544
 GameObject:
@@ -31533,7 +31471,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &5741987532666576462
 GameObject:
@@ -31800,7 +31737,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &5828983651803694475
 GameObject:
@@ -31933,7 +31869,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &5891464386347618587
 GameObject:
@@ -32452,7 +32387,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &6001535684190755004
 GameObject:
@@ -32971,7 +32905,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &6079589527048430392
 GameObject:
@@ -33322,7 +33255,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &6107022969680973583
 GameObject:
@@ -33589,7 +33521,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &6115542413738645440
 GameObject:
@@ -33772,7 +33703,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &6139374316514973574
 GameObject:
@@ -34207,7 +34137,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &6236530521752086302
 GameObject:
@@ -34558,7 +34487,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &6286291284413019902
 GameObject:
@@ -34741,7 +34669,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &6307059034136534866
 GameObject:
@@ -35344,7 +35271,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &6446952981911019035
 GameObject:
@@ -35611,7 +35537,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &6496558209029133604
 GameObject:
@@ -36298,7 +36223,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &6567470086370141998
 GameObject:
@@ -36397,7 +36321,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &6569336341813801816
 GameObject:
@@ -36866,7 +36789,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &6611179851210760599
 GameObject:
@@ -36965,7 +36887,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &6625252002932251896
 GameObject:
@@ -37232,7 +37153,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &6673161320183861528
 GameObject:
@@ -37499,7 +37419,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &6694958314491506743
 GameObject:
@@ -37934,7 +37853,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &6768126642285284445
 GameObject:
@@ -39341,7 +39259,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &7046041976098260237
 GameObject:
@@ -39440,7 +39357,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &7048071758770239881
 GameObject:
@@ -39707,7 +39623,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &7091719786382270080
 GameObject:
@@ -40142,7 +40057,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &7146228052378208444
 GameObject:
@@ -40661,7 +40575,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &7313730793371312719
 GameObject:
@@ -41467,7 +41380,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &7393036544994908430
 GameObject:
@@ -42055,7 +41967,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &7520181957764337433
 GameObject:
@@ -42238,7 +42149,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &7541172109931817962
 GameObject:
@@ -42757,7 +42667,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &7689626726166000824
 GameObject:
@@ -43528,7 +43437,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &7777133754957493254
 GameObject:
@@ -43627,7 +43535,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &7800838187947157522
 GameObject:
@@ -44230,7 +44137,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &7919709114802517069
 GameObject:
@@ -44413,7 +44319,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &7971833233760369164
 GameObject:
@@ -44557,7 +44462,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &8004626265495390766
 GameObject:
@@ -44740,7 +44644,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &8057309536526261032
 GameObject:
@@ -44839,7 +44742,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &8096662729387918953
 GameObject:
@@ -45694,7 +45596,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &8198234068212146734
 GameObject:
@@ -45793,7 +45694,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &8201719561110940615
 GameObject:
@@ -46144,7 +46044,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &8251984655529219985
 GameObject:
@@ -46495,7 +46394,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &8301543812391708409
 GameObject:
@@ -46594,7 +46492,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &8320412415416784090
 GameObject:
@@ -46945,7 +46842,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &8378774612054944943
 GameObject:
@@ -47585,7 +47481,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &8550967620238595236
 GameObject:
@@ -48692,7 +48587,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &8766423650248718683
 GameObject:
@@ -49463,7 +49357,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &8959221153658002171
 GameObject:
@@ -49691,7 +49584,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &9039712631056433338
 GameObject:
@@ -50630,7 +50522,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &9135640198624693605
 GameObject:
@@ -50813,7 +50704,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &9156037226011371305
 GameObject:
@@ -51164,7 +51054,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swaySpeed: 1
   maxSwayAngle: 4
 --- !u!1 &9205768971944712266
 GameObject:
