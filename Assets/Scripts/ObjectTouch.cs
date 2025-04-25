@@ -13,7 +13,7 @@ public class ObjectTouch : MonoBehaviour
     public GameObject wrongImage; // Prefab for the wrong image
     public GameObject spineAnimationPrefab; // Prefab for the Spine animation
     private float touchStartTime;
-    public float touchThresholdTime = 0.2f; // Threshold time for touch
+    private float touchThresholdTime = 1f; // Threshold time for touch
     private void Awake()
     {
         // Cache the main camera for performance
@@ -117,6 +117,7 @@ public class ObjectTouch : MonoBehaviour
 
         // Set the size and sprite of the target image
         targetImage.rectTransform.sizeDelta = new Vector2(1, 1); // Adjust size as needed
+        targetImage.rectTransform.localScale = new Vector3(100f, 100f, 100f); // Adjust scale as needed
         targetImage.sprite = gameObject.GetComponent<SpriteRenderer>().sprite;
 
         // Convert touch position to local position in the Canvas

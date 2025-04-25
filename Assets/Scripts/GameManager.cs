@@ -121,7 +121,7 @@ public class GameManager : MonoBehaviour
         if (levelInfor == null) return;
 
         currentLevelInstance = Instantiate(levelInfor.LevelPrefab);
-        Camera.main.GetComponent<CameraHandle>().background_GameObject = GameObject.Find("Background");
+        Camera.main.GetComponent<CameraHandle>().background_GameObject = GameObject.FindGameObjectWithTag("Background");
         currentLevelIndex = levelIndex;
         // Populate allTargetsList with all targets in every stage
         allTargetsList = new List<MyTarget>();
@@ -155,7 +155,14 @@ public class GameManager : MonoBehaviour
         targetList = new List<MyTarget>(levelInfor.stage[stageIndex].target);
         for (int i = 0; i < targetList.Count; i++)
         {
-            GameObject.Find(targetList[i].TargetName).GetComponent<ObjectTouch>().enabled = true;
+            try
+            {
+                GameObject.Find(targetList[i].TargetName).GetComponent<ObjectTouch>().enabled = true;
+            }
+            catch
+            {
+                
+            }
         }
 
         // Disable the child of mapHiding with index equal to stageIndex - 1
@@ -556,21 +563,25 @@ public class GameManager : MonoBehaviour
         Boolean craftable = false;
         foreach (craftRecipe recipe in levelInfor.recipe)
         {
-            Debug.Log("Selected: " + CraftSelected[0]);
-            Debug.Log("Required: " + recipe.ingredients[0]);
             craftable = CraftSelected.All(recipe.ingredients.Contains) && CraftSelected.Count == recipe.ingredients.Count;
             if (craftable)
             {
                 Camera mainCamera = Camera.main;
-
-                // Calculate the center position of the main camera
-                Vector3 centerPosition = mainCamera.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, mainCamera.nearClipPlane));
-
                 // Instantiate the result object at the center position
-                GameObject resultObject = Instantiate(recipe.Result, centerPosition, Quaternion.identity);
+                Vector2 position = GameObject.FindGameObjectWithTag("Crafter").transform.position;
+                GameObject resultObject = Instantiate(recipe.Result, position, Quaternion.identity);
                 resultObject.name = recipe.Result.name;
+                Vector2 UiPos = mainCamera.WorldToScreenPoint(position);
 
-                resultObject.GetComponent<ObjectTouch>().SpecialTargetFound(mainCamera.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, mainCamera.nearClipPlane)));
+                if (resultObject.tag == "Special")
+                {
+                    resultObject.GetComponent<ObjectTouch>().SpecialTargetFound(UiPos);
+                }
+                else if (resultObject.tag == "Normal")
+                {
+                    resultObject.GetComponent<ObjectTouch>().CreateTargetImage(UiPos);
+                }
+                
 
                 Dialogue.SetActive(false);
             }

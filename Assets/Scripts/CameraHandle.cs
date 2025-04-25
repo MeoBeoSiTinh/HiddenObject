@@ -27,8 +27,8 @@ public class CameraHandle : MonoBehaviour
     public int currentStage;
 
     // Define min and max zoom levels
-    private float minZoom = 2.5f;
-    private float maxZoom = 12f;
+    private float minZoom;
+    private float maxZoom;
 
     void Start()
     {
@@ -101,9 +101,15 @@ public class CameraHandle : MonoBehaviour
         switch (currentStage)
         {
             case 0:
+                minZoom = 3f;
+                maxZoom = 8f;
                 break;
             case 1:
-                minZoom = 2.5f;
+                minZoom = 3f;
+                maxZoom = 10f;
+                break;
+            case 2:
+                minZoom = 3f;
                 maxZoom = 25f;
                 break;
         }
@@ -160,6 +166,12 @@ public class CameraHandle : MonoBehaviour
                 maxY = backgroundBounds.center.y + stageHeight / 3;
                 break;
             case 1:
+                minX = backgroundBounds.center.x - stageWidth / 2;
+                maxX = backgroundBounds.center.x + stageWidth / 2;
+                minY = backgroundBounds.center.y - stageHeight / 2;
+                maxY = backgroundBounds.center.y + stageHeight / 2;
+                break;
+            case 2:
                 minX = backgroundBounds.min.x + horzExtent;
                 maxX = backgroundBounds.max.x - horzExtent;
                 minY = backgroundBounds.min.y + vertExtent - 1 / 4 * cam.orthographicSize;
@@ -213,6 +225,12 @@ public class CameraHandle : MonoBehaviour
                 maxY = backgroundBounds.center.y + stageHeight / 3;
                 break;
             case 1:
+                minX = backgroundBounds.center.x - stageWidth / 6;
+                maxX = backgroundBounds.center.x + stageWidth / 6;
+                minY = backgroundBounds.center.y - stageHeight / 6;
+                maxY = backgroundBounds.center.y + stageHeight / 6;
+                break;
+            case 2:
                 minX = backgroundBounds.min.x + horzExtent;
                 maxX = backgroundBounds.max.x - horzExtent;
                 minY = backgroundBounds.min.y + vertExtent - 1 / 4 * cam.orthographicSize;

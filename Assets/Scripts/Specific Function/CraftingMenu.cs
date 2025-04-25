@@ -9,6 +9,7 @@ public class CraftingMenu : MonoBehaviour
     {
         gameManager.isCrafting = false;
         gameManager.CraftSelected.Clear();
+        gameManager.Dialogue.transform.GetChild(0).GetComponentInChildren<TMPro.TextMeshProUGUI>().text = "";
     }
     public void OnEnable()
     {

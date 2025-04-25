@@ -5,8 +5,8 @@ using System.Collections.Generic;
 public class CameraFocus : MonoBehaviour
 {
     public Camera mainCamera; // Assign your 2D camera in the Inspector
-    public float activationDistance = 2f;
-    public float proximityRadius = 1.4f;
+    public float activationDistance = 4f;
+    public float proximityRadius = 4f;
     private List<GameObject> dynamicObjects = new List<GameObject>(); // Initialize the list to store all relevant 2D objects
 
     public void Start()
@@ -79,8 +79,24 @@ public class CameraFocus : MonoBehaviour
         dynamicObjects.Clear(); // Clear the list before adding new objects
         for (int i = 0; i < map.transform.childCount; i++)
         {
-            if (map.transform.GetChild(i).GetComponent<ObjectTouch>() == null)
-                dynamicObjects.Add(map.transform.GetChild(i).gameObject);
+            Transform child = map.transform.GetChild(i);
+            if (child.GetComponent<ObjectTouch>() == null)
+            {
+                if (child.childCount > 0)
+                {
+                    foreach (Transform grandChild in child)
+                    {
+                        if (grandChild.GetComponent<ObjectTouch>() == null)
+                        {
+                            dynamicObjects.Add(grandChild.gameObject);
+                        }
+                    }
+                }
+                else if (child.GetComponent<SpriteRenderer>() != null)
+                {
+                    dynamicObjects.Add(child.gameObject);
+                }
+            }
         }
         dynamicObjects.RemoveAll(x => x.name == "Background");
     }

@@ -19,23 +19,48 @@ MonoBehaviour:
       target:
       - TargetName: dog
         TargetPrefab: {fileID: 1001186962182482714, guid: bfd01a5ebe5e4b8428fa44bc0465e25d, type: 3}
-        Description: dog
+        Description: 
       - TargetName: soc
         TargetPrefab: {fileID: 7212739994703731388, guid: cd3c029273e6f244fa213489233f8eae, type: 3}
-        Description: soc lo
+        Description: 
+      - TargetName: "C\xE0nh c\xE2y"
+        TargetPrefab: {fileID: 1030370704512424776, guid: a7e628ee49bb6ec4d8eca06b10b46b94, type: 3}
+        Description: 
     - StageName: 2
       target:
+      - TargetName: ca
+        TargetPrefab: {fileID: 1756161657386106596, guid: bb6a7612e0789944890d802e0dc7af59, type: 3}
+        Description: 
+      - TargetName: vot
+        TargetPrefab: {fileID: 6331452310289447040, guid: 166e41da5f72cb944aeea4755d0db897, type: 3}
+        Description: 
+      - TargetName: riu
+        TargetPrefab: {fileID: 216038133734237617, guid: a948bad92da6e384790d7a0279d80d4d, type: 3}
+        Description: 
+    - StageName: 3
+      target:
+      - TargetName: tochim
+        TargetPrefab: {fileID: 1413396958478306160, guid: 46136fed405fd9c41972168fa74c90e0, type: 3}
+        Description: 
+      - TargetName: trung chim
+        TargetPrefab: {fileID: 898811475071222807, guid: 5c0ceb08583015140a52b151898fcd7b, type: 3}
+        Description: 
       - TargetName: soi
-        TargetPrefab: {fileID: 5342393655794998087, guid: f1d2ea765185e394a854bf6314ba6015, type: 3}
-        Description: nuts
-    LevelPrefab: {fileID: 4200273370681321277, guid: aff4ffef6aa37804eb9706958dacaea3, type: 3}
+        TargetPrefab: {fileID: 884125377571818782, guid: ea4e5bb0156b535499ecbe4656d39fe8, type: 3}
+        Description: 
+    LevelPrefab: {fileID: 4653674812091518928, guid: c2f77273e8b2ca2408b365c07248907e, type: 3}
     special:
     - TargetName: fishing rod
       TargetPrefab: {fileID: 9117161570159664264, guid: c7dd689c82e93d0449a0a72f67146dd9, type: 3}
       Description: can cau
     recipe:
-    - RecipeName: fishing rod
+    - RecipeName: "C\xE0nh c\xE2y"
       ingredients:
       - dog
       - soc
+      Result: {fileID: 1030370704512424776, guid: a7e628ee49bb6ec4d8eca06b10b46b94, type: 3}
+    - RecipeName: fishing rod
+      ingredients:
+      - "C\xE0nh c\xE2y"
+      - tochim
       Result: {fileID: 9117161570159664264, guid: c7dd689c82e93d0449a0a72f67146dd9, type: 3}
