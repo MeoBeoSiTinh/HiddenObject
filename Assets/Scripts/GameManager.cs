@@ -185,9 +185,9 @@ public class GameManager : MonoBehaviour
             case 0:
                 yield break;
             case 1:
-                targetSize = 12f; break;
+                targetSize = 15f; break;
             case 2:
-                targetSize = 20f; break;
+                targetSize = 25f; break;
         }
         float duration = 1f; // Duration of the camera movement in seconds
         float elapsedTime = 0f;

@@ -5,20 +5,22 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CraftSelect : MonoBehaviour, IPointerDownHandler
+public class CraftSelect : MonoBehaviour, IPointerClickHandler
 {
     public GameObject selectedObject;
     public Boolean isSelected = false;
     private GameManager gameManager;
     private GameObject Dialogue;
+
     private void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         Dialogue = gameManager.Dialogue;
-    }   
-    public void OnPointerDown(PointerEventData eventData)
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
     {
-        if (eventData.pointerEnter == gameObject && gameManager.isCrafting)
+        if (gameManager.isCrafting)
         {
             if (selectedObject != null)
             {
@@ -37,7 +39,7 @@ public class CraftSelect : MonoBehaviour, IPointerDownHandler
                 for (int i = 0; i < gameManager.CraftSelected.Count; i++)
                 {
                     string name = gameManager.CraftSelected[i];
-                    if(i>0)
+                    if (i > 0)
                     {
                         text += "+ ";
                     }
@@ -46,7 +48,6 @@ public class CraftSelect : MonoBehaviour, IPointerDownHandler
                 text += " = ?";
 
                 Dialogue.transform.GetChild(0).GetComponentInChildren<TextMeshProUGUI>().text = text;
-
             }
         }
     }

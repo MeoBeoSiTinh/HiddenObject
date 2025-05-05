@@ -106,7 +106,7 @@ public class CameraHandle : MonoBehaviour
                 break;
             case 1:
                 minZoom = 3f;
-                maxZoom = 10f;
+                maxZoom = 15f;
                 break;
             case 2:
                 minZoom = 3f;
