@@ -37,17 +37,6 @@ MonoBehaviour:
       - TargetName: riu
         TargetPrefab: {fileID: 216038133734237617, guid: a948bad92da6e384790d7a0279d80d4d, type: 3}
         Description: 
-    - StageName: 3
-      target:
-      - TargetName: tochim
-        TargetPrefab: {fileID: 1413396958478306160, guid: 46136fed405fd9c41972168fa74c90e0, type: 3}
-        Description: 
-      - TargetName: trung chim
-        TargetPrefab: {fileID: 898811475071222807, guid: 5c0ceb08583015140a52b151898fcd7b, type: 3}
-        Description: 
-      - TargetName: soi
-        TargetPrefab: {fileID: 884125377571818782, guid: ea4e5bb0156b535499ecbe4656d39fe8, type: 3}
-        Description: 
     LevelPrefab: {fileID: 4653674812091518928, guid: c2f77273e8b2ca2408b365c07248907e, type: 3}
     special:
     - TargetName: fishing rod
