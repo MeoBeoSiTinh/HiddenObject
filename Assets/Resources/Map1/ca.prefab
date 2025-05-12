@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2029648993456402132}
   m_Layer: 0
   m_Name: ca
-  m_TagString: Normal
+  m_TagString: Special
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 1756161657386106596}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 9.657464, y: 0.24119234, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -74,7 +74,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 50
+  m_SortingOrder: 700
   m_Sprite: {fileID: 21300000, guid: 16d1a4d623479344f9ef2ebcb6b2b013, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -138,7 +138,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1756161657386106596}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cb757d534d611e84fac072f61ca4405b, type: 3}
   m_Name: 
@@ -146,4 +146,3 @@ MonoBehaviour:
   UiHotbar: {fileID: 0}
   wrongImage: {fileID: 4935127338822683817, guid: b38f55ef37c30844c938b0c2d18997d9, type: 3}
   spineAnimationPrefab: {fileID: 1389588780676235433, guid: 258fa316bdd9fb542b83d3727d65e8af, type: 3}
-  touchThresholdTime: 0.2

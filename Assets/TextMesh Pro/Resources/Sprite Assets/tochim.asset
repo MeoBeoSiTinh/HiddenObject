@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!21 &-7924668932143384074
+--- !u!21 &-8804511312434556580
 Material:
   serializedVersion: 8
   m_ObjectHideFlags: 1
@@ -54,7 +54,7 @@ MonoBehaviour:
   m_Name: tochim
   m_EditorClassIdentifier: 
   hashCode: 135726548
-  material: {fileID: -7924668932143384074}
+  material: {fileID: -8804511312434556580}
   materialHashCode: 0
   m_Version: 1.1.0
   m_FaceInfo:
@@ -92,8 +92,8 @@ MonoBehaviour:
     m_Metrics:
       m_Width: 43
       m_Height: 29
-      m_HorizontalBearingX: -21.5
-      m_HorizontalBearingY: 14.5
+      m_HorizontalBearingX: -0
+      m_HorizontalBearingY: 29
       m_HorizontalAdvance: 43
     m_GlyphRect:
       m_X: 0

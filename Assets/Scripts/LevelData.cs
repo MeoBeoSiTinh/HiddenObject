@@ -15,7 +15,6 @@ public class MyLevelData
     public List<MyStage> stage;
     public GameObject LevelPrefab;
     public List<MyTarget> special;
-    public List<craftRecipe> recipe;
 
 }
 

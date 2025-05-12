@@ -663,6 +663,10 @@ MonoBehaviour:
   fallbackSpriteAssets:
   - {fileID: 11400000, guid: dfbb496a45ebc7b4697fd5e738c2fdad, type: 2}
   - {fileID: 11400000, guid: bc00f13246af9ad4e976745c29023b3e, type: 2}
+  - {fileID: 11400000, guid: fe253a9c1c3f7884c809fc428d96b872, type: 2}
+  - {fileID: 11400000, guid: bc14681784c1b184ba00105fb36f153a, type: 2}
+  - {fileID: 11400000, guid: c1a30a17c3a836644a5a789b993d8113, type: 2}
+  - {fileID: 11400000, guid: a975e57ecd36b0643aa007e0e5ecc194, type: 2}
 --- !u!21 &1369835458
 Material:
   serializedVersion: 8

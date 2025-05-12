@@ -13,7 +13,7 @@ public class ObjectTouch : MonoBehaviour
     public GameObject wrongImage; // Prefab for the wrong image
     public GameObject spineAnimationPrefab; // Prefab for the Spine animation
     private float touchStartTime;
-    private float touchThresholdTime = 1f; // Threshold time for touch
+    private float touchThresholdTime = 3f; // Threshold time for touch
     private void Awake()
     {
         // Cache the main camera for performance
@@ -31,7 +31,7 @@ public class ObjectTouch : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         // Check if there is a touch input
         if (Input.touchCount == 1)
@@ -100,6 +100,7 @@ public class ObjectTouch : MonoBehaviour
                                 break;
                             case "Crafter":
                                 gameObject.GetComponent<Crafter>().ShowRecipe();
+                                gameManager.CurrentCrafter = gameObject;
                                 break;
                         }
                     }
@@ -138,6 +139,7 @@ public class ObjectTouch : MonoBehaviour
 
         if (hotbarObject != null)
         {
+            hotbarObject.transform.hasChanged = false;
             UiHotbar = hotbarObject.transform;
         }
         else

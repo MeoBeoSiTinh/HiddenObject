@@ -9,6 +9,7 @@ using static UnityEngine.GraphicsBuffer;
 using Spine.Unity;
 using System.Linq;
 using Unity.VisualScripting;
+using Spine.Unity.Examples;
 
 public class GameManager : MonoBehaviour
 {
@@ -21,10 +22,11 @@ public class GameManager : MonoBehaviour
     public List<MyTarget> specialList;
     public List<MyTarget> allTargetsList;
     public List<MyTarget> allSpecialList;
-    public List<string> CraftSelected;
+    public List<string> foundTarget;
     public GameObject mapHiding;
     public float targetSize; // Size of the camera zoom out
     public GameObject CameraRenderer;
+    public GameObject CurrentCrafter;
 
     [Header("UI Settings")]
     public GameObject LevelMenuHolder;
@@ -133,6 +135,7 @@ public class GameManager : MonoBehaviour
         }
         specialList.AddRange(levelInfor.special);
         allSpecialList.AddRange(levelInfor.special);
+        foundTarget.Clear();
         UpdateSpecialBar();
         UpdateHotBar();
         LoadStage(0);
@@ -161,21 +164,48 @@ public class GameManager : MonoBehaviour
             }
             catch
             {
-                
+                Debug.Log("Object not found: " + targetList[i].TargetName);
             }
         }
 
-        // Disable the child of mapHiding with index equal to stageIndex - 1
-        if (stageIndex > 0 && stageIndex <= mapHiding.transform.childCount)
-        {
-            mapHiding.transform.GetChild(stageIndex - 1).gameObject.SetActive(false);
-        }
+        // Disable the child of mapHiding with index equal to stageIndex - 1  
 
-        // Set the currentStage value in mainCamera CameraHandle script to stageIndex
+        // Set the currentStage value in mainCamera CameraHandle script to stageIndex  
         Camera.main.GetComponent<CameraHandle>().currentStage = stageIndex;
 
-        // Start the coroutine to move the camera
+        // Start the coroutine to move the camera  
         StartCoroutine(MoveCameraToStage(stageIndex));
+        if (stageIndex > 0 && stageIndex <= mapHiding.transform.childCount)
+        {
+            Transform up = mapHiding.transform.GetChild(stageIndex - 1).GetChild(0);
+            Transform down = mapHiding.transform.GetChild(stageIndex - 1).GetChild(1);
+            Transform left = mapHiding.transform.GetChild(stageIndex - 1).GetChild(2);
+            Transform right = mapHiding.transform.GetChild(stageIndex - 1).GetChild(3);
+
+            Vector3 originalUpPosition = up.position;
+            Vector3 originalDownPosition = down.position;
+            Vector3 originalLeftPosition = left.position;
+            Vector3 originalRightPosition = right.position;
+
+            // Animate each transform to move in their respective directions  
+            LeanTween.moveY(up.gameObject, up.position.y + 8f, 2f).setEase(LeanTweenType.easeInQuad).setOnComplete(() =>
+            {
+                up.position = originalUpPosition;
+            });
+            LeanTween.moveY(down.gameObject, down.position.y - 8f, 2f).setEase(LeanTweenType.easeInQuad).setOnComplete(() =>
+            {
+                down.position = originalDownPosition;
+            });
+            LeanTween.moveX(left.gameObject, left.position.x - 8f, 2f).setEase(LeanTweenType.easeInQuad).setOnComplete(() =>
+            {
+                left.position = originalLeftPosition;
+            });
+            LeanTween.moveX(right.gameObject, right.position.x + 8f, 2f).setEase(LeanTweenType.easeInQuad).setOnComplete(() =>
+            {
+                right.position = originalRightPosition;
+                mapHiding.transform.gameObject.SetActive(false);
+            });
+        }
     }
 
     private IEnumerator MoveCameraToStage(int stageIndex)
@@ -185,7 +215,7 @@ public class GameManager : MonoBehaviour
             case 0:
                 yield break;
             case 1:
-                targetSize = 25f; break;
+                targetSize = 22f; break;
         }
         float duration = 1f; // Duration of the camera movement in seconds
         float elapsedTime = 0f;
@@ -211,11 +241,10 @@ public class GameManager : MonoBehaviour
             Camera.main.transform.position = Vector3.Lerp(startPosition, targetPosition, t);
             Camera.main.orthographicSize = Mathf.Lerp(startSize, targetSize, t);
             yield return null; // Wait for the next frame
-        }
 
-        // Ensure the camera reaches the exact target position and zoom level
-        Camera.main.transform.position = targetPosition;
-        Camera.main.orthographicSize = targetSize;
+        }
+        yield return null; // Wait for the current frame to finish
+
 
         // Re-enable CameraHandle script
         cameraHandle.enabled = true;
@@ -245,11 +274,13 @@ public class GameManager : MonoBehaviour
             Transform slot = toolbarSlotsParent.GetChild(targetIndex);
             Image bg = slot.GetComponentInChildren<Image>();
             bg.color = Color.green;
+
+            foundTarget.Add(target.name);
             //assign asset to the target
-            Transform slot2 = toolbarSlotsParent.GetChild(targetIndex).GetChild(0);
-            Image icon = slot2.GetComponent<Image>();
-            CraftSelect craftSelect = slot2.GetComponent<CraftSelect>();
-            craftSelect.selectedObject = target;
+            //Transform slot2 = toolbarSlotsParent.GetChild(targetIndex).GetChild(0);
+            //Image icon = slot2.GetComponent<Image>();
+            //CraftSelect craftSelect = slot2.GetComponent<CraftSelect>();
+            //craftSelect.selectedObject = target;
 
 
         }
@@ -337,10 +368,6 @@ public class GameManager : MonoBehaviour
             // Add CanvasGroup to iconObject  
             CanvasGroup canvasGroup = iconObject.AddComponent<CanvasGroup>();
 
-            //Add DragAndDrop script to iconObject
-            DragAndDrop dragAndDrop = iconObject.AddComponent<DragAndDrop>();
-            dragAndDrop.backgroundCanvas = newSlotObject.transform; // Assign background to DragAndDrop  
-
             Description description = iconObject.AddComponent<Description>();
             description.DescBox = DescBox;
             description.description = allSpecialList[i].Description;
@@ -368,6 +395,7 @@ public class GameManager : MonoBehaviour
             GameObject iconObject = new GameObject("Icon");
             iconObject.transform.SetParent(newSlotObject.transform);
             RectTransform iconRectTransform = iconObject.AddComponent<RectTransform>();
+            iconRectTransform.anchoredPosition = new Vector2(0, 0); // Set position of the icon
             iconRectTransform.sizeDelta = new Vector2(1, 1); // Set size of the icon  
             iconRectTransform.localScale = new Vector3(85,85,85); // Set scale of the icon
             iconRectTransform.anchoredPosition3D = new Vector3(iconRectTransform.anchoredPosition3D.x, iconRectTransform.anchoredPosition3D.y, 0); // Set z position to 0
@@ -550,45 +578,159 @@ public class GameManager : MonoBehaviour
         gadgetManager.Compass(targets);
     }
 
-    public void OpenCrafter()
+    public void OpenDialogue()
     {
         Dialogue.SetActive(true);
     }
     
     public void OnCraftClicked()
     {
-        MyLevelData levelInfor = levelData.data[currentLevelIndex];
+        Crafter crafter = CurrentCrafter.GetComponent<Crafter>();
         Boolean craftable = false;
-        foreach (craftRecipe recipe in levelInfor.recipe)
+        craftRecipe recipe = crafter.recipes[crafter.currectRecipeIndex];
+        craftable = !recipe.ingredients.Except(foundTarget).Any();
+        if (craftable)
         {
-            craftable = CraftSelected.All(recipe.ingredients.Contains) && CraftSelected.Count == recipe.ingredients.Count;
-            if (craftable)
+            Camera mainCamera = Camera.main;
+            // Instantiate the result object at the center position
+            Vector2 position = CurrentCrafter.transform.position;
+            GameObject resultObject = Instantiate(recipe.Result, position, Quaternion.identity);
+            resultObject.name = recipe.Result.name;
+            Vector2 UiPos = mainCamera.WorldToScreenPoint(position);
+
+            AnimateWithDecreasingBounces(resultObject);
+            // Remove crafted ingredients
+            foreach (string name in recipe.ingredients)
             {
-                Camera mainCamera = Camera.main;
-                // Instantiate the result object at the center position
-                Vector2 position = GameObject.FindGameObjectWithTag("Crafter").transform.position;
-                GameObject resultObject = Instantiate(recipe.Result, position, Quaternion.identity);
-                resultObject.name = recipe.Result.name;
-                Vector2 UiPos = mainCamera.WorldToScreenPoint(position);
-
-                if (resultObject.tag == "Special")
-                {
-                    resultObject.GetComponent<ObjectTouch>().SpecialTargetFound(UiPos);
-                }
-                else if (resultObject.tag == "Normal")
-                {
-                    resultObject.GetComponent<ObjectTouch>().CreateTargetImage(UiPos);
-                }
-                
-
-                Dialogue.SetActive(false);
+                allTargetsList.RemoveAll(x => x.TargetName == name);
+            }
+            foreach (Transform child in toolbarSlotsParent)
+            {
+                Destroy(child.gameObject);
+            }
+            UpdateHotBar();
+            crafter.recipes.Remove(recipe);
+            crafter.currectRecipeIndex = 0;
+            if (crafter.recipes.Count == 1)
+            {
+                disableButton(2);
             }
             else
             {
-                Debug.Log("Not Craftable");
+                enableButton(2);
             }
+            disableButton(0);
+            StartCoroutine(HandleResultObject(resultObject, UiPos));
         }
-        
+        else
+        {
+            Debug.Log("Not Craftable");
+        }
+    }
+    void AnimateWithDecreasingBounces(GameObject obj)
+    {
+        float duration = 1.5f;
+        float distance = 1f;
+        float originalY = obj.transform.position.y;
+
+        // Horizontal movement
+        LeanTween.moveX(obj, obj.transform.position.x + distance, duration)
+            .setEase(LeanTweenType.linear);
+
+        // First bounce (highest)
+        LeanTween.moveY(obj, originalY + 0.8f, duration * 0.3f)
+            .setEase(LeanTweenType.easeOutQuad)
+            .setOnComplete(() => {
+                LeanTween.moveY(obj, originalY, duration * 0.2f)
+                    .setEase(LeanTweenType.easeInQuad)
+                    .setOnComplete(() => {
+                        // Second bounce (medium)
+                        LeanTween.moveY(obj, originalY + 0.5f, duration * 0.2f)
+                            .setEase(LeanTweenType.easeOutQuad)
+                            .setOnComplete(() => {
+                                LeanTween.moveY(obj, originalY, duration * 0.15f)
+                                    .setEase(LeanTweenType.easeInQuad)
+                                    .setOnComplete(() => {
+                                        // Third bounce (smallest)
+                                        LeanTween.moveY(obj, originalY + 0.2f, duration * 0.15f)
+                                            .setEase(LeanTweenType.easeOutQuad)
+                                            .setOnComplete(() => {
+                                                LeanTween.moveY(obj, originalY, duration * 0.1f)
+                                                    .setEase(LeanTweenType.easeInQuad);
+                                            });
+                                    });
+                            });
+                    });
+            });
     }
 
+    private IEnumerator HandleResultObject(GameObject resultObject, Vector2 UiPos)
+    {
+        yield return null; // Wait for the current frame to finish
+
+        //if (resultObject.tag == "Special")
+        //{
+        //    resultObject.GetComponent<ObjectTouch>().SpecialTargetFound(UiPos);
+        //}
+        //else if (resultObject.tag == "Normal")
+        //{
+        //    resultObject.GetComponent<ObjectTouch>().CreateTargetImage(UiPos);
+        //}
+        
+        Dialogue.SetActive(false);
+        yield return null; // Wait for the current frame to finish
+
+
+    }
+
+    public void onNextClick()
+    {
+
+        Crafter crafter = GameObject.FindGameObjectWithTag("Crafter").GetComponent<Crafter>();
+        if(crafter.currectRecipeIndex < crafter.recipes.Count - 1)
+        {
+            crafter.currectRecipeIndex++;
+            enableButton(0);
+            if (crafter.currectRecipeIndex == crafter.recipes.Count - 1)
+            {
+                disableButton(2);
+            }
+            crafter.setText();
+        }
+        else
+        {
+            crafter.currectRecipeIndex = 0;
+        }
+
+    }
+
+    public void onPreviousClick()
+    {
+        Crafter crafter = GameObject.FindGameObjectWithTag("Crafter").GetComponent<Crafter>();
+        if (crafter.currectRecipeIndex > 0)
+        {
+            crafter.currectRecipeIndex--;
+            enableButton(2);
+            if (crafter.currectRecipeIndex == 0)
+            {
+                disableButton(0);
+            }
+            crafter.setText();
+        }
+        else
+        {
+            crafter.currectRecipeIndex = 0;
+        }
+    }
+
+    public void disableButton(int index)
+    {
+        Dialogue.transform.GetChild(0).GetChild(index).GetComponent<Button>().interactable = false;
+        Dialogue.transform.GetChild(0).GetChild(index).GetComponent<Image>().color = new Color(0, 0, 0, 0);
+    }
+    public void enableButton(int index)
+    {
+        Dialogue.transform.GetChild(0).GetChild(index).GetComponent<Button>().interactable = true;
+        Dialogue.transform.GetChild(0).GetChild(index).GetComponent<Image>().color = new Color(1, 1, 1, 1);
+    }
 }

@@ -74,7 +74,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 50
+  m_SortingOrder: 700
   m_Sprite: {fileID: 21300000, guid: 5b360b304a972fd4d87e8355895a935f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -93,7 +93,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1030370704512424776}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cb757d534d611e84fac072f61ca4405b, type: 3}
   m_Name: 
@@ -101,7 +101,6 @@ MonoBehaviour:
   UiHotbar: {fileID: 0}
   wrongImage: {fileID: 4935127338822683817, guid: b38f55ef37c30844c938b0c2d18997d9, type: 3}
   spineAnimationPrefab: {fileID: 1389588780676235433, guid: 258fa316bdd9fb542b83d3727d65e8af, type: 3}
-  touchThresholdTime: 0.2
 --- !u!61 &2209742539067361347
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -134,10 +133,10 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.00000011920929, y: -0.038084388}
+  m_Offset: {x: 0.48439503, y: 0.22920156}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0, y: 0}
     oldSize: {x: 0.81, y: 0.47}
     newSize: {x: 0.81, y: 0.47}
     adaptiveTilingThreshold: 0.5
@@ -145,5 +144,5 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.3812649, y: 1.155518}
+  m_Size: {x: 1.6956286, y: 1.4584031}
   m_EdgeRadius: 0

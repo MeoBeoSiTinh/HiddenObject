@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3251939694094772558}
   m_Layer: 0
   m_Name: fishing rod
-  m_TagString: Special
+  m_TagString: Normal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -74,7 +74,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 48
+  m_SortingOrder: 700
   m_Sprite: {fileID: 21300000, guid: e7b4be1e2eab204448d2288764b7deef, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -146,4 +146,3 @@ MonoBehaviour:
   UiHotbar: {fileID: 0}
   wrongImage: {fileID: 4935127338822683817, guid: b38f55ef37c30844c938b0c2d18997d9, type: 3}
   spineAnimationPrefab: {fileID: 1389588780676235433, guid: 258fa316bdd9fb542b83d3727d65e8af, type: 3}
-  touchThresholdTime: 0.2

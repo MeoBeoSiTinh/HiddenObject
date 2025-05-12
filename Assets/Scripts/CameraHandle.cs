@@ -102,7 +102,7 @@ public class CameraHandle : MonoBehaviour
         {
             case 0:
                 minZoom = 3f;
-                maxZoom = 8f;
+                maxZoom = 15f;
                 break;
             case 1:
                 minZoom = 3f;
@@ -156,18 +156,12 @@ public class CameraHandle : MonoBehaviour
         switch (currentStage)
         {
             case 0:
-                minX = backgroundBounds.center.x - stageWidth / 3;
-                maxX = backgroundBounds.center.x + stageWidth / 3;
-                minY = backgroundBounds.center.y - stageHeight / 3;
-                maxY = backgroundBounds.center.y + stageHeight / 3;
+                minX = backgroundBounds.center.x - stageWidth / 2 + cam.orthographicSize * 0.5f;
+                maxX = backgroundBounds.center.x + stageWidth / 2 - cam.orthographicSize * 0.5f;
+                minY = backgroundBounds.center.y - stageHeight / 2 + cam.orthographicSize * 0.5f;
+                maxY = backgroundBounds.center.y + stageHeight / 2 - cam.orthographicSize * 0.5f;
                 break;
             case 1:
-                minX = backgroundBounds.center.x - stageWidth / 2;
-                maxX = backgroundBounds.center.x + stageWidth / 2;
-                minY = backgroundBounds.center.y - stageHeight / 2;
-                maxY = backgroundBounds.center.y + stageHeight / 2;
-                break;
-            case 2:
                 minX = backgroundBounds.min.x + horzExtent;
                 maxX = backgroundBounds.max.x - horzExtent;
                 minY = backgroundBounds.min.y + vertExtent - 1 / 4 * cam.orthographicSize;
@@ -215,18 +209,12 @@ public class CameraHandle : MonoBehaviour
         switch (currentStage)
         {
             case 0:
-                minX = backgroundBounds.center.x - stageWidth / 3;
-                maxX = backgroundBounds.center.x + stageWidth / 3;
-                minY = backgroundBounds.center.y - stageHeight / 3;
-                maxY = backgroundBounds.center.y + stageHeight / 3;
+                minX = backgroundBounds.center.x - stageWidth / 2;
+                maxX = backgroundBounds.center.x + stageWidth / 2;
+                minY = backgroundBounds.center.y - stageHeight / 2;
+                maxY = backgroundBounds.center.y + stageHeight / 2;
                 break;
             case 1:
-                minX = backgroundBounds.center.x - stageWidth / 6;
-                maxX = backgroundBounds.center.x + stageWidth / 6;
-                minY = backgroundBounds.center.y - stageHeight / 6;
-                maxY = backgroundBounds.center.y + stageHeight / 6;
-                break;
-            case 2:
                 minX = backgroundBounds.min.x + horzExtent;
                 maxX = backgroundBounds.max.x - horzExtent;
                 minY = backgroundBounds.min.y + vertExtent - 1 / 4 * cam.orthographicSize;

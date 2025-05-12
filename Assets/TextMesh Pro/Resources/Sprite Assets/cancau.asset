@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!21 &-1571991627974203168
+--- !u!21 &-2431214474968427510
 Material:
   serializedVersion: 8
   m_ObjectHideFlags: 1
@@ -54,7 +54,7 @@ MonoBehaviour:
   m_Name: cancau
   m_EditorClassIdentifier: 
   hashCode: -462682725
-  material: {fileID: -1571991627974203168}
+  material: {fileID: -2431214474968427510}
   materialHashCode: 0
   m_Version: 1.1.0
   m_FaceInfo:
@@ -85,15 +85,15 @@ MonoBehaviour:
     m_Unicode: 65534
     m_GlyphIndex: 0
     m_Scale: 1
-    m_Name: cancau
-    m_HashCode: -462682725
+    m_Name: fishing rod
+    m_HashCode: -1369192851
   m_SpriteGlyphTable:
   - m_Index: 0
     m_Metrics:
       m_Width: 384
       m_Height: 384
-      m_HorizontalBearingX: -192
-      m_HorizontalBearingY: 192
+      m_HorizontalBearingX: -0
+      m_HorizontalBearingY: 384
       m_HorizontalAdvance: 384
     m_GlyphRect:
       m_X: 0
