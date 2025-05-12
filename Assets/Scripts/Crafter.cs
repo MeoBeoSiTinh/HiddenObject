@@ -84,5 +84,18 @@ public class Crafter : MonoBehaviour
         CrafterMenu.transform.GetChild(0).GetComponentInChildren<TMPro.TextMeshProUGUI>().text = text;
     }
 
+    public void SetResultText()
+    {
+        if (recipes.Count == 0)
+        {
+            return;
+        }
+
+        craftRecipe recipe = recipes[currectRecipeIndex];
+        string resultText = $"<sprite name=\"{recipe.RecipeName}\">";
+
+        CrafterMenu.transform.GetChild(0).GetComponentInChildren<TMPro.TextMeshProUGUI>().text = resultText;
+    }
+
 
 }

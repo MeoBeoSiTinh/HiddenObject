@@ -591,36 +591,8 @@ public class GameManager : MonoBehaviour
         craftable = !recipe.ingredients.Except(foundTarget).Any();
         if (craftable)
         {
-            Camera mainCamera = Camera.main;
-            // Instantiate the result object at the center position
-            Vector2 position = CurrentCrafter.transform.position;
-            GameObject resultObject = Instantiate(recipe.Result, position, Quaternion.identity);
-            resultObject.name = recipe.Result.name;
-            Vector2 UiPos = mainCamera.WorldToScreenPoint(position);
-
-            AnimateWithDecreasingBounces(resultObject);
-            // Remove crafted ingredients
-            foreach (string name in recipe.ingredients)
-            {
-                allTargetsList.RemoveAll(x => x.TargetName == name);
-            }
-            foreach (Transform child in toolbarSlotsParent)
-            {
-                Destroy(child.gameObject);
-            }
-            UpdateHotBar();
-            crafter.recipes.Remove(recipe);
-            crafter.currectRecipeIndex = 0;
-            if (crafter.recipes.Count == 1)
-            {
-                disableButton(2);
-            }
-            else
-            {
-                enableButton(2);
-            }
-            disableButton(0);
-            StartCoroutine(HandleResultObject(resultObject, UiPos));
+            
+            StartCoroutine(HandleResultObject(recipe, crafter));
         }
         else
         {
@@ -645,6 +617,7 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
 
     private IEnumerator FlashRed(GameObject icon)
     {
@@ -677,6 +650,58 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+    private IEnumerator HandleResultObject(craftRecipe recipe, Crafter crafter)
+    {
+
+        Camera mainCamera = Camera.main;
+        // Instantiate the result object at the center position
+        Vector2 position = CurrentCrafter.transform.position;
+
+        //Rotate the dialogue box
+        LeanTween.rotateY(Dialogue.transform.GetChild(0).GetChild(1).gameObject, 90f, 0.25f).setEase(LeanTweenType.easeInOutQuad).setOnComplete(() =>
+        {
+            crafter.SetResultText();
+            LeanTween.rotateY(Dialogue.transform.GetChild(0).GetChild(1).gameObject, 180f, 0.25f).setEase(LeanTweenType.easeInOutQuad);
+        });
+        yield return new WaitForSeconds(1.5f);
+
+        GameObject resultObject = Instantiate(recipe.Result, position, Quaternion.identity);
+        resultObject.name = recipe.Result.name;
+        Vector2 UiPos = mainCamera.WorldToScreenPoint(position);
+
+        List<RectTransform> IconToRemove = new List<RectTransform>();
+        foreach (string name in recipe.ingredients)
+        {
+            GameObject icon = GameObject.Find("Icon" + name);
+            allTargetsList.Remove(allTargetsList.Find(x => x.TargetName == name));
+            IconToRemove.Add(icon.GetComponent<RectTransform>());
+        }
+
+        //Delete crafted recipe
+        crafter.recipes.Remove(recipe);
+        crafter.currectRecipeIndex = 0;
+        if (crafter.recipes.Count == 1)
+        {
+            disableButton(2);
+        }
+        else
+        {
+            enableButton(2);
+        }
+        disableButton(0);
+
+        //UI HotBar transition
+        LayoutGroupMultiRemover remover = GetComponent<LayoutGroupMultiRemover>();
+        remover.RemoveMultipleAndSlide(IconToRemove);
+
+
+        //Result bounce
+        AnimateWithDecreasingBounces(resultObject);
+        Dialogue.transform.GetChild(0).GetChild(1).rotation = Quaternion.Euler(0, 0, 0);
+        Dialogue.SetActive(false);
+        yield return null; // Wait for the current frame to finish
+    }
+
     void AnimateWithDecreasingBounces(GameObject obj)
     {
         float duration = 1.5f;
@@ -688,24 +713,24 @@ public class GameManager : MonoBehaviour
             .setEase(LeanTweenType.linear);
 
         // First bounce (highest)
-        LeanTween.moveY(obj, originalY + 0.8f, duration * 0.3f)
+        LeanTween.moveY(obj, originalY + 0.8f, duration * 0.2f)
             .setEase(LeanTweenType.easeOutQuad)
             .setOnComplete(() => {
                 LeanTween.moveY(obj, originalY, duration * 0.2f)
                     .setEase(LeanTweenType.easeInQuad)
                     .setOnComplete(() => {
                         // Second bounce (medium)
-                        LeanTween.moveY(obj, originalY + 0.5f, duration * 0.2f)
+                        LeanTween.moveY(obj, originalY + 0.5f, duration * 0.1f)
                             .setEase(LeanTweenType.easeOutQuad)
                             .setOnComplete(() => {
-                                LeanTween.moveY(obj, originalY, duration * 0.15f)
+                                LeanTween.moveY(obj, originalY, duration * 0.1f)
                                     .setEase(LeanTweenType.easeInQuad)
                                     .setOnComplete(() => {
                                         // Third bounce (smallest)
-                                        LeanTween.moveY(obj, originalY + 0.2f, duration * 0.15f)
+                                        LeanTween.moveY(obj, originalY + 0.2f, duration * 0.05f)
                                             .setEase(LeanTweenType.easeOutQuad)
                                             .setOnComplete(() => {
-                                                LeanTween.moveY(obj, originalY, duration * 0.1f)
+                                                LeanTween.moveY(obj, originalY, duration * 0.05f)
                                                     .setEase(LeanTweenType.easeInQuad);
                                             });
                                     });
@@ -714,24 +739,7 @@ public class GameManager : MonoBehaviour
             });
     }
 
-    private IEnumerator HandleResultObject(GameObject resultObject, Vector2 UiPos)
-    {
-        
-
-        //if (resultObject.tag == "Special")
-        //{
-        //    resultObject.GetComponent<ObjectTouch>().SpecialTargetFound(UiPos);
-        //}
-        //else if (resultObject.tag == "Normal")
-        //{
-        //    resultObject.GetComponent<ObjectTouch>().CreateTargetImage(UiPos);
-        //}
-
-        Dialogue.SetActive(false);
-        yield return null; // Wait for the current frame to finish
-
-
-    }
+    
 
     public void onNextClick()
     {
