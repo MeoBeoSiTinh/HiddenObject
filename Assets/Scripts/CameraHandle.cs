@@ -231,4 +231,28 @@ public class CameraHandle : MonoBehaviour
         Vector3 pos = cam.transform.position;
         return pos.x <= minX || pos.x >= maxX || pos.y <= minY || pos.y >= maxY;
     }
+
+    public void ShakeCamera(float duration, float magnitude)
+    {
+        StartCoroutine(PerformCameraShake(duration, magnitude));
+    }
+
+    private IEnumerator PerformCameraShake(float duration, float magnitude)
+    {
+        Vector3 originalPosition = camera_GameObject.transform.localPosition;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            float offsetX = Random.Range(-1f, 1f) * magnitude;
+            float offsetY = Random.Range(-1f, 1f) * magnitude;
+
+            camera_GameObject.transform.localPosition = new Vector3(originalPosition.x + offsetX, originalPosition.y + offsetY, originalPosition.z);
+
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        camera_GameObject.transform.localPosition = originalPosition;
+    }
 }

@@ -626,6 +626,8 @@ public class GameManager : MonoBehaviour
         {
             List<string> missingIngredients = recipe.ingredients.Except(foundTarget).ToList();
             ScrollRectFocus scroll = GameObject.Find("Scroll").GetComponent<ScrollRectFocus>();
+            CameraHandle cameraHandle = Camera.main.GetComponent<CameraHandle>();
+            cameraHandle.ShakeCamera(0.2f, 0.1f);
             foreach (string name in missingIngredients)
             {
                 GameObject icon = GameObject.Find("Icon" + name);
@@ -714,7 +716,7 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator HandleResultObject(GameObject resultObject, Vector2 UiPos)
     {
-        yield return null; // Wait for the current frame to finish
+        
 
         //if (resultObject.tag == "Special")
         //{
@@ -724,7 +726,7 @@ public class GameManager : MonoBehaviour
         //{
         //    resultObject.GetComponent<ObjectTouch>().CreateTargetImage(UiPos);
         //}
-        
+
         Dialogue.SetActive(false);
         yield return null; // Wait for the current frame to finish
 
