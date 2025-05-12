@@ -624,7 +624,55 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("Not Craftable");
+            List<string> missingIngredients = recipe.ingredients.Except(foundTarget).ToList();
+            ScrollRectFocus scroll = GameObject.Find("Scroll").GetComponent<ScrollRectFocus>();
+            foreach (string name in missingIngredients)
+            {
+                GameObject icon = GameObject.Find("Icon" + name);
+                if (icon != null)
+                {
+                    StartCoroutine(FlashRed(icon));
+
+                    bool isVisible = scroll.IsElementVisible(icon.GetComponent<RectTransform>());
+                    if (!isVisible)
+                    {
+                        scroll.ScrollToView(icon.GetComponent<RectTransform>());
+                        Debug.Log("visible");
+                    }
+                }
+            }
+        }
+    }
+
+    private IEnumerator FlashRed(GameObject icon)
+    {
+        Image iconImage = icon.GetComponent<Image>();
+        if (iconImage != null)
+        {
+            Color originalColor = new Color(1, 1, 1);
+            Color flashColor = new Color(0.984f, 0.431f, 0.431f); // Equivalent to "FB6E6E" in RGB (normalized to 0-1 range)  
+
+            float duration = 0.3f; // Duration for each transition
+            for (int i = 0; i < 1; i++) // Flash times  
+            {
+                // Gradually change to flashColor
+                float elapsedTime = 0f;
+                while (elapsedTime < duration)
+                {
+                    elapsedTime += Time.deltaTime;
+                    iconImage.color = Color.Lerp(originalColor, flashColor, elapsedTime / duration);
+                    yield return null;
+                }
+
+                // Gradually change back to originalColor
+                elapsedTime = 0f;
+                while (elapsedTime < duration)
+                {
+                    elapsedTime += Time.deltaTime;
+                    iconImage.color = Color.Lerp(flashColor, originalColor, elapsedTime / duration);
+                    yield return null;
+                }
+            }
         }
     }
     void AnimateWithDecreasingBounces(GameObject obj)
