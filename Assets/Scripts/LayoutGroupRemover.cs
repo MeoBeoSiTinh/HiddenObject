@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using Spine.Unity;
 
 public class LayoutGroupMultiRemover : MonoBehaviour
 {
@@ -10,6 +11,11 @@ public class LayoutGroupMultiRemover : MonoBehaviour
     [SerializeField] private float slideDuration = 0.3f;
     [SerializeField] private LeanTweenType easeType = LeanTweenType.easeOutQuad;
     [SerializeField] private bool destroyImmediately = false;
+
+    [Header("Animation Settings")]
+    [SerializeField] private SkeletonGraphic smokeAnimationPrefab;
+    [SerializeField] private float smokeAnimationDuration = 0.5f;
+    [SerializeField] private Vector2 smokeOffset = new Vector2(0, 0);
 
     public void RemoveMultipleAndSlide(List<RectTransform> elementsToRemove)
     {
@@ -38,6 +44,8 @@ public class LayoutGroupMultiRemover : MonoBehaviour
         List<RectTransform> AllChildren = new List<RectTransform>();
         List<Vector2> originalPositions = new List<Vector2>();
 
+        // 3. Play smoke animations on elements being removed
+        List<Coroutine> smokeAnimations = new List<Coroutine>();
         foreach (RectTransform child in layoutGroup.transform)
         {
             AllChildren.Add(child);
@@ -46,17 +54,30 @@ public class LayoutGroupMultiRemover : MonoBehaviour
                 remainingChildren.Add(child);
                 originalPositions.Add(child.anchoredPosition);
             }
-            else if (!destroyImmediately)
+            else
             {
-                child.gameObject.SetActive(false);
+                if (!destroyImmediately)
+                {
+                    // Play smoke animation before deactivating
+                    if (smokeAnimationPrefab != null)
+                    {
+                        var smoke = Instantiate(smokeAnimationPrefab, child.parent);
+                        smoke.rectTransform.anchoredPosition = child.anchoredPosition + smokeOffset;
+                        smokeAnimations.Add(StartCoroutine(PlayAndDestroySmoke(smoke, smokeAnimationDuration)));
+                    }
+                    child.gameObject.SetActive(false);
+                }
             }
         }
 
-        // 3. Get TARGET positions (critical steps)
-        // First force immediate rebuild
-        LayoutRebuilder.ForceRebuildLayoutImmediate(layoutGroup.GetComponent<RectTransform>());
+        // Wait for smoke animations to complete
+        foreach (var anim in smokeAnimations)
+        {
+            yield return anim;
+        }
 
-        // Wait for THREE frames to ensure layout is fully updated
+        // 4. Get TARGET positions
+        LayoutRebuilder.ForceRebuildLayoutImmediate(layoutGroup.GetComponent<RectTransform>());
         yield return null;
         yield return null;
         yield return null;
@@ -67,59 +88,46 @@ public class LayoutGroupMultiRemover : MonoBehaviour
         {
             if (remainingChildren[i] != null)
             {
-
                 targetPositions[i] = AllChildren[i].anchoredPosition;
 
-                // DEBUG: Verify positions are different
-                if (originalPositions[i] == targetPositions[i])
-                {
-                    Debug.LogWarning($"Element {remainingChildren[i].name} has identical positions! " +
-                                   $"Original: {originalPositions[i]}, Target: {targetPositions[i]}");
-                }
-
-                // Reset to original position for animation
                 remainingChildren[i].anchoredPosition = originalPositions[i];
             }
         }
 
-        // 4. Animate if positions are actually different
-        bool positionsDiffer = false;
+        // 5. Animate if positions are different
         for (int i = 0; i < remainingChildren.Count; i++)
         {
             if (remainingChildren[i] != null && originalPositions[i] != targetPositions[i])
             {
-                positionsDiffer = true;
                 LeanTween.move(remainingChildren[i], targetPositions[i], slideDuration)
                     .setEase(easeType);
             }
         }
 
-        // 5. If no movement needed, skip animation
-        if (!positionsDiffer)
-        {
-            Debug.Log("No position change detected - removing immediately");
-            foreach (var element in elementsToRemove)
-            {
-                if (element != null) Destroy(element.gameObject);
-            }
-            yield break;
-        }
-
-        // 6. Wait for animation
+        // 6. Final cleanup
         yield return new WaitForSeconds(slideDuration);
 
-        // 7. Final cleanup
         foreach (var element in elementsToRemove)
         {
             if (element != null) Destroy(element.gameObject);
         }
 
-        // 8. Restore layout systems
+        // 7. Restore layout systems
         if (wasFitterEnabled && sizeFitter != null)
         {
             sizeFitter.enabled = true;
             LayoutRebuilder.ForceRebuildLayoutImmediate(layoutGroup.GetComponent<RectTransform>());
         }
         layoutGroup.enabled = true;
+    }
+
+    private IEnumerator PlayAndDestroySmoke(SkeletonGraphic smoke, float duration)
+    {
+        smoke.gameObject.SetActive(true);
+        smoke.AnimationState.SetAnimation(0, "smoke", false);
+
+        yield return new WaitForSeconds(duration);
+
+        Destroy(smoke.gameObject);
     }
 }

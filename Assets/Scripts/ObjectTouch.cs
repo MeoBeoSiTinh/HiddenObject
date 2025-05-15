@@ -144,6 +144,7 @@ public class ObjectTouch : MonoBehaviour
         }
         else
         {
+            Debug.Log("Icon" + gameObject.name);
             Debug.LogError("Hotbar object not found in the scene.");
         }
 
@@ -192,6 +193,18 @@ public class ObjectTouch : MonoBehaviour
             gameManager.OnMinimizeClicked();
         }
         gameObject.GetComponent<SpriteRenderer>().enabled = false;
+        ScrollRectFocus scroll = GameObject.Find("Scroll").GetComponent<ScrollRectFocus>();
+        GameObject icon = GameObject.Find("Icon" + name);
+        bool isVisible = scroll.IsElementVisible(icon.GetComponent<RectTransform>());
+        if (!isVisible)
+        {
+            scroll.ScrollToView(icon.GetComponent<RectTransform>());
+            yield return new WaitForSeconds(0.5f); // Wait for the scroll to finish
+
+        }
+
+
+
 
         RectTransform flyingImageRect = flyingImage.GetComponent<RectTransform>();
         Vector2 startPosition = flyingImageRect.anchoredPosition;
@@ -213,8 +226,15 @@ public class ObjectTouch : MonoBehaviour
         );
 
         RectTransform uiLocaction = GameObject.Find("UILocation").GetComponent<RectTransform>();
-        endPosition.y = uiLocaction.anchoredPosition.y;
         endPosition.x += parentRect.anchoredPosition.x;
+        //if (!isVisible)
+        //{
+        //    endPosition = scroll.CalculateFinalIconPosition(icon.GetComponent<RectTransform>());
+        //    endPosition.x *= 2;
+        //}
+        endPosition.y = uiLocaction.anchoredPosition.y;
+
+
 
         // Define control points for an upward-then-downward parabola
         Vector2 midPoint = (startPosition + endPosition) * 0.5f;

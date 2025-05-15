@@ -43,6 +43,7 @@ public class GameManager : MonoBehaviour
     public GameObject DescBox;
     public Transform PlayerInfo;
     public GameObject Dialogue;
+    public GameObject ProgressBar;
 
 
     [Header("PlayerData")]
@@ -125,10 +126,13 @@ public class GameManager : MonoBehaviour
         currentLevelInstance = Instantiate(levelInfor.LevelPrefab);
         Camera.main.GetComponent<CameraHandle>().background_GameObject = GameObject.FindGameObjectWithTag("Background");
         currentLevelIndex = levelIndex;
+
         // Populate allTargetsList with all targets in every stage
         allTargetsList = new List<MyTarget>();
-        TextMeshProUGUI stageName = GameObject.Find("StageName").GetComponentInChildren<TextMeshProUGUI>();
-        stageName.text = levelInfor.LevelName;
+
+        //TextMeshProUGUI stageName = GameObject.Find("StageName").GetComponentInChildren<TextMeshProUGUI>();
+        //stageName.text = levelInfor.LevelName;
+
         foreach (var stage in levelInfor.stage)
         {
             allTargetsList.AddRange(stage.target);
@@ -139,13 +143,14 @@ public class GameManager : MonoBehaviour
         UpdateSpecialBar();
         UpdateHotBar();
         LoadStage(0);
+        ProgressBar.GetComponent<ProgressBar>().resetProgressBar();
         mapHiding.SetActive(true);
         foreach (Transform child in mapHiding.transform)
         {
             child.gameObject.SetActive(true);
         }
-        CameraRenderer.GetComponent<CameraFocus>().ResetMap(currentLevelIndex + 1);
-        CameraRenderer.SetActive(true);
+        //CameraRenderer.GetComponent<CameraFocus>().ResetMap(currentLevelIndex + 1);
+        //CameraRenderer.SetActive(true);
 
     }
 
@@ -271,7 +276,7 @@ public class GameManager : MonoBehaviour
         {
             targetList.RemoveAll(x => x.TargetName == target.name);
             //change Hotbar color
-            Transform slot = toolbarSlotsParent.GetChild(targetIndex);
+            Transform slot = toolbarSlotsParent.GetChild(targetIndex + allSpecialList.Count);
             Image bg = slot.GetComponentInChildren<Image>();
             bg.color = Color.green;
 
@@ -296,6 +301,7 @@ public class GameManager : MonoBehaviour
         specialFoundUi.SetActive(true);
         specialFoundUi.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = target.name;
         int specialIndex = allSpecialList.FindIndex(x => x.TargetName == target.name);
+
         if (specialIndex == -1)
         {
             return;
@@ -303,11 +309,21 @@ public class GameManager : MonoBehaviour
         else
         {
             specialList.RemoveAll(x => x.TargetName == target.name);
+            foundTarget.Add(target.name);
+            ProgressBar progress = ProgressBar.GetComponent<ProgressBar>();
+            int foundSpecial = (allSpecialList.Count - specialList.Count);
+            Debug.Log("foundSpecial: " + foundSpecial);
+            Debug.Log("all: " + allSpecialList.Count);
+            Debug.Log("remain: " + specialList.Count);
+            float targetValue = 33 * foundSpecial;
+            Debug.Log("targetValue: " + targetValue);
+            StartCoroutine(increaseProgress(progress, (int) targetValue));
+
             //change Hotbar color
-            Transform slot = SpecialSlotsParent.GetChild(specialIndex);
+            Transform slot = toolbarSlotsParent.GetChild(specialIndex);
             Image bg = slot.GetComponentInChildren<Image>();
             //assign asset to the target
-            Transform slot2 = SpecialSlotsParent.GetChild(specialIndex).GetChild(0);
+            Transform slot2 = toolbarSlotsParent.GetChild(specialIndex).GetChild(0);
 
             if (bg != null)
             {
@@ -321,6 +337,33 @@ public class GameManager : MonoBehaviour
         
         StartCoroutine(DestroyImageAfterDelay(image));
 
+    }
+    private IEnumerator increaseProgress(ProgressBar progress, int targetValue)
+    {
+        float duration = 1f; // Duration of the camera movement in seconds
+        float elapsedTime = 0f;
+        int startValue = progress.current;
+        // Smoothly move the camera to the target position and zoom out
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsedTime / duration);
+            progress.current = (int)Mathf.Lerp(startValue, targetValue, t);
+            yield return null; // Wait for the next frame
+        }
+        if (targetValue >= 1)
+        {
+            progress.transform.GetChild(1).GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/starFilled");
+        }
+        if (targetValue >= 50)
+        {
+            progress.transform.GetChild(2).GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/starFilled");
+        }
+        if (targetValue >= 99)
+        {
+            progress.transform.GetChild(3).GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/starFilled");
+        }
+        yield return null; // Wait for the current frame to finish
     }
 
     private IEnumerator DestroyImageAfterDelay(GameObject image)
@@ -340,13 +383,13 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < allSpecialList.Count; i++)
         {
             GameObject newSlotObject = new GameObject("Icon" + allSpecialList[i].TargetName);
-            newSlotObject.transform.SetParent(SpecialSlotsParent);
+            newSlotObject.transform.SetParent(toolbarSlotsParent);
             RectTransform rectTransform = newSlotObject.AddComponent<RectTransform>();
             rectTransform.sizeDelta = new Vector2(1, 1); // Set size of the slot
             rectTransform.localScale = new Vector3(1, 1, 1); // Set scale of the slot
             rectTransform.anchoredPosition3D = new Vector3(rectTransform.anchoredPosition3D.x, rectTransform.anchoredPosition3D.y, 0); // Set z position to 0
             Image newSlot = newSlotObject.AddComponent<Image>();
-            newSlot.sprite = Resources.Load<Sprite>("UI/SpecialObjectBG1");
+            newSlot.sprite = Resources.Load<Sprite>("UI/SpecialObjectBG2");
 
 
             GameObject iconObject = new GameObject("Icon");
@@ -366,11 +409,11 @@ public class GameManager : MonoBehaviour
             //unlockRectTransform.anchoredPosition3D = new Vector3(unlockRectTransform.anchoredPosition3D.x, unlockRectTransform.anchoredPosition3D.y, 0); // Set z position to 0
 
             // Add CanvasGroup to iconObject  
-            CanvasGroup canvasGroup = iconObject.AddComponent<CanvasGroup>();
+            //CanvasGroup canvasGroup = iconObject.AddComponent<CanvasGroup>();
 
-            Description description = iconObject.AddComponent<Description>();
-            description.DescBox = DescBox;
-            description.description = allSpecialList[i].Description;
+            //Description description = iconObject.AddComponent<Description>();
+            //description.DescBox = DescBox;
+            //description.description = allSpecialList[i].Description;
 
             image.sprite = allSpecialList[i].TargetPrefab.GetComponent<SpriteRenderer>().sprite;
             image.gameObject.SetActive(true);
@@ -533,7 +576,7 @@ public class GameManager : MonoBehaviour
     public void ClearIngameMenu()
     {
         specialFoundUi.SetActive(false);
-        if (specialList.Count == 0 && specialStageIndex + 1 >= levelData.data[currentLevelIndex].special.Count)
+        if (specialList.Count == 0)
         {
             allSpecialList.Clear();
             allTargetsList.Clear();
@@ -656,7 +699,7 @@ public class GameManager : MonoBehaviour
         Camera mainCamera = Camera.main;
         // Instantiate the result object at the center position
         Vector2 position = CurrentCrafter.transform.position;
-
+        Dialogue.transform.GetChild(1).gameObject.SetActive(false);
         //Rotate the dialogue box
         LeanTween.rotateY(Dialogue.transform.GetChild(0).GetChild(1).gameObject, 90f, 0.25f).setEase(LeanTweenType.easeInOutQuad).setOnComplete(() =>
         {
@@ -668,13 +711,16 @@ public class GameManager : MonoBehaviour
         GameObject resultObject = Instantiate(recipe.Result, position, Quaternion.identity);
         resultObject.name = recipe.Result.name;
         Vector2 UiPos = mainCamera.WorldToScreenPoint(position);
-
+        
         List<RectTransform> IconToRemove = new List<RectTransform>();
         foreach (string name in recipe.ingredients)
         {
-            GameObject icon = GameObject.Find("Icon" + name);
-            allTargetsList.Remove(allTargetsList.Find(x => x.TargetName == name));
-            IconToRemove.Add(icon.GetComponent<RectTransform>());
+            if (allSpecialList.Find(x => x.TargetName == name) == null)
+            {
+                GameObject icon = GameObject.Find("Icon" + name);
+                allTargetsList.Remove(allTargetsList.Find(x => x.TargetName == name));
+                IconToRemove.Add(icon.GetComponent<RectTransform>());
+            }
         }
 
         //Delete crafted recipe
@@ -699,6 +745,7 @@ public class GameManager : MonoBehaviour
         AnimateWithDecreasingBounces(resultObject);
         Dialogue.transform.GetChild(0).GetChild(1).rotation = Quaternion.Euler(0, 0, 0);
         Dialogue.SetActive(false);
+        Dialogue.transform.GetChild(1).gameObject.SetActive(true);
         yield return null; // Wait for the current frame to finish
     }
 

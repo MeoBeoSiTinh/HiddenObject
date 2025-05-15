@@ -17,31 +17,34 @@ MonoBehaviour:
     stage:
     - StageName: 1
       target:
-      - TargetName: dog
-        TargetPrefab: {fileID: 1001186962182482714, guid: bfd01a5ebe5e4b8428fa44bc0465e25d, type: 3}
-        Description: 
-      - TargetName: soc
-        TargetPrefab: {fileID: 7212739994703731388, guid: cd3c029273e6f244fa213489233f8eae, type: 3}
-        Description: 
       - TargetName: "C\xE0nh c\xE2y"
-        TargetPrefab: {fileID: 1030370704512424776, guid: a7e628ee49bb6ec4d8eca06b10b46b94, type: 3}
+        TargetPrefab: {fileID: 404611377008870635, guid: 1c1d0b96f641f7145821c39cf270d3cc, type: 3}
+        Description: 
+      - TargetName: "M\xF3c c\xE2u n\u1ED1i v\u1EDBi ch\u1EC9"
+        TargetPrefab: {fileID: 5975667689412147970, guid: 3991ae46b99c6cf4dabaac850823f125, type: 3}
         Description: 
     - StageName: 2
       target:
-      - TargetName: vot
-        TargetPrefab: {fileID: 6331452310289447040, guid: 166e41da5f72cb944aeea4755d0db897, type: 3}
+      - TargetName: "C\u1EE5c s\u1EAFt"
+        TargetPrefab: {fileID: 5295883171517697108, guid: 4a2c0ce8fbdfaff4fa33d06473938e0f, type: 3}
         Description: 
-      - TargetName: riu
-        TargetPrefab: {fileID: 216038133734237617, guid: a948bad92da6e384790d7a0279d80d4d, type: 3}
+      - TargetName: "\u0110\xE1 l\u1EEDa"
+        TargetPrefab: {fileID: 2628418135835634306, guid: dc18339b9ae4e214fa1522b86fb6b4bb, type: 3}
         Description: 
-      - TargetName: tochim
-        TargetPrefab: {fileID: 9076495241678710005, guid: 46136fed405fd9c41972168fa74c90e0, type: 3}
+      - TargetName: "C\xE1i x\xFAc \u0111\u1EA5t"
+        TargetPrefab: {fileID: 2451757506242017388, guid: 89dd5766beb6c9442a06879b9a09f372, type: 3}
         Description: 
-      - TargetName: fishing rod
-        TargetPrefab: {fileID: 9117161570159664264, guid: c7dd689c82e93d0449a0a72f67146dd9, type: 3}
+      - TargetName: "Chai n\u01B0\u1EDBc"
+        TargetPrefab: {fileID: 2834647842296746338, guid: d502d5143dfbf1345aea9545156958fb, type: 3}
         Description: 
-    LevelPrefab: {fileID: 4653674812091518928, guid: c2f77273e8b2ca2408b365c07248907e, type: 3}
+    LevelPrefab: {fileID: 7646842039866314721, guid: 5ccf09399a787914d909983e383f3d9d, type: 3}
     special:
-    - TargetName: ca
-      TargetPrefab: {fileID: 1756161657386106596, guid: bb6a7612e0789944890d802e0dc7af59, type: 3}
+    - TargetName: "C\u1EA7n c\xE2u"
+      TargetPrefab: {fileID: 3410708434728115166, guid: 98e9ecc94a08feb488f18709caf061aa, type: 3}
+      Description: ca
+    - TargetName: "D\u1EE5ng c\u1EE5 \u0111\xE1nh l\u1EEDa"
+      TargetPrefab: {fileID: 3410090064556870836, guid: 5df384b051ecc0b4fbf1798cef884612, type: 3}
+      Description: ca
+    - TargetName: "Giun \u0111\u1EA5t"
+      TargetPrefab: {fileID: 8963060633217734891, guid: fb36dfe2d908017458a7a49c7ecef42e, type: 3}
       Description: ca

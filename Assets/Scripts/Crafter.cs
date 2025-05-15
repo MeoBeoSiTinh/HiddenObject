@@ -21,6 +21,10 @@ public class Crafter : MonoBehaviour
         {
             gameManager.disableButton(0);
         }
+        if(recipes.Count <= 1)
+        {
+            gameManager.disableButton(1);
+        }
     }
     public void ShowRecipe()
     {

@@ -1,8 +1,0 @@
-click.png
-size:480,320
-filter:Linear,Linear
-pma:true
-g2
-bounds:2,2,315,315
-star
-bounds:319,137,159,180
