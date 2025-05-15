@@ -17,14 +17,7 @@ public class Crafter : MonoBehaviour
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         CrafterMenu = gameManager.Dialogue;
         cam = Camera.main;
-        if(currectRecipeIndex == 0)
-        {
-            gameManager.disableButton(0);
-        }
-        if(recipes.Count <= 1)
-        {
-            gameManager.disableButton(1);
-        }
+        
     }
     public void ShowRecipe()
     {
@@ -36,6 +29,16 @@ public class Crafter : MonoBehaviour
         targetPosition.z = cam.transform.position.z;
         targetPosition.x = targetPosition.x + 0.5f;
         StartCoroutine(MoveCamera(targetPosition));
+        gameManager.enableButton(0);
+        gameManager.enableButton(2);
+        if (currectRecipeIndex == 0)
+        {
+            gameManager.disableButton(0);
+        }
+        if (recipes.Count <= 1)
+        {
+            gameManager.disableButton(2);
+        }
     }
 
 

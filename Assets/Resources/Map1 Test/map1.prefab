@@ -3854,7 +3854,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   recipes:
-  - RecipeName: giun
+  - RecipeName: "Giun \u0111\u1EA5t"
     ingredients:
     - "C\xE1i x\xFAc \u0111\u1EA5t"
     - "Chai n\u01B0\u1EDBc"

@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static UnityEngine.GraphicsBuffer;
 
 public class ObjectTouch : MonoBehaviour
 {
@@ -13,7 +15,7 @@ public class ObjectTouch : MonoBehaviour
     public GameObject wrongImage; // Prefab for the wrong image
     public GameObject spineAnimationPrefab; // Prefab for the Spine animation
     private float touchStartTime;
-    private float touchThresholdTime = 3f; // Threshold time for touch
+    private float touchThresholdTime = 0.5f; // Threshold time for touch
     private void Awake()
     {
         // Cache the main camera for performance
@@ -343,17 +345,17 @@ public class ObjectTouch : MonoBehaviour
         {
             Debug.LogError("Hotbar object not found in the scene.");
         }
-        // Start the flying animation
-        StartCoroutine(SpecialEffect(targetImagePrefab, shiningEffect));
+
+        StartCoroutine(SpecialEffect(targetImagePrefab, shiningEffect, touchPosition));
 
     }
 
-    private IEnumerator SpecialEffect(GameObject specialImage, GameObject shiningEffect)
+    private IEnumerator SpecialEffect(GameObject specialImage, GameObject shiningEffect, Vector2 touchPosition)
     {
         // Get RectTransforms
         RectTransform specialImageRect = specialImage.GetComponent<RectTransform>();
         RectTransform shiningRect = shiningEffect.GetComponent<RectTransform>();
-
+        gameObject.GetComponent<SpriteRenderer>().enabled = false;
         // Store initial position
         Vector2 startPosition = specialImageRect.anchoredPosition;
         Vector2 endPosition = new Vector2(0, 100);
@@ -380,15 +382,146 @@ public class ObjectTouch : MonoBehaviour
         LeanTween.scale(shiningRect, new Vector3(1.5f, 1.5f, 1.5f), 1f)
             .setEase(LeanTweenType.easeInOutQuad).setOnComplete(() =>
             {
-                gameObject.SetActive(false);
+                gameManager.specialFoundUi.SetActive(true);
+                gameManager.specialFoundUi.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = name;
             });
 
+        yield return new WaitForSeconds(2.5f);
+        Debug.Log("Destroying special image");
+        Destroy(specialImage);
+        gameManager.specialFoundUi.SetActive(false);
+        targetImagePrefab = new GameObject("TargetImage");
+        Image targetImage = targetImagePrefab.AddComponent<Image>();
+        targetImagePrefab.transform.SetParent(GameObject.Find("Canvas").transform);
+
+        // Set the size and sprite of the target image
+        targetImage.rectTransform.sizeDelta = new Vector2(1, 1); // Adjust size as needed
+        targetImage.rectTransform.localScale = new Vector3(100f, 100f, 100f); // Adjust scale as needed
+        targetImage.sprite = gameObject.GetComponent<SpriteRenderer>().sprite;
+
+        // Convert touch position to local position in the Canvas
+        RectTransform canvasRect = GameObject.Find("Canvas").GetComponent<RectTransform>();
+        Vector2 localPoint;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            canvasRect,
+            touchPosition,
+            mainCamera,
+            out localPoint
+        );
+
+        // Set the initial position of the target image to the touch position
+        targetImage.rectTransform.anchoredPosition = localPoint;
+
+        // Find the UI hotbar by name and assign it to UiHotbar
+        GameObject hotbarObject = GameObject.Find("Icon" + gameObject.name);
+
+        if (hotbarObject != null)
+        {
+            hotbarObject.transform.hasChanged = false;
+            UiHotbar = hotbarObject.transform;
+        }
+        else
+        {
+            Debug.Log("Icon" + gameObject.name);
+            Debug.LogError("Hotbar object not found in the scene.");
+        }
+
+        StartCoroutine(specialFlyingEffect(targetImagePrefab));
+
         // Call the game manager function
-        gameManager.specialFound(gameObject, specialImage);
-        
+
 
         yield return null;
     }
+    
+
+    private IEnumerator specialFlyingEffect(GameObject flyingImage)
+    {
+        if (gameManager.isHotBarMinimized)
+        {
+            gameManager.OnMinimizeClicked();
+        }
+        ScrollRectFocus scroll = GameObject.Find("Scroll").GetComponent<ScrollRectFocus>();
+        GameObject icon = GameObject.Find("Icon" + name);
+        bool isVisible = scroll.IsElementVisible(icon.GetComponent<RectTransform>());
+        if (!isVisible)
+        {
+            scroll.ScrollToView(icon.GetComponent<RectTransform>());
+            yield return new WaitForSeconds(0.5f); // Wait for the scroll to finish
+
+        }
+
+
+
+
+        RectTransform flyingImageRect = flyingImage.GetComponent<RectTransform>();
+        Vector2 startPosition = flyingImageRect.anchoredPosition;
+
+        // Get the end position (UiHotbar's anchored position)
+        RectTransform hotbarRect = UiHotbar.GetComponent<RectTransform>();
+
+        // Step 1: Get the current world position of the hotbarRect
+        Vector3 hotbarWorldPosition = hotbarRect.TransformPoint(hotbarRect.rect.center);
+        // Step 4: Convert the world position back to the new anchored position
+        RectTransform parentRect = hotbarRect.parent as RectTransform;
+
+        Vector2 endPosition;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            parentRect,
+            RectTransformUtility.WorldToScreenPoint(null, hotbarWorldPosition),
+            null,
+            out endPosition
+        );
+
+        RectTransform uiLocaction = GameObject.Find("UILocation").GetComponent<RectTransform>();
+        endPosition.x += parentRect.anchoredPosition.x;
+        //if (!isVisible)
+        //{
+        //    endPosition = scroll.CalculateFinalIconPosition(icon.GetComponent<RectTransform>());
+        //    endPosition.x *= 2;
+        //}
+        endPosition.y = uiLocaction.anchoredPosition.y;
+
+
+
+        // Define control points for an upward-then-downward parabola
+        Vector2 midPoint = (startPosition + endPosition) * 0.5f;
+        float parabolaHeight = 400f; // Adjust this to control the "height" of the parabola
+
+        Vector2 controlPoint = new Vector2(
+            midPoint.x,
+            Mathf.Max(startPosition.y, endPosition.y) + parabolaHeight
+        );
+
+        // Move the image along the parabolic path with slow start and end
+        LeanTween.value(flyingImage, 0f, 1f, 1f) // Increased duration to 1.5s for smoother effect
+            .setEase(LeanTweenType.easeInOutQuad) // Starts slow, speeds up, then slows down
+            .setOnUpdate((float t) =>
+            {
+                flyingImageRect.anchoredPosition = CalculateQuadraticBezierPoint(t, startPosition, controlPoint, endPosition);
+
+            })
+            .setOnComplete(() =>
+            {
+                try
+                {
+                    Destroy(flyingImage);
+                }
+                catch (System.Exception e)
+                {
+                    Debug.LogError("Error destroying flying image: " + e.Message);
+                }
+                gameManager.specialFound(gameObject);
+                gameObject.SetActive(false);
+
+
+            });
+
+        yield return null;
+    }
+
+
+
     private bool IsPointerOverUIObject(Touch touch)
     {
         PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);

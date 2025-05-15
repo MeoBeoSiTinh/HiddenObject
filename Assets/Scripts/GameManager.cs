@@ -86,8 +86,20 @@ public class GameManager : MonoBehaviour
     }
     public void Start()
     {
+        GenerateLevelMenu();
+        gadgetManager = GameObject.Find("GadgetManager").GetComponent<GadgetManager>();
+        CreateEmptyUIElementAtParentRectPosition(toolbarSlotsParent.GetComponent<RectTransform>());
+    }
+
+    public void GenerateLevelMenu()
+    {
         int i = 1;
         Transform LevelPanel = GameObject.Find("LevelPanel").transform;
+        // Clear existing level menu items
+        foreach (Transform child in LevelPanel)
+        {
+            Destroy(child.gameObject);
+        }
         foreach (MyLevelData data in levelData.data)
         {
             GameObject LevelHolder = Instantiate(LevelMenuHolder, LevelPanel);
@@ -99,8 +111,6 @@ public class GameManager : MonoBehaviour
             levelButton.onClick.AddListener(() => LoadLevel(levelIndex));
             i++;
         }
-        gadgetManager = GameObject.Find("GadgetManager").GetComponent<GadgetManager>();
-        CreateEmptyUIElementAtParentRectPosition(toolbarSlotsParent.GetComponent<RectTransform>());
     }
 
     public void LoadLevel(int levelIndex)
@@ -111,6 +121,7 @@ public class GameManager : MonoBehaviour
             DeleteCurrentLevel();
             ResetMainCameraPosition();
             mainMenuUI.SetActive(true);
+            GenerateLevelMenu();
             inGameUi.SetActive(false);
             return;
         }
@@ -280,6 +291,17 @@ public class GameManager : MonoBehaviour
             Image bg = slot.GetComponentInChildren<Image>();
             bg.color = Color.green;
 
+
+            GameObject tick = new GameObject("Tick");
+            tick.transform.SetParent(slot);
+            RectTransform tickRectTransform = tick.AddComponent<RectTransform>();
+            Image tickImage = tick.AddComponent<Image>();
+            tickImage.sprite = Resources.Load<Sprite>("UI/tick");
+            tickRectTransform.sizeDelta = new Vector2(61, 50); // Set size of the icon
+            tickRectTransform.localPosition = new Vector3(40, -40, 0); // Set position of the icon
+            tickRectTransform.localScale = new Vector3(1, 1, 1); // Set scale of the icon
+
+
             foundTarget.Add(target.name);
             //assign asset to the target
             //Transform slot2 = toolbarSlotsParent.GetChild(targetIndex).GetChild(0);
@@ -295,11 +317,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void specialFound(GameObject target, GameObject image)
+    public void specialFound(GameObject target)
     {
 
-        specialFoundUi.SetActive(true);
-        specialFoundUi.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = target.name;
+
         int specialIndex = allSpecialList.FindIndex(x => x.TargetName == target.name);
 
         if (specialIndex == -1)
@@ -312,12 +333,8 @@ public class GameManager : MonoBehaviour
             foundTarget.Add(target.name);
             ProgressBar progress = ProgressBar.GetComponent<ProgressBar>();
             int foundSpecial = (allSpecialList.Count - specialList.Count);
-            Debug.Log("foundSpecial: " + foundSpecial);
-            Debug.Log("all: " + allSpecialList.Count);
-            Debug.Log("remain: " + specialList.Count);
             float targetValue = 33 * foundSpecial;
-            Debug.Log("targetValue: " + targetValue);
-            StartCoroutine(increaseProgress(progress, (int) targetValue));
+            StartCoroutine(increaseProgress(progress, (int)targetValue));
 
             //change Hotbar color
             Transform slot = toolbarSlotsParent.GetChild(specialIndex);
@@ -325,17 +342,16 @@ public class GameManager : MonoBehaviour
             //assign asset to the target
             Transform slot2 = toolbarSlotsParent.GetChild(specialIndex).GetChild(0);
 
-            if (bg != null)
-            {
-                bg.sprite = Resources.Load<Sprite>("UI/SpecialObjectBG2");
-            }
-            else
-            {
-                Debug.Log("vailon bug");
-            }
+            GameObject tick = new GameObject("Tick");
+            tick.transform.SetParent(slot);
+            RectTransform tickRectTransform = tick.AddComponent<RectTransform>();
+            Image tickImage = tick.AddComponent<Image>();
+            tickImage.sprite = Resources.Load<Sprite>("UI/tick");
+            tickRectTransform.sizeDelta = new Vector2(61, 50); // Set size of the icon
+            tickRectTransform.localPosition = new Vector3(40, -40, 0); // Set position of the icon
+            tickRectTransform.localScale = new Vector3(1, 1, 1); // Set scale of the icon
+            EndgameCheck();
         }
-        
-        StartCoroutine(DestroyImageAfterDelay(image));
 
     }
     private IEnumerator increaseProgress(ProgressBar progress, int targetValue)
@@ -366,12 +382,6 @@ public class GameManager : MonoBehaviour
         yield return null; // Wait for the current frame to finish
     }
 
-    private IEnumerator DestroyImageAfterDelay(GameObject image)
-    {
-        
-        yield return new WaitForSeconds(2.5f); // Delay for 3 seconds
-        CloseSpecialFound(image);
-    }
 
     private IEnumerator ShowLevelCompleteUIWithDelay()
     {
@@ -567,15 +577,8 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void CloseSpecialFound(GameObject image)
+    public void EndgameCheck()
     {
-        Destroy(image);
-        ClearIngameMenu();
-    }
-
-    public void ClearIngameMenu()
-    {
-        specialFoundUi.SetActive(false);
         if (specialList.Count == 0)
         {
             allSpecialList.Clear();

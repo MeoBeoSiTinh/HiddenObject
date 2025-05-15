@@ -663,10 +663,17 @@ MonoBehaviour:
   fallbackSpriteAssets:
   - {fileID: 11400000, guid: dfbb496a45ebc7b4697fd5e738c2fdad, type: 2}
   - {fileID: 11400000, guid: bc00f13246af9ad4e976745c29023b3e, type: 2}
-  - {fileID: 11400000, guid: fe253a9c1c3f7884c809fc428d96b872, type: 2}
+  - {fileID: 11400000, guid: eb94d0425645b5d4aa66445274df3bb3, type: 2}
   - {fileID: 11400000, guid: bc14681784c1b184ba00105fb36f153a, type: 2}
   - {fileID: 11400000, guid: c1a30a17c3a836644a5a789b993d8113, type: 2}
-  - {fileID: 11400000, guid: a975e57ecd36b0643aa007e0e5ecc194, type: 2}
+  - {fileID: 11400000, guid: d3057cadb5bc33c4f9afa56211837f1d, type: 2}
+  - {fileID: 11400000, guid: ac039d0e55669324b8db8e3a2051a328, type: 2}
+  - {fileID: 11400000, guid: 29609af7e28059845a9cc560dac8c63f, type: 2}
+  - {fileID: 11400000, guid: 3a377201c4e0c794e8ce7a7ce378f65c, type: 2}
+  - {fileID: 11400000, guid: b3f4aef75e91f54499e2672f68c94e62, type: 2}
+  - {fileID: 11400000, guid: 750aa2b6a54689043b60a8b960b6e933, type: 2}
+  - {fileID: 11400000, guid: 462e93a48bf61af4cbe2aa4e9408f0cc, type: 2}
+  - {fileID: 11400000, guid: 4a23455bc018f6c4ca341684649650e4, type: 2}
 --- !u!21 &1369835458
 Material:
   serializedVersion: 8
