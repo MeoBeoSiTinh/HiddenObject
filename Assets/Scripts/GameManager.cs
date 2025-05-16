@@ -10,6 +10,7 @@ using Spine.Unity;
 using System.Linq;
 using Unity.VisualScripting;
 using Spine.Unity.Examples;
+using UnityEditor.iOS;
 
 public class GameManager : MonoBehaviour
 {
@@ -467,7 +468,7 @@ public class GameManager : MonoBehaviour
 
     public void ResetMainCameraPosition()
     {
-        Camera.main.transform.position = new Vector3(0, 0, 0); // Reset to default position
+        Camera.main.transform.position = new Vector3(0, 0, -10); // Reset to default position
         Camera.main.orthographicSize = 8; // Reset to default size
     }
 
@@ -639,6 +640,14 @@ public class GameManager : MonoBehaviour
         {
             
             StartCoroutine(HandleResultObject(recipe, crafter));
+            if(crafter.recipes.Count > 0)
+            {
+                crafter.transform.GetChild(0).gameObject.SetActive(true);
+            }
+            else
+            {
+                crafter.transform.GetChild(0).gameObject.SetActive(false);
+            }
         }
         else
         {
@@ -710,7 +719,10 @@ public class GameManager : MonoBehaviour
             LeanTween.rotateY(Dialogue.transform.GetChild(0).GetChild(1).gameObject, 180f, 0.25f).setEase(LeanTweenType.easeInOutQuad);
         });
         yield return new WaitForSeconds(1.5f);
-
+        Dialogue.SetActive(false);
+        yield return null;
+        GameObject smoke = Resources.Load<GameObject>("Anim/Smoke/SmokeAnim");
+        Instantiate(smoke, position, Quaternion.identity);
         GameObject resultObject = Instantiate(recipe.Result, position, Quaternion.identity);
         resultObject.name = recipe.Result.name;
         Vector2 UiPos = mainCamera.WorldToScreenPoint(position);
@@ -747,8 +759,8 @@ public class GameManager : MonoBehaviour
         //Result bounce
         AnimateWithDecreasingBounces(resultObject);
         Dialogue.transform.GetChild(0).GetChild(1).rotation = Quaternion.Euler(0, 0, 0);
-        Dialogue.SetActive(false);
         Dialogue.transform.GetChild(1).gameObject.SetActive(true);
+        Destroy(smoke, 1f);
         yield return null; // Wait for the current frame to finish
     }
 

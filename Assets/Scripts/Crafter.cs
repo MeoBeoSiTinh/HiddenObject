@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Cache;
 using TMPro;
 using UnityEngine;
 
@@ -11,13 +12,22 @@ public class Crafter : MonoBehaviour
     public List<craftRecipe> recipes;
     public int currectRecipeIndex = 0;
     public float smoothTime = 0.3f;
+    public GameObject Exclamation;
 
     public void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         CrafterMenu = gameManager.Dialogue;
         cam = Camera.main;
-        
+        Exclamation = gameObject.transform.GetChild(0).gameObject;
+        if (recipes.Count > 0)
+        {
+            Exclamation.SetActive(true);
+        }
+        else
+        {
+            Exclamation.SetActive(false);
+        }
     }
     public void ShowRecipe()
     {
