@@ -17,22 +17,28 @@ MonoBehaviour:
     stage:
     - StageName: 1
       target:
-      - TargetName: "C\xE0nh c\xE2y"
-        TargetPrefab: {fileID: 404611377008870635, guid: 1c1d0b96f641f7145821c39cf270d3cc, type: 3}
-        Description: 
       - TargetName: "C\xE1i x\xFAc \u0111\u1EA5t"
         TargetPrefab: {fileID: 2451757506242017388, guid: 89dd5766beb6c9442a06879b9a09f372, type: 3}
         Description: 
+      - TargetName: da mai
+        TargetPrefab: {fileID: 4834999490293406964, guid: a875bac314779484bbab89c035f49476, type: 3}
+        Description: 
     - StageName: 2
       target:
-      - TargetName: "C\u1EE5c s\u1EAFt"
-        TargetPrefab: {fileID: 5295883171517697108, guid: 4a2c0ce8fbdfaff4fa33d06473938e0f, type: 3}
-        Description: 
-      - TargetName: "\u0110\xE1 l\u1EEDa"
-        TargetPrefab: {fileID: 2628418135835634306, guid: dc18339b9ae4e214fa1522b86fb6b4bb, type: 3}
+      - TargetName: day cuoc
+        TargetPrefab: {fileID: 8523463899341969933, guid: 49ec4ea399ef5384488ad5dc8cc315e8, type: 3}
         Description: 
       - TargetName: moc cau
         TargetPrefab: {fileID: 4991979849747468237, guid: 50d9890c00033bf468edafa3c49df987, type: 3}
+        Description: 
+      - TargetName: "C\u1EE5c s\u1EAFt"
+        TargetPrefab: {fileID: 5295883171517697108, guid: 4a2c0ce8fbdfaff4fa33d06473938e0f, type: 3}
+        Description: 
+      - TargetName: "C\xE0nh c\xE2y"
+        TargetPrefab: {fileID: 404611377008870635, guid: 1c1d0b96f641f7145821c39cf270d3cc, type: 3}
+        Description: 
+      - TargetName: "\u0110\xE1 l\u1EEDa"
+        TargetPrefab: {fileID: 2628418135835634306, guid: dc18339b9ae4e214fa1522b86fb6b4bb, type: 3}
         Description: 
       - TargetName: "Chai n\u01B0\u1EDBc"
         TargetPrefab: {fileID: 2834647842296746338, guid: d502d5143dfbf1345aea9545156958fb, type: 3}
@@ -43,20 +49,14 @@ MonoBehaviour:
       - TargetName: vot
         TargetPrefab: {fileID: 6097400376923157770, guid: 2def5a40085e6da4c941090f393d7b83, type: 3}
         Description: 
-      - TargetName: da mai
-        TargetPrefab: {fileID: 4834999490293406964, guid: a875bac314779484bbab89c035f49476, type: 3}
-        Description: 
-      - TargetName: day cuoc
-        TargetPrefab: {fileID: 8523463899341969933, guid: 49ec4ea399ef5384488ad5dc8cc315e8, type: 3}
-        Description: 
     LevelPrefab: {fileID: 7646842039866314721, guid: 5ccf09399a787914d909983e383f3d9d, type: 3}
     special:
-    - TargetName: "C\u1EA7n c\xE2u"
-      TargetPrefab: {fileID: 3410708434728115166, guid: 98e9ecc94a08feb488f18709caf061aa, type: 3}
+    - TargetName: "C\xE1 s\u1ED1ng"
+      TargetPrefab: {fileID: 9109781842524443708, guid: d93643ac0483842488180127618c0057, type: 3}
       Description: ca
     - TargetName: "D\u1EE5ng c\u1EE5 \u0111\xE1nh l\u1EEDa"
       TargetPrefab: {fileID: 3410090064556870836, guid: 5df384b051ecc0b4fbf1798cef884612, type: 3}
       Description: ca
-    - TargetName: "C\xE1 s\u1ED1ng"
-      TargetPrefab: {fileID: 9109781842524443708, guid: d93643ac0483842488180127618c0057, type: 3}
+    - TargetName: "C\u1EA7n c\xE2u"
+      TargetPrefab: {fileID: 3410708434728115166, guid: 98e9ecc94a08feb488f18709caf061aa, type: 3}
       Description: ca
