@@ -119,9 +119,10 @@ public class ObjectTouch : MonoBehaviour
         targetImagePrefab.transform.SetParent(GameObject.Find("Canvas").transform);
 
         // Set the size and sprite of the target image
-        targetImage.rectTransform.sizeDelta = new Vector2(1, 1); // Adjust size as needed
-        targetImage.rectTransform.localScale = new Vector3(100f, 100f, 100f); // Adjust scale as needed
         targetImage.sprite = gameObject.GetComponent<SpriteRenderer>().sprite;
+        targetImage.rectTransform.localScale = new Vector3(1.2f, 1.2f, 1.2f); // Adjust scale as needed
+        targetImage.rectTransform.sizeDelta = new Vector2(targetImage.sprite.rect.width, targetImage.sprite.rect.height); // Adjust size as needed
+
 
         // Convert touch position to local position in the Canvas
         RectTransform canvasRect = GameObject.Find("Canvas").GetComponent<RectTransform>();

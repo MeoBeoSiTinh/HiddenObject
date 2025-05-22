@@ -8,9 +8,6 @@ using UnityEngine.EventSystems;
 using static UnityEngine.GraphicsBuffer;
 using Spine.Unity;
 using System.Linq;
-using Unity.VisualScripting;
-using Spine.Unity.Examples;
-using UnityEditor.iOS;
 
 public class GameManager : MonoBehaviour
 {
@@ -406,9 +403,6 @@ public class GameManager : MonoBehaviour
             GameObject iconObject = new GameObject("Icon");
             iconObject.transform.SetParent(newSlotObject.transform);
             RectTransform iconRectTransform = iconObject.AddComponent<RectTransform>();
-            iconRectTransform.sizeDelta = new Vector2(1, 1); // Set size of the icon  
-            iconRectTransform.localScale = new Vector3(85, 85, 85); // Set scale of the slot
-            iconRectTransform.anchoredPosition3D = new Vector3(iconRectTransform.anchoredPosition3D.x, iconRectTransform.anchoredPosition3D.y, 0); // Set z position to 0
             Image image = iconObject.AddComponent<Image>();
 
             //GameObject unlockPrefab = Resources.Load<GameObject>("anim/unlock/unlock");
@@ -428,7 +422,10 @@ public class GameManager : MonoBehaviour
 
             image.sprite = allSpecialList[i].TargetPrefab.GetComponent<SpriteRenderer>().sprite;
             image.gameObject.SetActive(true);
-
+            iconRectTransform.sizeDelta = new Vector2(image.sprite.rect.width, image.sprite.rect.height);
+            iconRectTransform.anchoredPosition = new Vector2(0, 0); // Set position of the icon
+            iconRectTransform.localScale = new Vector3(1.2f, 1.2f, 1.2f); // Set scale of the icon
+            iconRectTransform.anchoredPosition3D = new Vector3(iconRectTransform.anchoredPosition3D.x, iconRectTransform.anchoredPosition3D.y, 0); // Set z position to 0
         }
     }
 
@@ -440,27 +437,25 @@ public class GameManager : MonoBehaviour
             newSlotObject.transform.SetParent(toolbarSlotsParent);
             RectTransform rectTransform = newSlotObject.AddComponent<RectTransform>();
             rectTransform.sizeDelta = new Vector2(1, 1); // Set size of the slot
-            rectTransform.localScale = new Vector3(1,1,1); // Set scale of the slot
+            rectTransform.localScale = new Vector3(1, 1, 1); // Set scale of the slot
             rectTransform.anchoredPosition3D = new Vector3(rectTransform.anchoredPosition3D.x, rectTransform.anchoredPosition3D.y, 0); // Set z position to 0
             Image newSlot = newSlotObject.AddComponent<Image>();
             newSlot.sprite = Resources.Load<Sprite>("UI/HotbarslotUI");
 
-
             GameObject iconObject = new GameObject("Icon");
             iconObject.transform.SetParent(newSlotObject.transform);
             RectTransform iconRectTransform = iconObject.AddComponent<RectTransform>();
-            iconRectTransform.anchoredPosition = new Vector2(0, 0); // Set position of the icon
-            iconRectTransform.sizeDelta = new Vector2(1, 1); // Set size of the icon  
-            iconRectTransform.localScale = new Vector3(85,85,85); // Set scale of the icon
-            iconRectTransform.anchoredPosition3D = new Vector3(iconRectTransform.anchoredPosition3D.x, iconRectTransform.anchoredPosition3D.y, 0); // Set z position to 0
+
             Image image = iconObject.AddComponent<Image>();
-
             CanvasGroup canvasGroup = iconObject.AddComponent<CanvasGroup>();
-
             CraftSelect craftSelect = iconObject.AddComponent<CraftSelect>();
 
-
             image.sprite = allTargetsList[i].TargetPrefab.GetComponent<SpriteRenderer>().sprite;
+
+            iconRectTransform.sizeDelta = new Vector2(image.sprite.rect.width, image.sprite.rect.height);
+            iconRectTransform.anchoredPosition = new Vector2(0, 0); // Set position of the icon
+            iconRectTransform.localScale = new Vector3(1.2f, 1.2f, 1.2f); // Set scale of the icon
+            iconRectTransform.anchoredPosition3D = new Vector3(iconRectTransform.anchoredPosition3D.x, iconRectTransform.anchoredPosition3D.y, 0); // Set z position to 0
 
             image.gameObject.SetActive(true);
         }
@@ -640,13 +635,25 @@ public class GameManager : MonoBehaviour
         {
             
             StartCoroutine(HandleResultObject(recipe, crafter));
-            if(crafter.recipes.Count > 0)
+            //Delete crafted recipe
+            crafter.recipes.Remove(recipe);
+            crafter.currectRecipeIndex = 0;
+            if (crafter.recipes.Count == 1)
             {
-                crafter.transform.GetChild(0).gameObject.SetActive(true);
+                disableButton(2);
             }
             else
             {
-                crafter.transform.GetChild(0).gameObject.SetActive(false);
+                enableButton(2);
+            }
+            disableButton(0);
+            if (crafter.recipes.Count > 0)
+            {
+                CurrentCrafter.transform.GetChild(0).gameObject.SetActive(true);
+            }
+            else
+            {
+                CurrentCrafter.transform.GetChild(0).gameObject.SetActive(false);
             }
         }
         else
@@ -670,9 +677,19 @@ public class GameManager : MonoBehaviour
                     }
                 }
             }
+            StartCoroutine(WrongAnim());
         }
     }
 
+    private IEnumerator WrongAnim()
+    {
+        if (CurrentCrafter.GetComponentInChildren<SkeletonAnimation>() != null)
+        {
+            var animPlay = CurrentCrafter.GetComponentInChildren<SkeletonAnimation>().AnimationState.SetAnimation(0, "wrong", false);
+            yield return new WaitForSpineAnimationComplete(animPlay);
+            CurrentCrafter.GetComponentInChildren<SkeletonAnimation>().AnimationState.SetAnimation(0, "idle", true);
+        }
+    }
 
     private IEnumerator FlashRed(GameObject icon)
     {
@@ -718,15 +735,7 @@ public class GameManager : MonoBehaviour
             crafter.SetResultText();
             LeanTween.rotateY(Dialogue.transform.GetChild(0).GetChild(1).gameObject, 180f, 0.25f).setEase(LeanTweenType.easeInOutQuad);
         });
-        yield return new WaitForSeconds(1.5f);
-        Dialogue.SetActive(false);
-        yield return null;
-        GameObject smoke = Resources.Load<GameObject>("Anim/Smoke/SmokeAnim");
-        Instantiate(smoke, position, Quaternion.identity);
-        GameObject resultObject = Instantiate(recipe.Result, position, Quaternion.identity);
-        resultObject.name = recipe.Result.name;
-        Vector2 UiPos = mainCamera.WorldToScreenPoint(position);
-        
+
         List<RectTransform> IconToRemove = new List<RectTransform>();
         foreach (string name in recipe.ingredients)
         {
@@ -738,22 +747,43 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        //Delete crafted recipe
-        crafter.recipes.Remove(recipe);
-        crafter.currectRecipeIndex = 0;
-        if (crafter.recipes.Count == 1)
-        {
-            disableButton(2);
-        }
-        else
-        {
-            enableButton(2);
-        }
-        disableButton(0);
-
         //UI HotBar transition
         LayoutGroupMultiRemover remover = GetComponent<LayoutGroupMultiRemover>();
         remover.RemoveMultipleAndSlide(IconToRemove);
+        
+        try
+        {
+            CurrentCrafter.transform.GetChild(2).gameObject.SetActive(true);
+        }
+        catch
+        {
+                
+        }
+        if(CurrentCrafter.GetComponentInChildren<SkeletonAnimation>() != null)
+        {
+            var animPlay = CurrentCrafter.GetComponentInChildren<SkeletonAnimation>().AnimationState.SetAnimation(0, "craft", false);
+            yield return new WaitForSpineAnimationComplete(animPlay);
+            CurrentCrafter.GetComponentInChildren<SkeletonAnimation>().AnimationState.SetAnimation(0, "idle", true);
+        }
+        else
+        {
+            yield return new WaitForSeconds(1.5f);
+        }
+        Dialogue.SetActive(false);
+        yield return null;
+        GameObject smoke = Resources.Load<GameObject>("Anim/Smoke/SmokeAnim");
+        Instantiate(smoke, position, Quaternion.identity);
+        GameObject resultObject = Instantiate(recipe.Result, position, Quaternion.identity);
+        resultObject.name = recipe.Result.name;
+        Vector2 UiPos = mainCamera.WorldToScreenPoint(position);
+        try
+        {
+            CurrentCrafter.transform.GetChild(2).gameObject.SetActive(false);
+        }
+        catch
+        {
+
+        }
 
 
         //Result bounce

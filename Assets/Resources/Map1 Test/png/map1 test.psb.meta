@@ -12518,7 +12518,7 @@ ScriptedImporter:
   - name: Android
     overridden: 1
     ignorePlatformSupport: 0
-    maxTextureSize: 4096
+    maxTextureSize: 16384
     resizeAlgorithm: 0
     textureFormat: 47
     textureCompression: 1
@@ -18772,7 +18772,7 @@ ScriptedImporter:
   sharedRigPSDLayers: []
   pSDLayerImportSetting: []
   importFileNodeState: 1
-  platformSettingsDirtyTick: 638828327676253580
+  platformSettingsDirtyTick: 638834337810412843
   spriteSizeExpandChanged: 0
   generateGOHierarchy: 1
   textureAssetName: 
