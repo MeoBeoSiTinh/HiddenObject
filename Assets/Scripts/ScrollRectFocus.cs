@@ -58,7 +58,7 @@ public class ScrollRectFocus : MonoBehaviour
     {
         if (target == null || !target.gameObject.activeInHierarchy) return;
 
-        Canvas.ForceUpdateCanvases();
+        Canvas.ForceUpdateCanvases();   
         LayoutRebuilder.ForceRebuildLayoutImmediate(content);
 
         Vector2 targetPos = CalculateNormalizedPosition(target);

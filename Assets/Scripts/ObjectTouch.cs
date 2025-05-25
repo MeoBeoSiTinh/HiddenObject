@@ -1,10 +1,10 @@
+using Spine.Unity;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using static UnityEngine.GraphicsBuffer;
 
 public class ObjectTouch : MonoBehaviour
 {
@@ -15,7 +15,12 @@ public class ObjectTouch : MonoBehaviour
     public GameObject wrongImage; // Prefab for the wrong image
     public GameObject spineAnimationPrefab; // Prefab for the Spine animation
     private float touchStartTime;
-    private float touchThresholdTime = 0.5f; // Threshold time for touch
+    private readonly float touchThresholdTime = 0.5f; // Threshold time for touch
+    private bool isSpreading = false; // Flag to check if the object is spreading
+
+    [SerializeField] public AudioClip soundFx;
+    [SerializeField] private bool removeAfterFound = true;
+
     private void Awake()
     {
         // Cache the main camera for performance
@@ -31,6 +36,7 @@ public class ObjectTouch : MonoBehaviour
         {
             Debug.LogError("GameManager object not found in the scene.");
         }
+        
     }
 
     private void Update()
@@ -86,23 +92,56 @@ public class ObjectTouch : MonoBehaviour
                     {
                         switch (gameObject.tag)
                         {
-                            case "Special":
-                                CreateSpineAnimation(touch.position);
-                                SpecialTargetFound(touch.position);
-                                break;
                             case "Normal":
-                                CreateSpineAnimation(touch.position);
-                                CreateTargetImage(touch.position);
+                                TryGetComponent<Boxman>(out Boxman boxman);
+                                if (boxman != null)
+                                {
+                                    if (boxman.unbox && boxman.anim.AnimationName != "idle3")
+                                    {
+                                        CreateSpineAnimation(touch.position);
+                                        CreateTargetImage(touch.position);
+                                    }
+                                    boxman.interact();
+                                }
+                                else
+                                {
+                                    CreateSpineAnimation(touch.position);
+                                    CreateTargetImage(touch.position);
+                                }
+                                if(soundFx != null)
+                                {
+                                    SoundFXManager.Instance.PlaySoundFXClip(soundFx, transform, 1f);
+                                }
                                 break;
-                            case "Background":
-                                CreateWrongImage(touch.position);
-                                break;
+                            //case "Background":
+                            //    CreateWrongImage(touch.position);
+                            //    break;
                             case "Openable":
-                                StartCoroutine(DestroyAfterDelay(0.05f));
+                                StartCoroutine(FadeOpen(0.35f));
                                 break;
-                            case "Crafter":
-                                gameObject.GetComponent<Crafter>().ShowRecipe();
-                                gameManager.CurrentCrafter = gameObject;
+                            case "Jiggle":
+                                JiggleObject();
+                                SoundFXManager.Instance.PlaySoundFXClip(soundFx, transform, 1f);
+
+                                break;
+                            case "DoubleBush":
+                                DoubleBush();
+                                SoundFXManager.Instance.PlaySoundFXClip(soundFx, transform, 1f);
+
+                                break;
+                            case "X-Shake":
+                                XShake();
+                                SoundFXManager.Instance.PlaySoundFXClip(soundFx, transform, 1f);
+
+                                break;
+                            case "Interact":
+                                gameObject.GetComponent<ObjectInteract>().Interact();
+
+                                break;
+                            case "Tree":
+                                gameObject.GetComponent<AddLeafToTree>().addLeaf();
+                                SoundFXManager.Instance.PlaySoundFXClip(soundFx, transform, 1f);
+
                                 break;
                         }
                     }
@@ -266,8 +305,10 @@ public class ObjectTouch : MonoBehaviour
                 {
                     Debug.LogError("Error destroying flying image: " + e.Message);
                 }
-                gameObject.SetActive(false);
-
+                if (removeAfterFound)
+                {
+                    gameObject.SetActive(false);
+                }
                 gameManager.TargetFound(gameObject);
             });
 
@@ -288,238 +329,6 @@ public class ObjectTouch : MonoBehaviour
         return point;
     }
     
-    public void SpecialTargetFound(Vector2 touchPosition)
-    {
-        // Instantiate the target image prefab
-        targetImagePrefab = new GameObject("TargetImage");
-        Image targetImage = targetImagePrefab.AddComponent<Image>();
-        targetImagePrefab.transform.SetParent(GameObject.Find("Canvas").transform);
-
-        // Add Canvas component and override sorting layer
-        Canvas canvas = targetImagePrefab.AddComponent<Canvas>();
-        canvas.overrideSorting = true;
-        canvas.sortingOrder = 5002;
-
-        // Set the size and sprite of the target image
-        Sprite sourceSprite = gameObject.GetComponent<SpriteRenderer>().sprite;
-        targetImage.sprite = sourceSprite;
-        targetImage.rectTransform.localScale = new Vector3(1f, 1f, 1f); // Adjust scale as needed
-
-        // Convert touch position to local position in the Canvas
-        RectTransform canvasRect = GameObject.Find("Canvas").GetComponent<RectTransform>();
-        Vector2 localPoint;
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            canvasRect,
-            touchPosition,
-            mainCamera,
-            out localPoint
-        );
-
-        // Set the initial position of the target image to the touch position
-        targetImage.rectTransform.anchoredPosition = localPoint;
-
-        // Create a separate GameObject for the shining effect
-        GameObject shiningEffect = new GameObject("ShiningEffect");
-        Image shiningImage = shiningEffect.AddComponent<Image>();
-        shiningEffect.transform.SetParent(targetImagePrefab.transform); // Make shiningEffect a child of targetImage
-
-        // Add Canvas component and override sorting layer for shining effect
-        Canvas shiningCanvas = shiningEffect.AddComponent<Canvas>();
-        shiningCanvas.overrideSorting = true;
-        shiningCanvas.sortingOrder = 5001;
-
-        // Set the source image for the shining effect
-        shiningImage.sprite = Resources.Load<Sprite>("shining/light");
-        shiningImage.rectTransform.sizeDelta = new Vector2(131, 131); // Adjust size as needed
-        shiningImage.rectTransform.localScale = new Vector3(1f, 1f, 1f); // Adjust scale as needed
-        shiningImage.rectTransform.anchoredPosition = Vector2.zero; // Center the shining effect in the parent
-
-        // Find the UI hotbar by name and assign it to UiHotbar
-        GameObject hotbarObject = GameObject.Find("Icon" + gameObject.name);
-        Debug.Log("Icon" + gameObject.name);
-
-        if (hotbarObject != null)
-        {
-            UiHotbar = hotbarObject.transform;
-        }
-        else
-        {
-            Debug.LogError("Hotbar object not found in the scene.");
-        }
-
-        StartCoroutine(SpecialEffect(targetImagePrefab, shiningEffect, touchPosition));
-
-    }
-
-    private IEnumerator SpecialEffect(GameObject specialImage, GameObject shiningEffect, Vector2 touchPosition)
-    {
-        // Get RectTransforms
-        RectTransform specialImageRect = specialImage.GetComponent<RectTransform>();
-        RectTransform shiningRect = shiningEffect.GetComponent<RectTransform>();
-        gameObject.GetComponent<SpriteRenderer>().enabled = false;
-        // Store initial position
-        Vector2 startPosition = specialImageRect.anchoredPosition;
-        Vector2 endPosition = new Vector2(0, 100);
-
-        // Move the image to the center of the screen
-        LeanTween.value(specialImage, 0f, 1f, 1f)
-            .setEase(LeanTweenType.easeInOutQuad)
-            .setOnUpdate((float t) =>
-            {
-                Vector2 newPosition = Vector2.Lerp(startPosition, endPosition, t);
-                specialImageRect.anchoredPosition = newPosition;
-            });
-
-        // Scale the parent image
-        LeanTween.scale(specialImageRect, new Vector3(6f, 6f, 6f), 1f)
-            .setEase(LeanTweenType.easeInOutQuad);
-
-        // Rotate the shining effect
-        LeanTween.rotateAroundLocal(shiningEffect, Vector3.forward, 360f, 8f) // Slowed down rotation speed
-            .setEase(LeanTweenType.easeInOutQuad)
-            .setLoopCount(-1); // Infinite loops
-
-        // Scale the child
-        LeanTween.scale(shiningRect, new Vector3(1.5f, 1.5f, 1.5f), 1f)
-            .setEase(LeanTweenType.easeInOutQuad).setOnComplete(() =>
-            {
-                gameManager.specialFoundUi.SetActive(true);
-                gameManager.specialFoundUi.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = name;
-            });
-
-        yield return new WaitForSeconds(2.5f);
-        Debug.Log("Destroying special image");
-        Destroy(specialImage);
-        gameManager.specialFoundUi.SetActive(false);
-        targetImagePrefab = new GameObject("TargetImage");
-        Image targetImage = targetImagePrefab.AddComponent<Image>();
-        targetImagePrefab.transform.SetParent(GameObject.Find("Canvas").transform);
-
-        // Set the size and sprite of the target image
-        targetImage.rectTransform.sizeDelta = new Vector2(1, 1); // Adjust size as needed
-        targetImage.rectTransform.localScale = new Vector3(100f, 100f, 100f); // Adjust scale as needed
-        targetImage.sprite = gameObject.GetComponent<SpriteRenderer>().sprite;
-
-        // Convert touch position to local position in the Canvas
-        RectTransform canvasRect = GameObject.Find("Canvas").GetComponent<RectTransform>();
-        Vector2 localPoint;
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            canvasRect,
-            touchPosition,
-            mainCamera,
-            out localPoint
-        );
-
-        // Set the initial position of the target image to the touch position
-        targetImage.rectTransform.anchoredPosition = localPoint;
-
-        // Find the UI hotbar by name and assign it to UiHotbar
-        GameObject hotbarObject = GameObject.Find("Icon" + gameObject.name);
-
-        if (hotbarObject != null)
-        {
-            hotbarObject.transform.hasChanged = false;
-            UiHotbar = hotbarObject.transform;
-        }
-        else
-        {
-            Debug.Log("Icon" + gameObject.name);
-            Debug.LogError("Hotbar object not found in the scene.");
-        }
-
-        StartCoroutine(specialFlyingEffect(targetImagePrefab));
-
-        // Call the game manager function
-
-
-        yield return null;
-    }
-    
-
-    private IEnumerator specialFlyingEffect(GameObject flyingImage)
-    {
-        if (gameManager.isHotBarMinimized)
-        {
-            gameManager.OnMinimizeClicked();
-        }
-        ScrollRectFocus scroll = GameObject.Find("Scroll").GetComponent<ScrollRectFocus>();
-        GameObject icon = GameObject.Find("Icon" + name);
-        bool isVisible = scroll.IsElementVisible(icon.GetComponent<RectTransform>());
-        if (!isVisible)
-        {
-            scroll.ScrollToView(icon.GetComponent<RectTransform>());
-            yield return new WaitForSeconds(0.5f); // Wait for the scroll to finish
-
-        }
-
-
-
-
-        RectTransform flyingImageRect = flyingImage.GetComponent<RectTransform>();
-        Vector2 startPosition = flyingImageRect.anchoredPosition;
-
-        // Get the end position (UiHotbar's anchored position)
-        RectTransform hotbarRect = UiHotbar.GetComponent<RectTransform>();
-
-        // Step 1: Get the current world position of the hotbarRect
-        Vector3 hotbarWorldPosition = hotbarRect.TransformPoint(hotbarRect.rect.center);
-        // Step 4: Convert the world position back to the new anchored position
-        RectTransform parentRect = hotbarRect.parent as RectTransform;
-
-        Vector2 endPosition;
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            parentRect,
-            RectTransformUtility.WorldToScreenPoint(null, hotbarWorldPosition),
-            null,
-            out endPosition
-        );
-
-        RectTransform uiLocaction = GameObject.Find("UILocation").GetComponent<RectTransform>();
-        endPosition.x += parentRect.anchoredPosition.x;
-        //if (!isVisible)
-        //{
-        //    endPosition = scroll.CalculateFinalIconPosition(icon.GetComponent<RectTransform>());
-        //    endPosition.x *= 2;
-        //}
-        endPosition.y = uiLocaction.anchoredPosition.y;
-
-
-
-        // Define control points for an upward-then-downward parabola
-        Vector2 midPoint = (startPosition + endPosition) * 0.5f;
-        float parabolaHeight = 400f; // Adjust this to control the "height" of the parabola
-
-        Vector2 controlPoint = new Vector2(
-            midPoint.x,
-            Mathf.Max(startPosition.y, endPosition.y) + parabolaHeight
-        );
-
-        // Move the image along the parabolic path with slow start and end
-        LeanTween.value(flyingImage, 0f, 1f, 1f) // Increased duration to 1.5s for smoother effect
-            .setEase(LeanTweenType.easeInOutQuad) // Starts slow, speeds up, then slows down
-            .setOnUpdate((float t) =>
-            {
-                flyingImageRect.anchoredPosition = CalculateQuadraticBezierPoint(t, startPosition, controlPoint, endPosition);
-
-            })
-            .setOnComplete(() =>
-            {
-                try
-                {
-                    Destroy(flyingImage);
-                }
-                catch (System.Exception e)
-                {
-                    Debug.LogError("Error destroying flying image: " + e.Message);
-                }
-                gameManager.specialFound(gameObject);
-                gameObject.SetActive(false);
-
-
-            });
-
-        yield return null;
-    }
 
 
 
@@ -570,9 +379,125 @@ public class ObjectTouch : MonoBehaviour
             });
         });
     }
-    private IEnumerator DestroyAfterDelay(float delay)
+    private IEnumerator FadeOpen(float duration)
     {
-        yield return new WaitForSeconds(delay);
-        Destroy(gameObject);
+        SpriteRenderer spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+        if (spriteRenderer == null)
+            yield break;
+
+        Color originalColor = spriteRenderer.color;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            float alpha = Mathf.Lerp(1f, 0f, elapsed / duration);
+            spriteRenderer.color = new Color(originalColor.r, originalColor.g, originalColor.b, alpha);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        spriteRenderer.color = new Color(originalColor.r, originalColor.g, originalColor.b, 0f);
+        gameObject.SetActive(false);
     }
+    // Add this method to the ObjectTouch class
+    public void JiggleObject()
+    {
+        // Ensure the object has a transform
+        Transform objTransform = transform;
+
+        // Stop any previous jiggling
+        LeanTween.cancel(gameObject);
+
+        // Store the original rotation
+        Quaternion originalRotation = objTransform.rotation;
+
+        // Jiggle parameters
+        float jiggleAngle = 20f; // degrees to rotate up/down
+        float duration = 0.07f; // time for each half-jiggle
+        int jiggleCount = 2; // number of up-down cycles
+
+        // Sequence: rotate to +angle, then -angle, then back to 0, repeat
+        LTSeq seq = LeanTween.sequence();
+        for (int i = 0; i < jiggleCount; i++)
+        {
+            seq.append(LeanTween.rotateZ(gameObject, jiggleAngle, duration).setEase(LeanTweenType.easeInOutSine));
+            seq.append(LeanTween.rotateZ(gameObject, -jiggleAngle, duration * 2).setEase(LeanTweenType.easeInOutSine));
+            seq.append(LeanTween.rotateZ(gameObject, 0f, duration).setEase(LeanTweenType.easeInOutSine));
+        }
+        // Ensure final rotation is exactly original
+        seq.append(() => { objTransform.rotation = originalRotation; });
+    }
+
+
+    public void DoubleBush()
+    {
+        Transform parent = gameObject.transform.parent;
+        GameObject left = parent.Find("Left").gameObject;
+        GameObject right = parent.Find("Right").gameObject;
+
+        // Cancel any previous tweens
+        LeanTween.cancel(left);
+        LeanTween.cancel(right);
+
+        if (!isSpreading)
+        {
+            // Set the initial positions
+            // Store original positions (in case you want to reset later)
+            Vector3 leftOriginalPos = left.transform.localPosition;
+            Vector3 rightOriginalPos = right.transform.localPosition;
+
+            // Calculate target positions (spread out along X axis)
+            float spreadDistance = 0.38f; // Adjust as needed
+            Vector3 leftTargetPos = leftOriginalPos + Vector3.left * spreadDistance;
+            Vector3 rightTargetPos = rightOriginalPos + Vector3.right * spreadDistance;
+
+            // Animate with LeanTween
+            float duration = 0.4f;
+            LeanTween.moveLocal(left, leftTargetPos, duration).setEase(LeanTweenType.easeOutBack);
+            LeanTween.moveLocal(right, rightTargetPos, duration).setEase(LeanTweenType.easeOutBack);
+            LeanTween.scaleY(left,0.75f, duration/2).setEase(LeanTweenType.easeOutBack).setOnComplete(() =>
+            {
+                LeanTween.scaleY(left, 1f, duration / 2).setEase(LeanTweenType.easeOutBack);
+            });
+            LeanTween.scaleY(right, 0.75f, duration / 2).setEase(LeanTweenType.easeOutBack).setOnComplete(() =>
+            {
+                LeanTween.scaleY(right, 1f, duration / 2).setEase(LeanTweenType.easeOutBack);
+            });
+            left.GetComponent<ObjectTouch>().isSpreading = true;
+            right.GetComponent<ObjectTouch>().isSpreading = true;
+        }
+        else
+        {
+            float duration = 0.4f;
+            LeanTween.moveLocal(left, new Vector2(-0.3f, 0f), duration).setEase(LeanTweenType.easeOutBack);
+            LeanTween.moveLocal(right, new Vector2(0.3f,0f), duration).setEase(LeanTweenType.easeOutBack);
+            left.GetComponent<ObjectTouch>().isSpreading = false;
+            right.GetComponent<ObjectTouch>().isSpreading = false;
+        }
+        
+    }
+
+    public void XShake()
+    {
+        // Ensure the object has a transform
+        Transform objTransform = transform;
+        // Stop any previous jiggling
+        LeanTween.cancel(gameObject);
+        // Store the original position
+        Vector3 originalPosition = objTransform.localPosition;
+        // Shake parameters
+        float shakeDistance = 0.1f; // distance to shake
+        float duration = 0.3f; // time for the shake
+        // Shake left and right
+        LeanTween.moveLocalX(gameObject, originalPosition.x + shakeDistance, duration / 2)
+            .setEase(LeanTweenType.easeInOutSine)
+            .setLoopPingPong(1);
+    }
+
+    
+
+    
+    
+
+    
 }

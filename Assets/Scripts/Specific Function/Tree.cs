@@ -43,7 +43,7 @@ public class Tree : MonoBehaviour
         transform.RotateAround(basePosition, Vector3.forward, sway);
     }
 
-    Vector3 GetBasePosition()
+        Vector3 GetBasePosition()
     {
         // For SpriteRenderer (2D)
         if (TryGetComponent<SpriteRenderer>(out var sprite))

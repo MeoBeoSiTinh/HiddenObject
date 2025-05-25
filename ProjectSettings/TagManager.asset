@@ -9,7 +9,12 @@ TagManager:
   - Normal
   - Background
   - Openable
-  - Crafter
+  - Jiggle
+  - DoubleBush
+  - X-Shake
+  - Interact
+  - TextBox
+  - Tree
   layers:
   - Default
   - TransparentFX

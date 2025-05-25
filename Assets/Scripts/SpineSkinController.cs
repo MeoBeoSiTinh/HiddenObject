@@ -13,7 +13,6 @@ public class SpineSkinController : MonoBehaviour
    public string[] skinNames;
 
    private Skin _combinedSkin;
-   private string _strCombinedSkinName = "CombinedSkin";
    
    // protected Skeleton skeleton;
    

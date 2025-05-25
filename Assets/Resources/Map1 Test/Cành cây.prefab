@@ -146,3 +146,4 @@ MonoBehaviour:
   UiHotbar: {fileID: 0}
   wrongImage: {fileID: 4935127338822683817, guid: b38f55ef37c30844c938b0c2d18997d9, type: 3}
   spineAnimationPrefab: {fileID: 1389588780676235433, guid: 258fa316bdd9fb542b83d3727d65e8af, type: 3}
+  soundFx: {fileID: 8300000, guid: 4476e29490053d049b477ce38f2b503c, type: 3}

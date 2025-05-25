@@ -12,33 +12,15 @@ public class LevelData : ScriptableObject
 public class MyLevelData
 {
     public string LevelName;
-    public List<MyStage> stage;
     public GameObject LevelPrefab;
-    public List<MyTarget> special;
+    public List<MyTarget> TargetList;
 
 }
 
 [System.Serializable]
 public class MyTarget
 {
-    public string TargetName;
-    public GameObject TargetPrefab;
-    public string Description;
+    public GameObject Target;
 }
 
-[System.Serializable]
-public class MyStage
-{
-    public string StageName;
-    public List<MyTarget> target;
-}
-
-[System.Serializable]
-public class craftRecipe
-{
-    public string RecipeName;
-    public List<string> ingredients;
-    public GameObject Result;
-
-}
 
