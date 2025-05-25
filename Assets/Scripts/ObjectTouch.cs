@@ -15,7 +15,7 @@ public class ObjectTouch : MonoBehaviour
     public GameObject wrongImage; // Prefab for the wrong image
     public GameObject spineAnimationPrefab; // Prefab for the Spine animation
     private float touchStartTime;
-    private readonly float touchThresholdTime = 0.5f; // Threshold time for touch
+    private readonly float touchThresholdTime = 0.2f; // Threshold time for touch
     private bool isSpreading = false; // Flag to check if the object is spreading
 
     [SerializeField] public AudioClip soundFx;

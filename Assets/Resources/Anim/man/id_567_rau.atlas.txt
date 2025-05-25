@@ -1,0 +1,12 @@
+id_567_rau.png
+size:52,132
+filter:Linear,Linear
+pma:true
+rau1
+bounds:35,76,51,15
+rotate:90
+rau2
+bounds:2,2,44,33
+rau3
+bounds:2,37,90,31
+rotate:90

@@ -156,7 +156,7 @@ public class ObjectInteract : MonoBehaviour
     void AnimateWithDecreasingBounces(GameObject obj)
     {
         float duration = 1.5f;
-        float distance = 1.5f;
+        float distance = 1.2f;
         float originalY = obj.transform.position.y;
 
         // Horizontal movement

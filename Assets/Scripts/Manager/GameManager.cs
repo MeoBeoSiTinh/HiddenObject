@@ -151,7 +151,7 @@ public class GameManager : MonoBehaviour
         //CameraRenderer.SetActive(true);
 
         SoundFXManager.Instance.PlayLoopingSoundFXClip(BackgroundMusic, Camera.main.transform, 0.6f);
-
+        StartCoroutine(gameObject.GetComponent<Beginning>().Begin(currentLevelIndex));
     }
 
 
@@ -219,41 +219,85 @@ public class GameManager : MonoBehaviour
     private IEnumerator increaseProgress(int targetValue)
     {
         ProgressBar progress = ProgressBar.GetComponent<ProgressBar>();
-        
-        float duration = 1f; // Duration of the camera movement in seconds
+
+        float duration = 1f; // Duration of the progress increase
         float elapsedTime = 0f;
         int startValue = progress.current;
-        // Smoothly move the camera to the target position and zoom out
+
+        // Cache the star transforms to avoid repeated GetChild calls
+        Transform star30 = progress.transform.GetChild(1);
+        Transform star70 = progress.transform.GetChild(2);
+        Transform star100 = progress.transform.GetChild(3);
+
+        // Store original scales
+        Vector3 originalScale = star30.localScale;
+        float scaleDuration = 0.5f; // Duration of the scale animation
+
         while (elapsedTime < duration)
         {
             elapsedTime += Time.deltaTime;
             float t = Mathf.Clamp01(elapsedTime / duration);
             progress.current = (int)Mathf.Lerp(startValue, targetValue, t);
-            if(progress.current == 30 || progress.current == 70)
+
+            // Check for thresholds
+            if (progress.current == 30 || progress.current == 70)
             {
                 SoundFXManager.Instance.PlaySoundFXClip(starSound, transform, 1f);
+                Transform starToAnimate = progress.current == 30 ? star30 : star70;
+                StartCoroutine(ScaleStar(starToAnimate, originalScale, scaleDuration));
             }
-            else if(progress.current == 100)
+            else if (progress.current == 100)
             {
                 SoundFXManager.Instance.PlaySoundFXClip(allStarSound, transform, 1f);
+                StartCoroutine(ScaleStar(star30, originalScale, scaleDuration));
+                StartCoroutine(ScaleStar(star70, originalScale, scaleDuration));
+                StartCoroutine(ScaleStar(star100, originalScale, scaleDuration));
             }
-            yield return null; // Wait for the next frame
+
+            yield return null;
         }
+
+        // Update star sprites
         if (targetValue >= 30)
         {
-            progress.transform.GetChild(1).GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/starFilled");
+            star30.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/starFilled");
         }
         if (targetValue >= 70)
         {
-            progress.transform.GetChild(2).GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/starFilled");
-
+            star70.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/starFilled");
         }
         if (targetValue >= 100)
         {
-            progress.transform.GetChild(3).GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/starFilled");
-
+            star100.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/starFilled");
         }
-        yield return null; // Wait for the current frame to finish
+    }
+
+    private IEnumerator ScaleStar(Transform star, Vector3 originalScale, float duration)
+    {
+        float elapsedTime = 0f;
+        float maxScale = 1.5f; // How much bigger the star should get
+
+        // Scale up
+        while (elapsedTime < duration / 2)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = elapsedTime / (duration / 2);
+            star.localScale = Vector3.Lerp(originalScale, originalScale * maxScale, t);
+            yield return null;
+        }
+
+        // Scale down
+        elapsedTime = 0f;
+        while (elapsedTime < duration / 2)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = elapsedTime / (duration / 2);
+            star.localScale = Vector3.Lerp(originalScale * maxScale, originalScale, t);
+            yield return null;
+        }
+
+        // Ensure we end at exactly the original scale
+        star.localScale = originalScale;
     }
 
 

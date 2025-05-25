@@ -32,7 +32,7 @@ public class Endgame : MonoBehaviour
 
     private IEnumerator MoveCamera(Vector3 targetPosition)
     {
-        float duration = 2f; // Duration of the camera movement in seconds
+        float duration = 3f; // Duration of the camera movement in seconds
         float elapsedTime = 0f;
         Vector3 startPosition = Camera.main.transform.position;
         float startSize = Camera.main.orthographicSize;
