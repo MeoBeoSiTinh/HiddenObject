@@ -1,49 +1,79 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Tree : MonoBehaviour
 {
     [Header("Sway Settings")]
+    private float maxSwayAngle = 4f;
+    [Tooltip("Sway speed in degrees per second")]
+    private float minSwaySpeed = 1f;
+    private float maxSwaySpeed = 3f;
 
-    public float maxSwayAngle = 4f;
-
-    private Vector3 basePosition;  // The fixed base position
-    private float treeHeight;     // Distance from base to object center
-    private Quaternion startRot;  // Initial rotation
-    private float swaySpeed;      // Random sway speed
+    private Vector3 basePosition;
+    private float treeHeight;
+    private Quaternion startRot;
+    private float swaySpeed;
+    private Coroutine swayCoroutine;
 
     void Start()
     {
-        // Store initial position
+        InitializeTree();
+        swayCoroutine = StartCoroutine(SwayRoutine());
+    }
+
+    private void OnEnable()
+    {
+        InitializeTree();
+        swayCoroutine = StartCoroutine(SwayRoutine());
+    }
+
+    void OnDisable()
+    {
+        if (swayCoroutine != null)
+        {
+            StopCoroutine(swayCoroutine);
+        }
+    }
+
+    void InitializeTree()
+    {
         basePosition = GetBasePosition();
         treeHeight = transform.position.y - basePosition.y;
-
-        // Store initial rotation PROPERLY
         startRot = transform.rotation;
 
-        // Add random initial tilt (in Euler angles, not Quaternion)
-        float randomZRotation = Random.Range(-1, 1);
+        // Add random initial tilt
+        float randomZRotation = Random.Range(-1f, 1f);
         startRot = Quaternion.Euler(0, 0, randomZRotation);
 
-        // Random sway speed
-        swaySpeed = Random.Range(1f, 2f);
+        // Random sway speed (in degrees per second)
+        swaySpeed = Random.Range(minSwaySpeed, maxSwaySpeed);
     }
 
-    void Update()
+    IEnumerator SwayRoutine()
     {
-        // Calculate sway angle (-maxAngle to +maxAngle)
-        float sway = Mathf.Sin(Time.time * swaySpeed) * maxSwayAngle;
+        float swayTimer = 0f;
+        float swayDuration = 1f; // Duration for one full sway cycle
 
-        // Reset to original position/rotation
-        transform.rotation = startRot;
-        transform.position = basePosition + Vector3.up * treeHeight;
+        while (true)
+        {
+            // Calculate progress through sway cycle (0 to 1)
+            float progress = Mathf.PingPong(swayTimer * swaySpeed, maxSwayAngle * 2) / (maxSwayAngle * 2);
 
-        // Apply rotation around base
-        transform.RotateAround(basePosition, Vector3.forward, sway);
+            // Calculate sway angle using smooth Sin wave
+            float swayAngle = Mathf.Sin(progress * Mathf.PI * 2) * maxSwayAngle;
+
+            // Apply rotation around base
+            transform.rotation = startRot;
+            transform.position = basePosition + Vector3.up * treeHeight;
+            transform.RotateAround(basePosition, Vector3.forward, swayAngle);
+
+            // Increment timer and wait
+            swayTimer += Time.deltaTime;
+            yield return null;
+        }
     }
 
-        Vector3 GetBasePosition()
+    Vector3 GetBasePosition()
     {
         // For SpriteRenderer (2D)
         if (TryGetComponent<SpriteRenderer>(out var sprite))
@@ -55,8 +85,6 @@ public class Tree : MonoBehaviour
         {
             return transform.position - Vector3.up * mesh.bounds.extents.y;
         }
-
-        // Default to assuming pivot is at base
         return transform.position;
     }
 }
