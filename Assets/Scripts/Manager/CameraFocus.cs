@@ -5,8 +5,8 @@ using System.Collections.Generic;
 public class CameraFocus : MonoBehaviour
 {
     public Camera mainCamera; // Assign your 2D camera in the Inspector
-    public float activationDistance = 4f;
-    public float proximityRadius = 4f;
+    public float activationDistance = 1f;
+    public float proximityRadius = 1f;
     private List<GameObject> dynamicObjects = new List<GameObject>(); // Initialize the list to store all relevant 2D objects
 
     public void Start()
@@ -77,27 +77,40 @@ public class CameraFocus : MonoBehaviour
     {
         GameObject map = GameObject.Find("map" + levelIndex + "(Clone)");
         dynamicObjects.Clear(); // Clear the list before adding new objects
-        for (int i = 0; i < map.transform.childCount; i++)
+
+        if (map != null)
         {
-            Transform child = map.transform.GetChild(i);
-            if (child.GetComponent<ObjectTouch>() == null)
-            {
-                if (child.childCount > 0)
-                {
-                    foreach (Transform grandChild in child)
-                    {
-                        if (grandChild.GetComponent<ObjectTouch>() == null)
-                        {
-                            dynamicObjects.Add(grandChild.gameObject);
-                        }
-                    }
-                }
-                else if (child.GetComponent<SpriteRenderer>() != null)
-                {
-                    dynamicObjects.Add(child.gameObject);
-                }
-            }
+            // Recursively find all SpriteRenderers in the map
+            FindAllSpriteRenderers(map.transform);
         }
-        dynamicObjects.RemoveAll(x => x.name == "Background");
+        else
+        {
+            Debug.LogWarning("Map not found: map" + levelIndex + "(Clone)");
+        }
+    }
+
+    // Recursively find all GameObjects with SpriteRenderer in children
+    private void FindAllSpriteRenderers(Transform parent)
+    {
+        // Check SpriteRenderer (only if enabled)
+        SpriteRenderer spriteRenderer = parent.GetComponent<SpriteRenderer>();
+        bool hasActiveSpriteRenderer = (spriteRenderer != null && spriteRenderer.enabled);
+
+        // Check MeshRenderer (only if enabled)
+        MeshRenderer meshRenderer = parent.GetComponent<MeshRenderer>();
+        bool hasActiveMeshRenderer = (meshRenderer != null && meshRenderer.enabled);
+
+        // Add only if has an ACTIVE renderer and isn't a background
+        if ((hasActiveSpriteRenderer || hasActiveMeshRenderer) && parent.name != "Background")
+        {
+            dynamicObjects.Add(parent.gameObject);
+        }
+
+        // Recursively check children
+        for (int i = 0; i < parent.childCount; i++)
+        {
+            Transform child = parent.GetChild(i);
+            FindAllSpriteRenderers(child);
+        }
     }
 }

@@ -2776,8 +2776,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 519420031}
-  activationDistance: 2
-  proximityRadius: 2
+  activationDistance: 1.5
+  proximityRadius: 1.5
 --- !u!4 &1118976661
 Transform:
   m_ObjectHideFlags: 0

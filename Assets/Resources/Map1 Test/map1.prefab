@@ -27515,7 +27515,7 @@ GameObject:
   - component: {fileID: 1443638109407373239}
   - component: {fileID: 5529706641295117411}
   m_Layer: 0
-  m_Name: Untitled-1_0005_Background
+  m_Name: main
   m_TagString: Interact
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35283,7 +35283,7 @@ GameObject:
   - component: {fileID: 8864130477012016731}
   - component: {fileID: 7856117826659379101}
   m_Layer: 0
-  m_Name: main
+  m_Name: anim
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -79,6 +79,8 @@ public class GameManager : MonoBehaviour
     }
     public void Start()
     {
+        Application.targetFrameRate = 60;
+
         //GenerateLevelMenu();
         LoadLevel(0);
         gadgetManager = GameObject.Find("GadgetManager").GetComponent<GadgetManager>();
@@ -147,8 +149,8 @@ public class GameManager : MonoBehaviour
         UpdateHotBar();
 
         ProgressBar.GetComponent<ProgressBar>().resetProgressBar();
-        //CameraRenderer.GetComponent<CameraFocus>().ResetMap(currentLevelIndex + 1);
-        //CameraRenderer.SetActive(true);
+        CameraRenderer.GetComponent<CameraFocus>().ResetMap(currentLevelIndex + 1);
+        CameraRenderer.SetActive(true);
 
         SoundFXManager.Instance.PlayLoopingSoundFXClip(BackgroundMusic, Camera.main.transform, 0.6f);
         StartCoroutine(gameObject.GetComponent<Beginning>().Begin(currentLevelIndex));
@@ -160,6 +162,7 @@ public class GameManager : MonoBehaviour
         if (currentLevelInstance == null) return;
         Destroy(currentLevelInstance);
         currentLevelInstance = null;
+        CameraRenderer.SetActive(false);
         SoundFXManager.Instance.StopAllSoundFX();
     }
 

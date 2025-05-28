@@ -15,7 +15,8 @@ public class Beginning : MonoBehaviour
 
                 Camera.main.transform.position = new Vector3(-6, 11, -10);
                 yield return new WaitForSeconds(2f);
-                SkeletonAnimation anim = GameObject.Find("main").GetComponent<SkeletonAnimation>();
+                GameObject animHolder = GameObject.Find("main");
+                SkeletonAnimation anim = animHolder.transform.GetChild(0).GetComponent<SkeletonAnimation>();
                 Vector3 pos = anim.transform.position;
                 pos.z = -10;
                 yield return MoveCamera(pos, 5f);
