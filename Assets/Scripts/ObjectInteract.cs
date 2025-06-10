@@ -185,7 +185,7 @@ public class ObjectInteract : MonoBehaviour
         {
 
             List<string> missingIngredients = ingredients.Except(foundTarget).ToList();
-            ScrollRectFocus scroll = GameObject.Find("Scroll").GetComponent<ScrollRectFocus>();
+            ScrollFocus scroll = GameObject.Find("Scroll").GetComponent<ScrollFocus>();
             foreach (string name in missingIngredients)
             {
                 GameObject icon = GameObject.Find(name + "(recipe)");
@@ -199,10 +199,10 @@ public class ObjectInteract : MonoBehaviour
                 {
                     StartCoroutine(FlashRed(iconBar));
 
-                    bool isVisible = scroll.IsElementVisible(icon.GetComponent<RectTransform>());
+                    bool isVisible = scroll.IsIconVisible(icon.GetComponent<RectTransform>());
                     if (!isVisible)
                     {
-                        scroll.ScrollToView(iconBar.GetComponent<RectTransform>());
+                        scroll.ScrollToIcon(iconBar.GetComponent<RectTransform>());
                         Debug.Log("not visible");
                     }
                 }

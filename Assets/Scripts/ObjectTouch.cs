@@ -235,12 +235,12 @@ public class ObjectTouch : MonoBehaviour
             gameManager.OnMinimizeClicked();
         }
         gameObject.GetComponent<SpriteRenderer>().enabled = false;
-        ScrollRectFocus scroll = GameObject.Find("Scroll").GetComponent<ScrollRectFocus>();
+        ScrollFocus scroll = GameObject.Find("Scroll").GetComponent<ScrollFocus>();
         GameObject icon = GameObject.Find("Icon" + name);
-        bool isVisible = scroll.IsElementVisible(icon.GetComponent<RectTransform>());
+        bool isVisible = scroll.IsIconVisible(icon.GetComponent<RectTransform>());
         if (!isVisible)
         {
-            scroll.ScrollToView(icon.GetComponent<RectTransform>());
+            scroll.ScrollToIcon(icon.GetComponent<RectTransform>());
             yield return new WaitForSeconds(0.5f); // Wait for the scroll to finish
 
         }
