@@ -13,14 +13,9 @@ public class MyLevelData
 {
     public string LevelName;
     public GameObject LevelPrefab;
-    public List<MyTarget> TargetList;
+    public List<GameObject> TargetList;
 
 }
 
-[System.Serializable]
-public class MyTarget
-{
-    public GameObject Target;
-}
 
 

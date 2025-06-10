@@ -11,11 +11,11 @@ public class GameManager : MonoBehaviour
     public LevelData levelData;
     public int currentLevelIndex;
     private GameObject currentLevelInstance;
-    private List<MyTarget> targetList;
-    public List<MyTarget> allTargetsList;
+    private List<GameObject> targetList;
+    public List<GameObject> allTargetsList;
     public List<string> foundTarget;
-    public float targetSize; // Size of the camera zoom out
     public GameObject CameraRenderer;
+    public GameObject CurrentTextbox;
 
     [Header("UI Settings")]
     public GameObject LevelMenuHolder;
@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
     public Transform PlayerInfo;
     public GameObject Dialogue;
     public GameObject ProgressBar;
+    public GameObject FocusCircle;
 
 
     [Header("PlayerData")]
@@ -82,7 +83,7 @@ public class GameManager : MonoBehaviour
         Application.targetFrameRate = 60;
 
         //GenerateLevelMenu();
-        LoadLevel(0);
+        LoadLevel(currentLevelIndex);
         gadgetManager = GameObject.Find("GadgetManager").GetComponent<GadgetManager>();
         CreateEmptyUIElementAtParentRectPosition(toolbarSlotsParent.GetComponent<RectTransform>());
     }
@@ -125,19 +126,21 @@ public class GameManager : MonoBehaviour
         inGameUi.SetActive(true);
 
         DeleteCurrentLevel();
+        ResetMainCameraPosition();
 
         MyLevelData levelInfor = levelData.data[levelIndex];
 
         if (levelInfor == null) return;
 
         currentLevelInstance = Instantiate(levelInfor.LevelPrefab);
-        Camera.main.GetComponent<CameraHandle>().backgroundBounds = GameObject.FindGameObjectWithTag("Background").GetComponent<SpriteRenderer>().bounds;
-        
+        Bounds newbounds = currentLevelInstance.transform.Find("Background").GetComponent<SpriteRenderer>().bounds;
+        Camera.main.GetComponent<CameraHandle>().updateBounds(newbounds);
+
 
         currentLevelIndex = levelIndex;
 
         // Populate allTargetsList with all targets in every stage
-        allTargetsList = new List<MyTarget>();
+        allTargetsList = new List<GameObject>();
 
         //TextMeshProUGUI stageName = GameObject.Find("StageName").GetComponentInChildren<TextMeshProUGUI>();
         //stageName.text = levelInfor.LevelName;
@@ -153,7 +156,7 @@ public class GameManager : MonoBehaviour
         CameraRenderer.SetActive(true);
 
         SoundFXManager.Instance.PlayLoopingSoundFXClip(BackgroundMusic, Camera.main.transform, 0.6f);
-        StartCoroutine(gameObject.GetComponent<Beginning>().Begin(currentLevelIndex));
+        //StartCoroutine(gameObject.GetComponent<Beginning>().Begin(currentLevelIndex));
     }
 
 
@@ -168,18 +171,17 @@ public class GameManager : MonoBehaviour
 
     public void TargetFound(GameObject target)
     {
-        int targetIndex = allTargetsList.FindIndex(x => x.Target.name == target.name);
+        int targetIndex = allTargetsList.FindIndex(x => x.name == target.name);
         if (targetIndex == -1)
         {
             return;
         }
         else
         {
-            targetList.RemoveAll(x => x.Target.name == target.name);
+            targetList.RemoveAll(x => x.name == target.name);
             //change Hotbar color
             Transform slot = toolbarSlotsParent.GetChild(targetIndex);
             Image bg = slot.GetComponentInChildren<Image>();
-            bg.color = Color.green;
 
 
             GameObject tick = new GameObject("Tick");
@@ -204,7 +206,7 @@ public class GameManager : MonoBehaviour
         if (targetList.Count == 0)
         {
             StartCoroutine(EndgameSequence());
-        }
+        }   
     }
 
     private IEnumerator EndgameSequence()
@@ -314,7 +316,7 @@ public class GameManager : MonoBehaviour
     {
         for (int i = 0; i < allTargetsList.Count; i++)
         {
-            GameObject newSlotObject = new GameObject("Icon" + allTargetsList[i].Target.name);
+            GameObject newSlotObject = new GameObject("Icon" + allTargetsList[i].name);
             newSlotObject.transform.SetParent(toolbarSlotsParent);
             RectTransform rectTransform = newSlotObject.AddComponent<RectTransform>();
             rectTransform.sizeDelta = new Vector2(1, 1); // Set size of the slot
@@ -330,11 +332,19 @@ public class GameManager : MonoBehaviour
             Image image = iconObject.AddComponent<Image>();
             CanvasGroup canvasGroup = iconObject.AddComponent<CanvasGroup>();
 
-            image.sprite = allTargetsList[i].Target.GetComponent<SpriteRenderer>().sprite;
+            image.sprite = allTargetsList[i].GetComponent<SpriteRenderer>().sprite;
 
-            iconRectTransform.sizeDelta = new Vector2(image.sprite.rect.width, image.sprite.rect.height);
+            // Scale down if width or height > 80, maintaining aspect ratio
+            float defaultSize = 95f;
+            float width = image.sprite.rect.width;
+            float height = image.sprite.rect.height;
+            float scale = 1f;
+
+            scale = defaultSize / Mathf.Max(width, height);
+            
+            iconRectTransform.sizeDelta = new Vector2(width * scale, height * scale);
             iconRectTransform.anchoredPosition = new Vector2(0, 0); // Set position of the icon
-            iconRectTransform.localScale = new Vector3(1.2f, 1.2f, 1.2f); // Set scale of the icon
+            iconRectTransform.localScale = new Vector3(1f, 1f, 1f); // Set scale of the icon
             iconRectTransform.anchoredPosition3D = new Vector3(iconRectTransform.anchoredPosition3D.x, iconRectTransform.anchoredPosition3D.y, 0); // Set z position to 0
 
             image.gameObject.SetActive(true);
@@ -420,9 +430,9 @@ public class GameManager : MonoBehaviour
     public void OnScanClicked()
     {
         List<GameObject> targets = new List<GameObject>();
-        foreach (MyTarget target in targetList)
+        foreach (GameObject target in targetList)
         {
-            GameObject targetObject = GameObject.Find(target.Target.name);
+            GameObject targetObject = GameObject.Find(target.name);
             if (targetObject != null)
             {
                 targets.Add(targetObject);
@@ -434,9 +444,9 @@ public class GameManager : MonoBehaviour
     public void OnCompassClicked()
     {
         List<GameObject> targets = new List<GameObject>();
-        foreach (MyTarget target in targetList)
+        foreach (GameObject target in targetList)
         {
-            GameObject targetObject = GameObject.Find(target.Target.name);
+            GameObject targetObject = GameObject.Find(target.name);
             if (targetObject != null)
             {
                 targets.Add(targetObject);
@@ -445,9 +455,9 @@ public class GameManager : MonoBehaviour
         gadgetManager.Compass(targets);
     }
 
-    public void OpenDialogue()
+    public void OnClaimClicked()
     {
-        Dialogue.SetActive(true);
+        CurrentTextbox.GetComponent<ObjectInteract>().Interact();
     }
     
     

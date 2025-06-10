@@ -7,7 +7,6 @@ using UnityEngine.InputSystem;
 public class CameraHandle : MonoBehaviour
 {
     public GameObject camera_GameObject;
-    public GameObject background_GameObject;
     public Bounds backgroundBounds;
     private float prevMagnitude = 0;
     private float touchCount = 0;
@@ -16,6 +15,7 @@ public class CameraHandle : MonoBehaviour
     private float dragSpeed = 0.5f;
     private float zoomSpeed = 0.01f;
     private float zoomVelocity = 0.1f;
+    public bool allowed = true;
 
     // Bounce effect variables
     private bool isBouncing = false;
@@ -27,8 +27,8 @@ public class CameraHandle : MonoBehaviour
     public int currentStage;
 
     // Define min and max zoom levels
-    private float minZoom;
-    private float maxZoom;
+    public float minZoom = 5f;
+    public float maxZoom = 8f;
 
     void Start()
     {
@@ -61,7 +61,7 @@ public class CameraHandle : MonoBehaviour
 
         touch1Pos.performed += _ =>
         {
-            if (touchCount != 2 || IsPointerOverUI(touch0Pos.ReadValue<Vector2>()) || IsPointerOverUI(touch1Pos.ReadValue<Vector2>()))
+            if (touchCount != 2 || IsPointerOverUI(touch0Pos.ReadValue<Vector2>()) || IsPointerOverUI(touch1Pos.ReadValue<Vector2>()) || !allowed)
                 return;
 
             var magnitude = (touch1Pos.ReadValue<Vector2>() - touch0Pos.ReadValue<Vector2>()).magnitude;
@@ -78,7 +78,7 @@ public class CameraHandle : MonoBehaviour
         touch0Drag.Enable();
         touch0Drag.performed += ctx =>
         {
-            if (touchCount == 1 && !isZooming && !IsPointerOverUI(touch0Pos.ReadValue<Vector2>()))
+            if (touchCount == 1 && !isZooming && !IsPointerOverUI(touch0Pos.ReadValue<Vector2>()) && allowed)
             {
                 Vector2 delta = ctx.ReadValue<Vector2>();
                 Vector3 move = new Vector3(-delta.x, -delta.y, 0) * dragSpeed * Time.deltaTime;
@@ -97,13 +97,11 @@ public class CameraHandle : MonoBehaviour
 
     void Update()
     {
-        minZoom = 5f;
-        maxZoom = 15f;
 
         // Apply bounce effect if active
         if (isBouncing && touchCount == 0)
         {
-            camera_GameObject.transform.position += bounceDirection * bounceIntensity;
+            camera_GameObject.transform.position += bounceDirection * 0.05f * cam.orthographicSize;
             bounceDirection *= bounceDecay; // Reduce bounce over time
 
             // Stop bouncing when barely moving
@@ -212,5 +210,12 @@ public class CameraHandle : MonoBehaviour
         }
 
         camera_GameObject.transform.localPosition = originalPosition;
+    }
+
+
+    public void updateBounds(Bounds newBound)
+    {
+        backgroundBounds = newBound;
+        RestrictCameraPosition();
     }
 }

@@ -1,0 +1,143 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Map2 : MonoBehaviour
+{
+    GameManager gameManager;
+    private List<string> foundTarget;
+    FocusCircleController focusCircleController;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        StartCoroutine(Tutorial());
+        focusCircleController = gameManager.FocusCircle.GetComponent<FocusCircleController>();
+
+
+    }
+
+    private IEnumerator Tutorial()
+    {
+        yield return MoveCamera(new Vector3(-7.5f, 0.2f, -10f), 10f);
+        yield return CreateAndFadeInPointerDestroyOnClick(new Vector2(-7.8f, 1.2f), 0.5f);
+        Camera.main.GetComponent<CameraHandle>().allowed = false;
+        while (GameObject.FindGameObjectsWithTag("Pointer").Length > 0)
+        {
+            yield return null; // Wait for the next frame
+        }
+        Camera.main.GetComponent<CameraHandle>().allowed = true;
+        StartCoroutine(focusCircleController.StopFocusing());
+        while (!gameManager.foundTarget.Contains("Cần câu") || !gameManager.foundTarget.Contains("Giun đất"))
+        {
+            yield return null; // Wait for the next frame
+        }
+        yield return MoveCamera(new Vector3(-7.5f, 0.2f, -10f), 10f);
+        yield return CreateAndFadeInPointerDestroyOnClick(new Vector2(-7.8f, 1.2f), 0.5f);
+        Camera.main.GetComponent<CameraHandle>().allowed = false;
+        while (GameObject.FindGameObjectsWithTag("Pointer").Length > 0)
+        {
+            yield return null; // Wait for the next frame
+        }
+        StartCoroutine(focusCircleController.StopFocusing());
+        while (!GameObject.Find("Cá sống"))
+        {
+            yield return null; // Wait for the next frame
+        }
+        yield return new WaitForSeconds(1.5f);
+        GameObject fish = GameObject.Find("Cá sống");
+
+        Camera.main.GetComponent<CameraHandle>().allowed = true;
+    }
+
+    private IEnumerator CreateAndFadeInPointer(Vector2 position, float fadeDuration)
+    {
+        if (GameObject.FindGameObjectsWithTag("Pointer").Length > 0)
+        {
+            yield break;
+        }
+        GameObject pointerPrefab = Resources.Load<GameObject>("Pointer/Pointer");
+        if (pointerPrefab != null)
+        {
+            GameObject pointer = Instantiate(pointerPrefab, position, pointerPrefab.transform.rotation);
+            SpriteRenderer sr = pointer.GetComponentInChildren<SpriteRenderer>();
+            if (sr == null) yield break;
+
+            Color transparent = sr.color;
+            transparent.a = 0f;
+            Color opaque = sr.color;
+
+            float progress = 0f;
+            while (progress < 1f)
+            {
+                if (sr == null) yield break;
+                progress += Time.deltaTime / fadeDuration;
+                sr.color = Color.Lerp(transparent, opaque, progress);
+                yield return null;
+            }
+        }
+    }
+
+    private IEnumerator CreateAndFadeInPointerDestroyOnClick(Vector2 position, float fadeDuration)
+    {
+        if (GameObject.FindGameObjectsWithTag("Pointer").Length > 0)
+        {
+            yield break;
+        }
+        GameObject pointerPrefab = Resources.Load<GameObject>("Pointer/Pointer");
+        if (pointerPrefab != null)
+        {
+            GameObject pointer = Instantiate(pointerPrefab, position, pointerPrefab.transform.rotation);
+            pointer.AddComponent<DestroyOnAnyNonUIClick>();
+            SpriteRenderer sr = pointer.GetComponentInChildren<SpriteRenderer>();
+            if (sr == null) yield break;
+
+            Color transparent = sr.color;
+            transparent.a = 0f;
+            Color opaque = sr.color;
+
+            float progress = 0f;
+            while (progress < 1f)
+            {
+                if (sr == null) yield break;
+                progress += Time.deltaTime / fadeDuration;
+                sr.color = Color.Lerp(transparent, opaque, progress);
+                yield return null;
+            }
+        }
+    }
+
+
+
+    private IEnumerator MoveCamera(Vector3 targetPosition, float targetSize)
+    {
+        float duration = 0.8f; // Duration of the camera movement in seconds
+        float elapsedTime = 0f;
+        Vector3 startPosition = Camera.main.transform.position;
+        float startSize = Camera.main.orthographicSize;
+        targetPosition.z = -10f;
+
+        // Disable CameraHandle script
+        CameraHandle cameraHandle = Camera.main.GetComponent<CameraHandle>();
+
+        cameraHandle.enabled = false;
+        // Smoothly move the camera to the target position and zoom out
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsedTime / duration);
+            Camera.main.transform.position = Vector3.Lerp(startPosition, targetPosition, t);
+            Camera.main.orthographicSize = Mathf.Lerp(startSize, targetSize, t);
+            yield return null; // Wait for the next frame
+        }
+
+        // Ensure the camera reaches the exact target position and zoom level
+        Camera.main.transform.position = targetPosition;
+        Camera.main.orthographicSize = targetSize;
+        yield return focusCircleController.StartFocusing(targetPosition, 0.1f);
+
+        // Re-enable CameraHandle script
+        cameraHandle.enabled = true;
+    }
+}

@@ -25,7 +25,7 @@ public class ObjectTouch : MonoBehaviour
     {
         // Cache the main camera for performance
         mainCamera = Camera.main;
-        Input.simulateMouseWithTouches = false;
+        Input.simulateMouseWithTouches = true;
         // Find the GameManager object by name and get the GameManager component
         GameObject gameManagerObject = GameObject.Find("GameManager");
         if (gameManagerObject != null)
@@ -135,7 +135,7 @@ public class ObjectTouch : MonoBehaviour
 
                                 break;
                             case "Interact":
-                                gameObject.GetComponent<ObjectInteract>().Interact();
+                                gameObject.GetComponent<ObjectInteract>().CreateTextBox();
 
                                 break;
                             case "Tree":
@@ -397,7 +397,7 @@ public class ObjectTouch : MonoBehaviour
         }
 
         spriteRenderer.color = new Color(originalColor.r, originalColor.g, originalColor.b, 0f);
-        gameObject.SetActive(false);
+        Destroy(gameObject);
     }
     // Add this method to the ObjectTouch class
     public void JiggleObject()

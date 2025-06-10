@@ -8,6 +8,8 @@ public class CameraFocus : MonoBehaviour
     public float activationDistance = 1f;
     public float proximityRadius = 1f;
     private List<GameObject> dynamicObjects = new List<GameObject>(); // Initialize the list to store all relevant 2D objects
+                                                                      // Add this field to the class
+    private readonly HashSet<string> excludedRendererNames = new HashSet<string> { "Background", "may", "main" };
 
     public void Start()
     {
@@ -100,11 +102,10 @@ public class CameraFocus : MonoBehaviour
         MeshRenderer meshRenderer = parent.GetComponent<MeshRenderer>();
         bool hasActiveMeshRenderer = (meshRenderer != null && meshRenderer.enabled);
 
-        // Add only if has an ACTIVE renderer and isn't a background
-        if ((hasActiveSpriteRenderer || hasActiveMeshRenderer) && parent.name != "Background")
-        {
-            dynamicObjects.Add(parent.gameObject);
-        }
+        // Replace the relevant line in FindAllSpriteRenderers:
+        if ((hasActiveSpriteRenderer || hasActiveMeshRenderer) && !excludedRendererNames.Contains(parent.name))
+        dynamicObjects.Add(parent.gameObject);
+        
 
         // Recursively check children
         for (int i = 0; i < parent.childCount; i++)

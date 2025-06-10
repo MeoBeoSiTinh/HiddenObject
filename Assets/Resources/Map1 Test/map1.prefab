@@ -514,9 +514,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &1108010087704275240
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1725,9 +1722,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &4114150245184172831
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2448,9 +2442,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &5035806497120227775
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2779,6 +2770,50 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &336193419388030243
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7213096780204390037}
+  - component: {fileID: 7626718889462326727}
+  m_Layer: 0
+  m_Name: Tutorial
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7213096780204390037
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 336193419388030243}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.26, y: 1.97, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6505371790088572021}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7626718889462326727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 336193419388030243}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4520a3dc5ad2abb409401757b53bd5a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &341216852873187761
 GameObject:
   m_ObjectHideFlags: 0
@@ -3606,9 +3641,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &7658962852891500202
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3785,9 +3817,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &5065653632294868838
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4527,9 +4556,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &3846444296549979124
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5444,9 +5470,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &8637443006299252565
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5623,9 +5646,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &3503236534411506935
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6289,7 +6309,7 @@ Transform:
   m_GameObject: {fileID: 742065616239173712}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.0194, y: -19.5, z: 0}
+  m_LocalPosition: {x: -0.04, y: -19.86, z: 0}
   m_LocalScale: {x: 1.1578302, y: 1.15, z: 1.15}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -6899,9 +6919,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &6965960975140696916
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7330,9 +7347,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &7992032190509086238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7944,9 +7958,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &6820053962362474197
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8123,9 +8134,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &5008935389541676124
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8302,9 +8310,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &2972180224646312323
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10074,9 +10079,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &7906536079250397748
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11687,9 +11689,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &4205695229069019447
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11866,9 +11865,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &5029628530242452681
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12878,9 +12874,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &3184192666676106989
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14050,9 +14043,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &8162933351333165365
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14969,9 +14959,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &621177877946814685
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15798,9 +15785,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!1 &2116875819067368241
 GameObject:
   m_ObjectHideFlags: 0
@@ -16990,9 +16974,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &1282525884420194847
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17337,9 +17318,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &8204547841667081481
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17684,9 +17662,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &4375125844304576333
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18676,9 +18651,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &9018723532157284963
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19345,9 +19317,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &3152019509973938081
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19524,9 +19493,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &2483165254372594148
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19701,9 +19667,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!1 &2531925893865501639
 GameObject:
   m_ObjectHideFlags: 0
@@ -22729,9 +22692,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &319787030843902535
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23966,9 +23926,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &8980801472887149404
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24859,9 +24816,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 2
-  maxSwaySpeed: 4
 --- !u!114 &2819470421120361615
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25458,9 +25412,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &8635754070896360372
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25721,9 +25672,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &2698058832984204465
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26644,9 +26592,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &4350489308225017664
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31467,9 +31412,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &8425488739491657360
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31646,9 +31588,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &6195893169213456472
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34863,9 +34802,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &2911149045789997771
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35650,9 +35586,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &6647989503815518869
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35913,9 +35846,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &1812808359808448996
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36636,9 +36566,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!1 &4927389818041926760
 GameObject:
   m_ObjectHideFlags: 0
@@ -37670,9 +37597,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &6797345128264927556
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38533,9 +38457,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &9110323615915855528
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39596,9 +39517,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &494851072447747175
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -40491,9 +40409,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &4685118450646452407
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -40754,9 +40669,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &8401578680732636839
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -41364,9 +41276,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &1154546982611498967
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -41543,9 +41452,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &7005196949131665123
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -41890,9 +41796,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &1089603232246524507
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42796,9 +42699,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &4584860760616397194
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45391,9 +45291,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &1369816223045186995
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45906,9 +45803,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &5942835807521567221
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46916,9 +46810,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &1529153429904579056
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47263,9 +47154,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &8264492843973205259
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47883,9 +47771,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &8090936265492848032
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -48289,9 +48174,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!1 &6408471069617506757
 GameObject:
   m_ObjectHideFlags: 0
@@ -48392,9 +48274,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &3604028399249273990
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -48569,9 +48448,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!1 &6441688972551293078
 GameObject:
   m_ObjectHideFlags: 0
@@ -48787,9 +48663,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &8064343938932644369
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -49218,9 +49091,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &1905569323950302599
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -49598,9 +49468,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &3355993262605824289
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -50251,90 +50118,6 @@ MonoBehaviour:
   _animationName: idle
   loop: 1
   timeScale: 1
---- !u!1 &6686990916148677144
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7580785092474763006}
-  - component: {fileID: 2756396295419612545}
-  m_Layer: 0
-  m_Name: Layer 596
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7580785092474763006
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6686990916148677144}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 6.569999, y: -9.71, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3399117324651485758}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &2756396295419612545
-SpriteRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6686990916148677144}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 0
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 420
-  m_Sprite: {fileID: 8765349139739563369, guid: 3799e3d8096b0aa43b9d5b1db427793d, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 1.3, y: 0.78}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
 --- !u!1 &6690128982929794458
 GameObject:
   m_ObjectHideFlags: 0
@@ -50634,9 +50417,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &8571080914599275789
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -51808,9 +51588,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &5646511232351711174
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -52158,7 +51935,7 @@ BoxCollider2D:
   m_Offset: {x: -0.045903683, y: 0.8}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0, y: 0}
     oldSize: {x: 0.4, y: 0.4}
     newSize: {x: 0.38, y: 0.37}
     adaptiveTilingThreshold: 0.5
@@ -52903,9 +52680,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &1719756407909091824
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -53522,9 +53296,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &8892652379572809692
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -53869,9 +53640,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &3607197580339583949
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -54415,9 +54183,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &8346949755669426124
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -55959,9 +55724,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &6403145091273837973
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57277,6 +57039,7 @@ Transform:
   - {fileID: 486839834803599779}
   - {fileID: 3084518827383976255}
   - {fileID: 2576787164288568608}
+  - {fileID: 7213096780204390037}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7648770655319964318
@@ -57908,9 +57671,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &5035944014938342377
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -59145,9 +58905,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &3227828957277063818
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -59492,9 +59249,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &4417150019798812517
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -59671,9 +59425,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &6077583795360072144
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -60016,9 +59767,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!1 &8008173325442978357
 GameObject:
   m_ObjectHideFlags: 0
@@ -60318,9 +60066,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &1526889923205421101
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -61726,9 +61471,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &4795951909303823698
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -61989,9 +61731,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &2519473807922889262
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64099,9 +63838,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!1 &8539984400312457570
 GameObject:
   m_ObjectHideFlags: 0
@@ -64433,9 +64169,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!1 &8574448657738500250
 GameObject:
   m_ObjectHideFlags: 0
@@ -65211,9 +64944,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &7480502747676096319
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -66623,9 +66353,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &3714435734961113693
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -66886,9 +66613,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &9088895048128633668
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67065,9 +66789,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &5983809386507109619
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68891,9 +68612,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af87f66eeb2fa14ea388bdd80ae2741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSwayAngle: 4
-  minSwaySpeed: 20
-  maxSwaySpeed: 40
 --- !u!114 &3110554475819836582
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69625,6 +69343,68 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 7105975850762877362, guid: 15def40d2f9258b4db3e5b8d7b82fcdb, type: 3}
   m_PrefabInstance: {fileID: 3529484277071926422}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &3574291952516263190
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3399117324651485758}
+    m_Modifications:
+    - target: {fileID: 6390102609453915112, guid: 8ff9ce7583e35274e8112cb645f74b12, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 6.569999
+      objectReference: {fileID: 0}
+    - target: {fileID: 6390102609453915112, guid: 8ff9ce7583e35274e8112cb645f74b12, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -9.71
+      objectReference: {fileID: 0}
+    - target: {fileID: 6390102609453915112, guid: 8ff9ce7583e35274e8112cb645f74b12, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6390102609453915112, guid: 8ff9ce7583e35274e8112cb645f74b12, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6390102609453915112, guid: 8ff9ce7583e35274e8112cb645f74b12, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6390102609453915112, guid: 8ff9ce7583e35274e8112cb645f74b12, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6390102609453915112, guid: 8ff9ce7583e35274e8112cb645f74b12, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6390102609453915112, guid: 8ff9ce7583e35274e8112cb645f74b12, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6390102609453915112, guid: 8ff9ce7583e35274e8112cb645f74b12, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6390102609453915112, guid: 8ff9ce7583e35274e8112cb645f74b12, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7878653205461772046, guid: 8ff9ce7583e35274e8112cb645f74b12, type: 3}
+      propertyPath: m_Name
+      value: Layer 596
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8ff9ce7583e35274e8112cb645f74b12, type: 3}
+--- !u!4 &7580785092474763006 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6390102609453915112, guid: 8ff9ce7583e35274e8112cb645f74b12, type: 3}
+  m_PrefabInstance: {fileID: 3574291952516263190}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3763278956669100709
 PrefabInstance:

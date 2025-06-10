@@ -13,18 +13,23 @@ MonoBehaviour:
   m_Name: LevelData
   m_EditorClassIdentifier: 
   data:
-  - LevelName: Camping in the wood
-    LevelPrefab: {fileID: 7646842039866314721, guid: 5ccf09399a787914d909983e383f3d9d, type: 3}
+  - LevelName: camping
+    LevelPrefab: {fileID: 7646842039866314721, guid: fec717bacdbd0714f9f057575b06ca35, type: 3}
     TargetList:
-    - Target: {fileID: 404611377008870635, guid: 1c1d0b96f641f7145821c39cf270d3cc, type: 3}
-    - Target: {fileID: 785789452558807969, guid: 6dc4865c3fa217440b99774ec8eeea41, type: 3}
-    - Target: {fileID: 1894422783341376688, guid: e369fb47eb2c28d4c91a576329024b7f, type: 3}
-    - Target: {fileID: 4890201634380008378, guid: 610bdcf77a219a244a57a7c92aad9503, type: 3}
-    - Target: {fileID: 329005420636973722, guid: 542a251e865de164a9125198b27e763d, type: 3}
-    - Target: {fileID: 4336240767306035871, guid: 179d0b2f32f5b3746a6740ee7efcc2f3, type: 3}
-    - Target: {fileID: 2692322865771529606, guid: 74c75739815eb5c4d8b941c23c080a6c, type: 3}
-    - Target: {fileID: 3092852842599020521, guid: a43848e08eb6a844f987544ec535a8c9, type: 3}
-    - Target: {fileID: 1016966044782446909, guid: 1145563dd585c324fbbc2f3df18f717c, type: 3}
-    - Target: {fileID: 5901575741412094142, guid: 24f3cdf38b0200d4da234920ea948f26, type: 3}
-    - Target: {fileID: 4753051558847740046, guid: 9e621b54cc9e07b40bd0600cfc814fae, type: 3}
-    - Target: {fileID: 3500053081600199354, guid: 73a7bb236aee53b41a18e96249fcd8ba, type: 3}
+    - {fileID: 2863581438150239884, guid: fef482617884c7c438d99d931afc48c5, type: 3}
+    - {fileID: 8842466002598645785, guid: cd1bf6bd54b7b01429f886cd9c3805cf, type: 3}
+    - {fileID: 6076269329274554569, guid: 4179bc7d5e02dc943856fdc72320655e, type: 3}
+  - LevelName: camping 2
+    LevelPrefab: {fileID: 7646842039866314721, guid: 49c1f61cec97da24883db14b97491b82, type: 3}
+    TargetList:
+    - {fileID: 3979874467627053351, guid: 1c6c0b8a32ab33346b71acc067d00621, type: 3}
+    - {fileID: 2067382545671350654, guid: 1aeb935986cf8174b9e08f284f4c6a79, type: 3}
+    - {fileID: 1016966044782446909, guid: 1145563dd585c324fbbc2f3df18f717c, type: 3}
+    - {fileID: 1016966044782446909, guid: 1145563dd585c324fbbc2f3df18f717c, type: 3}
+    - {fileID: 1016966044782446909, guid: 1145563dd585c324fbbc2f3df18f717c, type: 3}
+    - {fileID: 1016966044782446909, guid: 1145563dd585c324fbbc2f3df18f717c, type: 3}
+    - {fileID: 1016966044782446909, guid: 1145563dd585c324fbbc2f3df18f717c, type: 3}
+    - {fileID: 1016966044782446909, guid: 1145563dd585c324fbbc2f3df18f717c, type: 3}
+    - {fileID: 1016966044782446909, guid: 1145563dd585c324fbbc2f3df18f717c, type: 3}
+    - {fileID: 1016966044782446909, guid: 1145563dd585c324fbbc2f3df18f717c, type: 3}
+    - {fileID: 1016966044782446909, guid: 1145563dd585c324fbbc2f3df18f717c, type: 3}

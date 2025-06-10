@@ -5,7 +5,8 @@ MonoImporter:
   serializedVersion: 2
   defaultReferences:
   - result: {instanceID: 0}
-  - textBox: {fileID: 6291998131046742047, guid: 8c55132f18fa37442ac3148497901056, type: 3}
+  - Noti: {instanceID: 0}
+  - Tick: {fileID: 4211072844000078512, guid: d685444b049e0e4449f767c6a4850e92, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

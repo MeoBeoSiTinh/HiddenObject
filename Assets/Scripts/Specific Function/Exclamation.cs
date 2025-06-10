@@ -6,19 +6,32 @@ public class Exclamation : MonoBehaviour
 {
     private Vector3 startPosition;
     public float amplitude = 0.2f; // How far up and down
-    public float frequency = 2f;   // How fast
+    public float frequency = 0.5f;   // How fast
 
-    void Start()
+
+    private IEnumerator Jiggling()
     {
-        startPosition = transform.position;
+        while (true)
+        {
+            float elapsed = 0f;
+            while (true)
+            {
+                elapsed += Time.deltaTime;
+                float yOffset = Mathf.Sin(elapsed * frequency * Mathf.PI * 2) * amplitude;
+                transform.position = startPosition + new Vector3(0, yOffset, 0);
+                yield return null;
+            }
+        }
     }
 
-    void Update()
+    void OnEnable()
     {
-        if (gameObject.activeInHierarchy)
-        {
-            float newY = startPosition.y + Mathf.Sin(Time.time * frequency) * amplitude;
-            transform.position = new Vector3(startPosition.x, newY, startPosition.z);
-        }
+        startPosition = transform.position;
+        StartCoroutine(Jiggling());
+    }
+
+    void OnDisable()
+    {
+        StopCoroutine(Jiggling());
     }
 }
