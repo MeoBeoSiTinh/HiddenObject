@@ -1016,12 +1016,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 460448828}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 371a1cd2cd0779846a3ebecb508d8886, type: 3}
+  m_Script: {fileID: 11500000, guid: 600e84f2da1b38c4a97d961eb0adb1bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scrollRect: {fileID: 460448830}
+  canvasCamera: {fileID: 519420031}
+  viewport: {fileID: 460448829}
   scrollDuration: 0.5
-  easeType: 2
-  visibilityMargin: 0.1
 --- !u!1 &461090180
 GameObject:
   m_ObjectHideFlags: 0

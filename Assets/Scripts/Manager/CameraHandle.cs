@@ -218,4 +218,32 @@ public class CameraHandle : MonoBehaviour
         backgroundBounds = newBound;
         RestrictCameraPosition();
     }
+
+    public IEnumerator MoveCamera(Vector3 targetPosition, float targetSize)
+    {
+        float duration = 0.8f; // Duration of the camera movement in seconds
+        float elapsedTime = 0f;
+        Vector3 startPosition = Camera.main.transform.position;
+        float startSize = Camera.main.orthographicSize;
+        targetPosition.z = -10f;
+
+        // Disable CameraHandle script
+        CameraHandle cameraHandle = Camera.main.GetComponent<CameraHandle>();
+
+        // Smoothly move the camera to the target position and zoom out with ease in/ease out
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsedTime / duration);
+            // Ease in/ease out using SmoothStep
+            float smoothT = Mathf.SmoothStep(0f, 1f, t);
+            Camera.main.transform.position = Vector3.Lerp(startPosition, targetPosition, smoothT);
+            Camera.main.orthographicSize = Mathf.Lerp(startSize, targetSize, smoothT);
+            yield return null; // Wait for the next frame
+        }
+
+        // Ensure the camera reaches the exact target position and zoom level
+        Camera.main.transform.position = targetPosition;
+        Camera.main.orthographicSize = targetSize;
+    }
 }

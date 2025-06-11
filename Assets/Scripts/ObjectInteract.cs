@@ -18,11 +18,11 @@ public class ObjectInteract : MonoBehaviour
 
     private GameManager gameManager;
     private bool finished = false;
-    Camera mainCamera;
+    CameraHandle cam;
     void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        mainCamera = Camera.main;
+        cam = Camera.main.GetComponent<CameraHandle>();
     }
 
     public void CreateTextBox()
@@ -45,7 +45,7 @@ public class ObjectInteract : MonoBehaviour
         spawnedTextBox.transform.SetParent(GameObject.Find("Canvas").transform);
           
         Vector3 pos = transform.position;
-        StartCoroutine(MoveCamera(pos, 6f));
+        StartCoroutine(cam.GetComponent<CameraHandle>().MoveCamera(pos, 6f));
         pos.y += 1.8f;
         spawnedTextBox.GetComponent<WorldSpaceUI>().worldOffset = pos;
         spawnedTextBox.GetComponent<WorldSpaceUI>().Init();
@@ -174,7 +174,7 @@ public class ObjectInteract : MonoBehaviour
             Destroy(textBoxObj);
             Vector3 targetPosition = SpawnLocation;
             targetPosition.z = -10f;
-            StartCoroutine(MoveCamera(targetPosition, 6f));
+            StartCoroutine(cam.MoveCamera(targetPosition, 6f));
             StartCoroutine(HandleResult());
             finished = true;
             SoundFXManager.Instance.PlaySoundFXClip(GetComponent<ObjectTouch>().soundFx, transform, 1f);
@@ -355,33 +355,5 @@ public class ObjectInteract : MonoBehaviour
         }
     }
 
-    private IEnumerator MoveCamera(Vector3 targetPosition, float targetSize)
-    {
-        float duration = 0.4f; // Duration of the camera movement in seconds
-        float elapsedTime = 0f;
-        Vector3 startPosition = Camera.main.transform.position;
-        float startSize = Camera.main.orthographicSize;
-        targetPosition.z = -10f;
-        // Disable CameraHandle script
-        CameraHandle cameraHandle = Camera.main.GetComponent<CameraHandle>();
-
-        cameraHandle.enabled = false;
-        // Smoothly move the camera to the target position and zoom out
-        while (elapsedTime < duration)
-        {
-            elapsedTime += Time.deltaTime;
-            float t = Mathf.Clamp01(elapsedTime / duration);
-            Camera.main.transform.position = Vector3.Lerp(startPosition, targetPosition, t);
-            Camera.main.orthographicSize = Mathf.Lerp(startSize, targetSize, t);
-            yield return null; // Wait for the next frame
-        }
-
-        // Ensure the camera reaches the exact target position and zoom level
-        Camera.main.transform.position = targetPosition;
-        Camera.main.orthographicSize = targetSize;
-
-        // Re-enable CameraHandle script
-        cameraHandle.enabled = true;
-    }
 
 }

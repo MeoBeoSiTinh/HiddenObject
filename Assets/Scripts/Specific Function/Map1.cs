@@ -118,8 +118,9 @@ public class Map1 : MonoBehaviour
         {
             elapsedTime += Time.deltaTime;
             float t = Mathf.Clamp01(elapsedTime / duration);
-            Camera.main.transform.position = Vector3.Lerp(startPosition, targetPosition, t);
-            Camera.main.orthographicSize = Mathf.Lerp(startSize, targetSize, t);
+            float smoothT = Mathf.SmoothStep(0f, 1f, t);
+            Camera.main.transform.position = Vector3.Lerp(startPosition, targetPosition, smoothT);
+            Camera.main.orthographicSize = Mathf.Lerp(startSize, targetSize, smoothT);
             yield return null; // Wait for the next frame
         }
 
