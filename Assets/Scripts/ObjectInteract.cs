@@ -2,6 +2,7 @@ using Spine.Unity;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -11,7 +12,10 @@ public class ObjectInteract : MonoBehaviour
 {
     public List<string> ingredients = new List<string>();
     public GameObject result;
-    private float textBoxDuration = 3.5f; // Duration in seconds
+    private float textBoxDuration = 0.8f; // Duration in seconds
+    private float spinSpeed = 0.8f; // Duration in seconds
+    private float fadeDuration = 0.3f; // Duration in seconds
+
     [SerializeField] public Vector2 SpawnLocation;
     [SerializeField] public GameObject Noti;
     [SerializeField] private GameObject Tick;
@@ -170,15 +174,10 @@ public class ObjectInteract : MonoBehaviour
 
         if (Interactable)
         {
-            GameObject textBoxObj = GameObject.FindWithTag("TextBox");
-            Destroy(textBoxObj);
-            Vector3 targetPosition = SpawnLocation;
-            targetPosition.z = -10f;
-            StartCoroutine(cam.MoveCamera(targetPosition, 6f));
+           
             StartCoroutine(HandleResult());
             finished = true;
-            SoundFXManager.Instance.PlaySoundFXClip(GetComponent<ObjectTouch>().soundFx, transform, 1f);
-            Noti.SetActive(false);
+            Destroy(Noti);
 
         }
         else
@@ -212,66 +211,71 @@ public class ObjectInteract : MonoBehaviour
         }
     }
 
-    private IEnumerator FadeAndDestroyTextBox(GameObject textBoxObj, float duration)
+    private IEnumerator CollapseAndDestroyTextBox(GameObject textBoxObj, float duration)
     {
-        CanvasGroup canvasGroup = textBoxObj.GetComponent<CanvasGroup>();
-        if (canvasGroup == null)
+        LeanTween.scale(textBoxObj, new Vector3(0.1f, 0.1f, 0.1f), 0.4f).setEase(LeanTweenType.easeOutBack).setOnComplete(() =>
         {
-            canvasGroup = textBoxObj.AddComponent<CanvasGroup>();
-        }
-        yield return new WaitForSeconds(duration);
-        float fadeTime = 0.5f;
-        float elapsed = 0f;
-        while (elapsed < fadeTime)
-        {
-            elapsed += Time.deltaTime;
-            canvasGroup.alpha = Mathf.Lerp(1f, 0f, elapsed / fadeTime);
-            yield return null;
-        }
-        Destroy(textBoxObj);
+            Destroy(textBoxObj);
+        });
+
+        yield return null;
     }
 
     private IEnumerator HandleResult()
     {
         if (gameObject.GetComponentInChildren<SkeletonAnimation>() != null)
         {
-            CameraHandle cameraHandle = Camera.main.GetComponent<CameraHandle>();
+            cam.allowed = false;
 
-            // Set cameraHandle backgroundBounds to area around the camera only
-            float camHeight = 8f * 1.5f;
-            float camWidth = camHeight * Camera.main.aspect;
-
-            // Define bounds centered on camera, with width and height matching the camera's view
-            cameraHandle.backgroundBounds = new Bounds(
-                new Vector3(SpawnLocation.x, SpawnLocation.y, 0),
-                new Vector3(camWidth, camHeight, 1) // Set z size to 1 to avoid 0-size bounds
-            );
-            cameraHandle.bounceIntensity = 0.1f; // Set bounce intensity to a small value
+            GameObject textBoxObj = GameObject.FindWithTag("TextBox");
+            textBoxObj.GetComponent<DestroyOnOutsideClick>().enabled = false;
+            yield return spinTextbox(textBoxObj, spinSpeed);
 
             var skeletonAnim = gameObject.GetComponentInChildren<SkeletonAnimation>();
-            bool resultSpawned = false;
-
+            yield return cam.MoveCamera(SpawnLocation, 6f);
             // Add event handler for animation event
-            Spine.TrackEntry animPlay = skeletonAnim.AnimationState.SetAnimation(0, "craft", false);
-            animPlay.Event += (entry, e) =>
-            {
-                if (!resultSpawned && e.Data.Name == "craft")
-                {
-                    GameObject resultObject = Instantiate(result, SpawnLocation, Quaternion.identity);
-                    resultObject.name = result.name;
-                    AnimateWithDecreasingBounces(resultObject);
-                    resultSpawned = true;
-                }
-            };
-
+            var animPlay = skeletonAnim.AnimationState.SetAnimation(0, "craft", false);
+            SoundFXManager.Instance.PlaySoundFXClip(GetComponent<ObjectTouch>().soundFx, transform, 1f);
             yield return new WaitForSpineAnimationComplete(animPlay);
-            cameraHandle.backgroundBounds = GameObject.FindGameObjectWithTag("Background").GetComponent<SpriteRenderer>().bounds;
-            cameraHandle.bounceIntensity = 0.4f; // Reset bounce intensity to a higher value
             skeletonAnim.AnimationState.SetAnimation(0, "idle", true);
+            GameObject resultObject = Instantiate(result, SpawnLocation, Quaternion.identity);
+            resultObject.name = result.name;
+            AnimateWithDecreasingBounces(resultObject);
+            cam.allowed = true;
+        }
+        else
+        {
+            Debug.LogWarning("SkeletonAnimation component not found on the object.");
         }
         yield return null;
     }
 
+    private IEnumerator spinTextbox(GameObject textBoxObj, float duration)
+    {
+        LeanTween.rotateY(textBoxObj.gameObject, 90f, duration/2)
+            .setEase(LeanTweenType.easeInOutSine)
+            .setOnComplete(() =>
+            {
+                // Step 2: Change the content
+                for (int i = 0; i < textBoxObj.transform.GetChild(0).childCount - 1; i++)
+                {
+                    GameObject child = textBoxObj.transform.GetChild(0).GetChild(i).gameObject;
+                    if (child.name != "Button")
+                    {
+                        Destroy(child);
+                    }
+                }
+                textBoxObj.transform.GetChild(1).gameObject.SetActive(false); // Hide the button
+
+                // Step 3: Rotate back to 0 degrees
+                LeanTween.rotateY(textBoxObj.gameObject, 0f, duration/2)
+                    .setEase(LeanTweenType.easeInOutSine);
+            });
+        yield return new WaitForSeconds(duration + textBoxDuration);
+        yield return CollapseAndDestroyTextBox(textBoxObj, fadeDuration);
+        textBoxObj.transform.GetChild(1).gameObject.SetActive(false); // Hide the button
+        yield return null;
+    }
 
     void AnimateWithDecreasingBounces(GameObject obj)
     {
