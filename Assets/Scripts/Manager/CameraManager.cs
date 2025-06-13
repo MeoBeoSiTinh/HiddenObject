@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
-public class CameraHandle : MonoBehaviour
+public class CameraManager : MonoBehaviour
 {
-    public GameObject camera_GameObject;
+    public static CameraManager Instance;
     public Bounds backgroundBounds;
     private float prevMagnitude = 0;
     private float touchCount = 0;
@@ -17,11 +17,15 @@ public class CameraHandle : MonoBehaviour
     private float zoomVelocity = 0.1f;
     public bool allowed = true;
 
-    // Bounce effect variables
+    // Bounce effect variables for position
     private bool isBouncing = false;
     private Vector3 bounceDirection;
-    private float bounceDecay = 0.9f; // How quickly the bounce settles (0.8-0.95 feels good)
+    private float bounceDecay = 0.9f; // How quickly the bounce settles
     public float bounceIntensity = 0.4f; // How strong the bounce is
+
+    // Zoom bounce variables
+    private bool isZoomBouncing = false;
+    private float zoomBounceDuration = 0.6f; // Duration of zoom bounce-back
 
     // Define the stages
     public int currentStage;
@@ -29,10 +33,18 @@ public class CameraHandle : MonoBehaviour
     // Define min and max zoom levels
     public float minZoom = 5f;
     public float maxZoom = 8f;
+    private readonly float zoomOvershoot = 1f; // Allow temporary overshoot
 
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+    }
     void Start()
     {
-        cam = camera_GameObject.GetComponent<Camera>();
+        cam = gameObject.GetComponent<Camera>();
 
         var touch0contact = new InputAction(type: InputActionType.Button, binding: "<Touchscreen>/touch0/press");
         var touch1contact = new InputAction(type: InputActionType.Button, binding: "<Touchscreen>/touch1/press");
@@ -46,12 +58,14 @@ public class CameraHandle : MonoBehaviour
             touchCount--;
             prevMagnitude = 0;
             isZooming = false;
+            CheckZoomBounce();
         };
         touch1contact.canceled += _ =>
         {
             touchCount--;
             prevMagnitude = 0;
             isZooming = false;
+            CheckZoomBounce();
         };
 
         var touch0Pos = new InputAction(type: InputActionType.Value, binding: "<Touchscreen>/touch0/position");
@@ -82,7 +96,7 @@ public class CameraHandle : MonoBehaviour
             {
                 Vector2 delta = ctx.ReadValue<Vector2>();
                 Vector3 move = new Vector3(-delta.x, -delta.y, 0) * dragSpeed * Time.deltaTime;
-                camera_GameObject.transform.Translate(move);
+                gameObject.transform.Translate(move);
             }
         };
     }
@@ -97,11 +111,10 @@ public class CameraHandle : MonoBehaviour
 
     void Update()
     {
-
-        // Apply bounce effect if active
+        // Apply position bounce effect if active
         if (isBouncing && touchCount == 0)
         {
-            camera_GameObject.transform.position += bounceDirection * 0.05f * cam.orthographicSize;
+            gameObject.transform.position += bounceDirection * 0.05f * cam.orthographicSize;
             bounceDirection *= bounceDecay; // Reduce bounce over time
 
             // Stop bouncing when barely moving
@@ -111,14 +124,35 @@ public class CameraHandle : MonoBehaviour
             }
         }
         RestrictCameraPosition();
-
     }
 
     private void cameraZoom(float increment)
     {
-        Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize + increment, minZoom, maxZoom);
-        cam.orthographicSize = Mathf.SmoothDamp(cam.orthographicSize, cam.orthographicSize + increment, ref zoomVelocity, 0.2f, Mathf.Infinity, Time.deltaTime);
-        RestrictCameraPosition();
+        if (isZoomBouncing) return; // Prevent zooming during bounce-back
+
+        // Apply zoom increment
+        float targetSize = cam.orthographicSize + increment;
+        targetSize = Mathf.Clamp(targetSize, minZoom, maxZoom + zoomOvershoot);
+
+        // Smoothly apply zoom
+        cam.orthographicSize = Mathf.SmoothDamp(cam.orthographicSize, targetSize, ref zoomVelocity, 0.05f, Mathf.Infinity, Time.deltaTime);
+    }
+
+    private void CheckZoomBounce()
+    {
+        if (touchCount == 0 && !isZoomBouncing && cam.orthographicSize > maxZoom + 0.001f) // Small tolerance
+        {
+            isZoomBouncing = true;
+            LeanTween.value(gameObject, cam.orthographicSize, maxZoom, zoomBounceDuration)
+                .setEase(LeanTweenType.easeOutBack)
+                .setOnUpdate((float size) => cam.orthographicSize = size)
+                .setOnComplete(() =>
+                {
+                    isZoomBouncing = false;
+                    cam.orthographicSize = maxZoom; // Ensure exact value
+                    RestrictCameraPosition();
+                });
+        }
     }
 
     public void RestrictCameraPosition()
@@ -126,39 +160,40 @@ public class CameraHandle : MonoBehaviour
         if (backgroundBounds == null)
             return;
 
-        Camera cam = camera_GameObject.GetComponent<Camera>();
-
-        // Calculate the maximum orthographic size based on the background bounds  
+        // Calculate the maximum orthographic size based on the background bounds
         float maxOrthographicSize = Mathf.Min(backgroundBounds.size.x * Screen.height / Screen.width, backgroundBounds.size.y) / 2;
-        cam.orthographicSize = Mathf.Clamp(cam.orthographicSize, minZoom, Mathf.Min(maxZoom, maxOrthographicSize));
 
-        // Calculate the camera's viewable area  
+        // Allow temporary overshoot up to maxZoom + zoomOvershoot, but clamp for final bounds
+        if (!isZoomBouncing) // Skip clamping during bounce-back animation
+        {
+            cam.orthographicSize = Mathf.Clamp(cam.orthographicSize, minZoom, Mathf.Min(maxZoom + zoomOvershoot, maxOrthographicSize));
+        }
+
+        // Calculate the camera's viewable area
         float vertExtent = cam.orthographicSize;
         float horzExtent = vertExtent * Screen.width / Screen.height;
 
-        // Calculate the bounds for each stage  
+        // Calculate the bounds for each stage
         float stageWidth = backgroundBounds.size.x / 2;
         float stageHeight = backgroundBounds.size.y / 2;
 
-        float minX, maxX, minY, maxY;
+        float minX = backgroundBounds.min.x + horzExtent;
+        float maxX = backgroundBounds.max.x - horzExtent;
+        float minY = backgroundBounds.min.y + vertExtent - (0.1f * cam.orthographicSize);
+        float maxY = backgroundBounds.max.y - vertExtent;
 
-        minX = backgroundBounds.min.x + horzExtent;
-        maxX = backgroundBounds.max.x - horzExtent;
-        minY = backgroundBounds.min.y + vertExtent - (0.1f * gameObject.GetComponent<Camera>().orthographicSize);
-        maxY = backgroundBounds.max.y - vertExtent;
-
-        // CLAMP FIRST (original behavior)  
-        Vector3 oldPos = camera_GameObject.transform.position;
+        // CLAMP FIRST
+        Vector3 oldPos = gameObject.transform.position;
         Vector3 clampedPos = oldPos;
         clampedPos.x = Mathf.Clamp(clampedPos.x, minX, maxX);
         clampedPos.y = Mathf.Clamp(clampedPos.y, minY, maxY);
-        camera_GameObject.transform.position = clampedPos;
+        gameObject.transform.position = clampedPos;
 
-        // Calculate bounce direction if we hit a border  
+        // Calculate bounce direction if we hit a border
         if (clampedPos != oldPos)
         {
             isBouncing = true;
-            bounceDirection = (clampedPos - oldPos).normalized * 0.5f; // Small initial pushback  
+            bounceDirection = (clampedPos - oldPos).normalized * bounceIntensity;
         }
     }
 
@@ -167,22 +202,13 @@ public class CameraHandle : MonoBehaviour
         if (backgroundBounds == null)
             return false;
 
-        Camera cam = camera_GameObject.GetComponent<Camera>();
-
-
         float vertExtent = cam.orthographicSize;
         float horzExtent = vertExtent * Screen.width / Screen.height;
 
-        float stageWidth = backgroundBounds.size.x / 2;
-        float stageHeight = backgroundBounds.size.y / 2;
-
-        float minX, maxX, minY, maxY;
-
-        minX = backgroundBounds.min.x + horzExtent;
-        maxX = backgroundBounds.max.x - horzExtent;
-        minY = backgroundBounds.min.y + vertExtent - (0.1f * gameObject.GetComponent<Camera>().orthographicSize);
-        maxY = backgroundBounds.max.y - vertExtent;
-
+        float minX = backgroundBounds.min.x + horzExtent;
+        float maxX = backgroundBounds.max.x - horzExtent;
+        float minY = backgroundBounds.min.y + vertExtent - (0.1f * cam.orthographicSize);
+        float maxY = backgroundBounds.max.y - vertExtent;
 
         Vector3 pos = cam.transform.position;
         return pos.x <= minX || pos.x >= maxX || pos.y <= minY || pos.y >= maxY;
@@ -195,7 +221,7 @@ public class CameraHandle : MonoBehaviour
 
     private IEnumerator PerformCameraShake(float duration, float magnitude)
     {
-        Vector3 originalPosition = camera_GameObject.transform.localPosition;
+        Vector3 originalPosition = gameObject.transform.localPosition;
         float elapsed = 0f;
 
         while (elapsed < duration)
@@ -203,15 +229,14 @@ public class CameraHandle : MonoBehaviour
             float offsetX = Random.Range(-1f, 1f) * magnitude;
             float offsetY = Random.Range(-1f, 1f) * magnitude;
 
-            camera_GameObject.transform.localPosition = new Vector3(originalPosition.x + offsetX, originalPosition.y + offsetY, originalPosition.z);
+            gameObject.transform.localPosition = new Vector3(originalPosition.x + offsetX, originalPosition.y + offsetY, originalPosition.z);
 
             elapsed += Time.deltaTime;
             yield return null;
         }
 
-        camera_GameObject.transform.localPosition = originalPosition;
+        gameObject.transform.localPosition = originalPosition;
     }
-
 
     public void updateBounds(Bounds newBound)
     {
@@ -219,30 +244,25 @@ public class CameraHandle : MonoBehaviour
         RestrictCameraPosition();
     }
 
-    public IEnumerator MoveCamera(Vector3 targetPosition, float targetSize)
+    public IEnumerator MoveCamera(Vector3 targetPosition, float targetSize, float duration)
     {
-        float duration = 0.8f; // Duration of the camera movement in seconds
-        float elapsedTime = 0f;
-        Vector3 startPosition = Camera.main.transform.position;
-        float startSize = Camera.main.orthographicSize;
         targetPosition.z = -10f;
 
-        // Disable CameraHandle script
-        CameraHandle cameraHandle = Camera.main.GetComponent<CameraHandle>();
+        // Store start values
+        Vector3 startPosition = Camera.main.transform.position;
+        float startSize = Camera.main.orthographicSize;
 
-        // Smoothly move the camera to the target position and zoom out with ease in/ease out
-        while (elapsedTime < duration)
-        {
-            elapsedTime += Time.deltaTime;
-            float t = Mathf.Clamp01(elapsedTime / duration);
-            // Ease in/ease out using SmoothStep
-            float smoothT = Mathf.SmoothStep(0f, 1f, t);
-            Camera.main.transform.position = Vector3.Lerp(startPosition, targetPosition, smoothT);
-            Camera.main.orthographicSize = Mathf.Lerp(startSize, targetSize, smoothT);
-            yield return null; // Wait for the next frame
-        }
+        // Use LeanTween for position and zoom
+        LeanTween.move(Camera.main.gameObject, targetPosition, duration)
+            .setEase(LeanTweenType.easeInOutQuart); // Gentle sine easing
+        LeanTween.value(Camera.main.gameObject, startSize, targetSize, duration)
+            .setEase(LeanTweenType.easeInOutQuart)
+            .setOnUpdate((float size) => Camera.main.orthographicSize = size);
 
-        // Ensure the camera reaches the exact target position and zoom level
+        // Wait for LeanTween to complete
+        yield return new WaitForSeconds(duration);
+
+        // Ensure exact values
         Camera.main.transform.position = targetPosition;
         Camera.main.orthographicSize = targetSize;
     }

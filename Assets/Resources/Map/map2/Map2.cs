@@ -1,52 +1,73 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
-public class Map1 : MonoBehaviour
+public class Map2 : MonoBehaviour
 {
     GameManager gameManager;
     private List<string> foundTarget;
     FocusCircleController focusCircleController;
+    [SerializeField] private GameObject tutBox;
+    private GameObject Box;
 
     // Start is called before the first frame update
     void Start()
     {
-        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        focusCircleController = gameManager.FocusCircle.GetComponent<FocusCircleController>();
+        gameManager = GameManager.Instance;
         StartCoroutine(Tutorial());
+        focusCircleController = gameManager.FocusCircle.GetComponent<FocusCircleController>();
+
 
     }
 
     private IEnumerator Tutorial()
     {
-        yield return new WaitForSeconds(3f);
-        foundTarget = gameManager.foundTarget;
-        if(!foundTarget.Contains("day thung"))
+        yield return new WaitForSeconds(2f);
+        yield return CameraManager.Instance.MoveCamera(new Vector3(-12.6f, -8f, -10f), 8f, 2f);
+        if(focusCircleController != null)
         {
-            yield return MoveCamera(new Vector3(-2.5f, -3.2f, -10f), 7f);
-            Camera.main.GetComponent<CameraHandle>().allowed = false;
-            yield return CreateAndFadeInPointerDestroyOnClick(new Vector2(-2.5f, -2.7f), 0.5f);
+            yield return focusCircleController.StartFocusing(new Vector2(-12.6f, -8f), 0.1f);
         }
+        createTutBox("He needs somethings from you.");
+        yield return CreateAndFadeInPointerDestroyOnClick(new Vector2(-12.6f, -7f), 0.5f);
+        CameraManager.Instance.allowed = false;
         while (GameObject.FindGameObjectsWithTag("Pointer").Length > 0)
         {
             yield return null; // Wait for the next frame
         }
-        yield return new WaitForSeconds(0.5f);
-        while (!foundTarget.Contains("day thung"))
+        StartCoroutine(Box.GetComponent<TutorialBox>().popDown());
+        CameraManager.Instance.allowed = true;
+        StartCoroutine(focusCircleController.StopFocusing());
+        while (!gameManager.foundTarget.Contains("Cần câu") || !gameManager.foundTarget.Contains("Giun đất"))
         {
-            yield return CreateAndFadeInPointer(new Vector2(-2.5f, -2.7f), 0.5f);
             yield return null; // Wait for the next frame
         }
-        Destroy(GameObject.FindGameObjectWithTag("Pointer"));
+        yield return CameraManager.Instance.MoveCamera(new Vector3(-12.6f, -8f, -10f), 8f, 2f);
+        if (focusCircleController != null)
+        {
+            yield return focusCircleController.StartFocusing(new Vector2(-12.6f, -8f), 0.1f);
+        }
+        createTutBox("Give him what he needs to get the fish");
+        yield return CreateAndFadeInPointerDestroyOnClick(new Vector2(-12.6f, -7f), 0.5f);
+        CameraManager.Instance.allowed = false;
+        while (GameObject.FindGameObjectsWithTag("Pointer").Length > 0)
+        {
+            yield return null; // Wait for the next frame
+        }
+        StartCoroutine(Box.GetComponent<TutorialBox>().popDown());
         StartCoroutine(focusCircleController.StopFocusing());
-        Camera.main.GetComponent<CameraHandle>().allowed = true;
+        while (!GameObject.Find("Cá sống"))
+        {
+            yield return null; // Wait for the next frame
+        }
+        yield return new WaitForSeconds(1.5f);
 
+        CameraManager.Instance.allowed = true;
     }
 
     private IEnumerator CreateAndFadeInPointer(Vector2 position, float fadeDuration)
     {
-        if(GameObject.FindGameObjectsWithTag("Pointer").Length > 0)
+        if (GameObject.FindGameObjectsWithTag("Pointer").Length > 0)
         {
             yield break;
         }
@@ -64,7 +85,7 @@ public class Map1 : MonoBehaviour
             float progress = 0f;
             while (progress < 1f)
             {
-                if(sr == null) yield break;
+                if (sr == null) yield break;
                 progress += Time.deltaTime / fadeDuration;
                 sr.color = Color.Lerp(transparent, opaque, progress);
                 yield return null;
@@ -100,39 +121,14 @@ public class Map1 : MonoBehaviour
             }
         }
     }
-
-    private IEnumerator MoveCamera(Vector3 targetPosition, float targetSize)
+    private void createTutBox(string text)
     {
-        float duration = 0.8f; // Duration of the camera movement in seconds
-        float elapsedTime = 0f;
-        Vector3 startPosition = Camera.main.transform.position;
-        float startSize = Camera.main.orthographicSize;
-        targetPosition.z = -10f;
-
-        // Disable CameraHandle script
-        CameraHandle cameraHandle = Camera.main.GetComponent<CameraHandle>();
-
-        cameraHandle.enabled = false;
-        // Smoothly move the camera to the target position and zoom out
-        while (elapsedTime < duration)
-        {
-            elapsedTime += Time.deltaTime;
-            float t = Mathf.Clamp01(elapsedTime / duration);
-            float smoothT = Mathf.SmoothStep(0f, 1f, t);
-            Camera.main.transform.position = Vector3.Lerp(startPosition, targetPosition, smoothT);
-            Camera.main.orthographicSize = Mathf.Lerp(startSize, targetSize, smoothT);
-            yield return null; // Wait for the next frame
-        }
-
-
-        // Ensure the camera reaches the exact target position and zoom level
-        Camera.main.transform.position = targetPosition;
-        Camera.main.orthographicSize = targetSize;
-
-        yield return focusCircleController.StartFocusing(targetPosition, 0.1f);
-
-
-        // Re-enable CameraHandle script
-        cameraHandle.enabled = true;
+        GameObject tut = Instantiate(tutBox);
+        tut.transform.SetParent(GameObject.Find("Canvas").transform, false);
+        tut.GetComponent<TutorialBox>().ChangeText(text);
+        Box = tut;
+        StartCoroutine(Box.GetComponent<TutorialBox>().popUp());
     }
+
+
 }

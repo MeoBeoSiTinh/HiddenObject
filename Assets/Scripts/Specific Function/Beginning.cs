@@ -59,7 +59,7 @@ public class Beginning : MonoBehaviour
         float startSize = Camera.main.orthographicSize;
 
         // Disable CameraHandle script
-        CameraHandle cameraHandle = Camera.main.GetComponent<CameraHandle>();
+        CameraManager cameraHandle = Camera.main.GetComponent<CameraManager>();
 
         cameraHandle.enabled = false;
         // Smoothly move the camera to the target position and zoom out

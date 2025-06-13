@@ -61,7 +61,7 @@ public class GadgetManager : MonoBehaviour
 
     private IEnumerator MoveCamera(Vector3 targetPosition)
     {
-        CameraHandle cameraManager = cam.GetComponent<CameraHandle>();
+        CameraManager cameraManager = cam.GetComponent<CameraManager>();
         while (Vector3.Distance(Camera.main.transform.position, targetPosition) > 0.01f)
         {
             Camera.main.transform.position = Vector3.SmoothDamp(

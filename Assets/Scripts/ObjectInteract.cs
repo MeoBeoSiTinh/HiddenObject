@@ -17,16 +17,18 @@ public class ObjectInteract : MonoBehaviour
     private float fadeDuration = 0.3f; // Duration in seconds
 
     [SerializeField] public Vector2 SpawnLocation;
-    [SerializeField] public GameObject Noti;
+    [SerializeField] private Sprite notiImage;
     [SerializeField] private GameObject Tick;
 
+    private GameObject Noti;
     private GameManager gameManager;
     private bool finished = false;
-    CameraHandle cam;
+    CameraManager cam;
     void Start()
     {
-        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        cam = Camera.main.GetComponent<CameraHandle>();
+        gameManager = GameManager.Instance;
+        cam = Camera.main.GetComponent<CameraManager>();
+        CreateNoti();
     }
 
     public void CreateTextBox()
@@ -49,9 +51,10 @@ public class ObjectInteract : MonoBehaviour
         spawnedTextBox.transform.SetParent(GameObject.Find("Canvas").transform);
           
         Vector3 pos = transform.position;
-        StartCoroutine(cam.GetComponent<CameraHandle>().MoveCamera(pos, 6f));
+        StartCoroutine(cam.GetComponent<CameraManager>().MoveCamera(pos, 6f, 1f));
         pos.y += 1.8f;
-        spawnedTextBox.GetComponent<WorldSpaceUI>().worldOffset = pos;
+        WorldSpaceUI worldSpaceUI = spawnedTextBox.AddComponent<WorldSpaceUI>();
+        worldSpaceUI.worldOffset = pos;
         spawnedTextBox.GetComponent<WorldSpaceUI>().Init();
         spawnedTextBox.AddComponent<DestroyOnOutsideClick>();
 
@@ -213,7 +216,7 @@ public class ObjectInteract : MonoBehaviour
 
     private IEnumerator CollapseAndDestroyTextBox(GameObject textBoxObj, float duration)
     {
-        LeanTween.scale(textBoxObj, new Vector3(0.1f, 0.1f, 0.1f), 0.4f).setEase(LeanTweenType.easeOutBack).setOnComplete(() =>
+        LeanTween.scale(textBoxObj, new Vector3(0.1f, 0.1f, 0.1f), 0.4f).setEase(LeanTweenType.easeOutQuint).setOnComplete(() =>
         {
             Destroy(textBoxObj);
         });
@@ -232,7 +235,7 @@ public class ObjectInteract : MonoBehaviour
             yield return spinTextbox(textBoxObj, spinSpeed);
 
             var skeletonAnim = gameObject.GetComponentInChildren<SkeletonAnimation>();
-            yield return cam.MoveCamera(SpawnLocation, 6f);
+            yield return cam.MoveCamera(SpawnLocation, 6f, 2f);
             // Add event handler for animation event
             var animPlay = skeletonAnim.AnimationState.SetAnimation(0, "craft", false);
             SoundFXManager.Instance.PlaySoundFXClip(GetComponent<ObjectTouch>().soundFx, transform, 1f);
@@ -359,5 +362,21 @@ public class ObjectInteract : MonoBehaviour
         }
     }
 
+    private void CreateNoti()
+    {
+        GameObject noti = new GameObject(gameObject.name + "(noti)");
+        noti.transform.SetParent(GameObject.Find("Canvas").transform);
+        RectTransform rectTransform = noti.AddComponent<RectTransform>();
+        rectTransform.localPosition = new Vector3(0, 0, 0); // Adjust position as needed
+        Image image = noti.AddComponent<Image>();
+        image.sprite = notiImage;
+        rectTransform.sizeDelta = new Vector2(notiImage.rect.width, notiImage.rect.height); // Set size as needed
+        rectTransform.localScale = new Vector3(1f, 1f, 1f);
+        WorldSpaceUI worldSpaceUI = noti.AddComponent<WorldSpaceUI>();
+        worldSpaceUI.edgePadding = 40f;
+        worldSpaceUI.worldOffset = transform.position + new Vector3(0.3f, 0.7f, 0);
+        worldSpaceUI.Init();
+        Noti = noti;
+    }
 
 }

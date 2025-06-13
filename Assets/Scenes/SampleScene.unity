@@ -1351,7 +1351,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2d2d2e0f0232924997f13b113def605, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera_GameObject: {fileID: 519420028}
   backgroundBounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
@@ -2739,7 +2738,7 @@ GameObject:
   - component: {fileID: 1072749712}
   m_Layer: 0
   m_Name: GameManager
-  m_TagString: Untagged
+  m_TagString: GameController
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2773,7 +2772,6 @@ MonoBehaviour:
   toolbarSlotsParent: {fileID: 2051101473}
   DescBox: {fileID: 0}
   PlayerInfo: {fileID: 750207333}
-  Dialogue: {fileID: 0}
   ProgressBar: {fileID: 959448833}
   FocusCircle: {fileID: 1054632292}
   username: Meobeo

@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+guid: 4520a3dc5ad2abb409401757b53bd5a5
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - TutBox: {fileID: 799826153524520477, guid: 639fa3b5b9425d048a3717b99f5b24a9, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -8,6 +8,9 @@ using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
+
+    public static GameManager Instance;
+
     public LevelData levelData;
     public int currentLevelIndex;
     private GameObject currentLevelInstance;
@@ -29,7 +32,6 @@ public class GameManager : MonoBehaviour
     public Transform toolbarSlotsParent;
     public GameObject DescBox;
     public Transform PlayerInfo;
-    public GameObject Dialogue;
     public GameObject ProgressBar;
     public GameObject FocusCircle;
 
@@ -54,6 +56,11 @@ public class GameManager : MonoBehaviour
     }
     public void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+
         //SaveSystem.Init();
         //Load();
         //Transform name = PlayerInfo.GetChild(0).GetChild(0);
@@ -134,7 +141,7 @@ public class GameManager : MonoBehaviour
 
         currentLevelInstance = Instantiate(levelInfor.LevelPrefab);
         Bounds newbounds = currentLevelInstance.transform.Find("Background").GetComponent<SpriteRenderer>().bounds;
-        Camera.main.GetComponent<CameraHandle>().updateBounds(newbounds);
+        Camera.main.GetComponent<CameraManager>().updateBounds(newbounds);
 
 
         currentLevelIndex = levelIndex;
