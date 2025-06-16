@@ -38,6 +38,11 @@ public class Map2 : MonoBehaviour
         StartCoroutine(Box.GetComponent<TutorialBox>().popDown());
         CameraManager.Instance.allowed = true;
         StartCoroutine(focusCircleController.StopFocusing());
+        yield return new WaitForSeconds(0.5f);
+        createTutBox("Find him what he needs");
+        yield return new WaitForSeconds(3f);
+        StartCoroutine(Box.GetComponent<TutorialBox>().popDown());
+
         while (!gameManager.foundTarget.Contains("Cần câu") || !gameManager.foundTarget.Contains("Giun đất"))
         {
             yield return null; // Wait for the next frame

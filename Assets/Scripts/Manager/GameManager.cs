@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
     public Transform PlayerInfo;
     public GameObject ProgressBar;
     public GameObject FocusCircle;
+    public GameObject SpecialFound;
 
 
     [Header("PlayerData")]

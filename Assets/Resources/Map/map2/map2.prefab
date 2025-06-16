@@ -3179,7 +3179,7 @@ MonoBehaviour:
   - "C\u1EA7n c\xE2u"
   - "Giun \u0111\u1EA5t"
   result: {fileID: 1016966044782446909, guid: 1145563dd585c324fbbc2f3df18f717c, type: 3}
-  SpawnLocation: {x: -11.05, y: -8.19}
+  SpawnLocation: {x: -11.65, y: -8.1}
   notiImage: {fileID: 21300000, guid: ab043c607fbed524fa6ce8c9c4b8a8bd, type: 3}
   Tick: {fileID: 4211072844000078512, guid: d685444b049e0e4449f767c6a4850e92, type: 3}
 --- !u!1 &1106811219195155116
@@ -25584,6 +25584,10 @@ PrefabInstance:
     - target: {fileID: 2067382545671350654, guid: 1aeb935986cf8174b9e08f284f4c6a79, type: 3}
       propertyPath: m_Name
       value: "Giun \u0111\u1EA5t"
+      objectReference: {fileID: 0}
+    - target: {fileID: 2067382545671350654, guid: 1aeb935986cf8174b9e08f284f4c6a79, type: 3}
+      propertyPath: m_TagString
+      value: Special
       objectReference: {fileID: 0}
     - target: {fileID: 8792068500254760856, guid: 1aeb935986cf8174b9e08f284f4c6a79, type: 3}
       propertyPath: m_LocalPosition.x

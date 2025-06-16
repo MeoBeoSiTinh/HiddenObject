@@ -27,15 +27,8 @@ public class ObjectTouch : MonoBehaviour
         mainCamera = Camera.main;
         Input.simulateMouseWithTouches = true;
         // Find the GameManager object by name and get the GameManager component
-        GameObject gameManagerObject = GameObject.Find("GameManager");
-        if (gameManagerObject != null)
-        {
-            gameManager = gameManagerObject.GetComponent<GameManager>();
-        }
-        else
-        {
-            Debug.LogError("GameManager object not found in the scene.");
-        }
+        gameManager = GameManager.Instance;
+
         
     }
 
@@ -93,29 +86,21 @@ public class ObjectTouch : MonoBehaviour
                         switch (gameObject.tag)
                         {
                             case "Normal":
-                                TryGetComponent<Boxman>(out Boxman boxman);
-                                if (boxman != null)
-                                {
-                                    if (boxman.unbox && boxman.anim.AnimationName != "idle3")
-                                    {
-                                        CreateSpineAnimation(touch.position);
-                                        CreateTargetImage(touch.position);
-                                    }
-                                    boxman.interact();
-                                }
-                                else
-                                {
-                                    CreateSpineAnimation(touch.position);
-                                    CreateTargetImage(touch.position);
-                                }
+                                
+                                CreateSpineAnimation(touch.position);
+                                CreateTargetImage(touch.position);
                                 if(soundFx != null)
                                 {
                                     SoundFXManager.Instance.PlaySoundFXClip(soundFx, transform, 1f);
                                 }
                                 break;
-                            //case "Background":
-                            //    CreateWrongImage(touch.position);
-                            //    break;
+                            case "Special":
+                                StartCoroutine(Special(touch.position));
+                                if (soundFx != null)
+                                {
+                                    SoundFXManager.Instance.PlaySoundFXClip(soundFx, transform, 1f);
+                                }
+                                break;
                             case "Openable":
                                 StartCoroutine(FadeOpen(0.35f));
                                 break;
@@ -189,6 +174,8 @@ public class ObjectTouch : MonoBehaviour
             Debug.Log("Icon" + gameObject.name);
             Debug.LogError("Hotbar object not found in the scene.");
         }
+        gameObject.GetComponent<SpriteRenderer>().enabled = false;
+        gameObject.GetComponent<ObjectTouch>().enabled = false;
 
         // Start the flying animation
         StartCoroutine(FlyToToolbar(targetImagePrefab));
@@ -234,7 +221,6 @@ public class ObjectTouch : MonoBehaviour
         {
             gameManager.OnMinimizeClicked();
         }
-        gameObject.GetComponent<SpriteRenderer>().enabled = false;
         ScrollFocus scroll = GameObject.Find("Scroll").GetComponent<ScrollFocus>();
         GameObject icon = GameObject.Find("Icon" + name);
         bool isVisible = scroll.IsIconVisible(icon.GetComponent<RectTransform>());
@@ -286,10 +272,10 @@ public class ObjectTouch : MonoBehaviour
             midPoint.x,
             Mathf.Max(startPosition.y, endPosition.y) + parabolaHeight
         );
-
+        LeanTween.scale(flyingImage, new Vector3(1, 1, 1), 1f).setEase(LeanTweenType.easeInOutQuart); // Scale to normal size
         // Move the image along the parabolic path with slow start and end
         LeanTween.value(flyingImage, 0f, 1f, 1f) // Increased duration to 1.5s for smoother effect
-            .setEase(LeanTweenType.easeInOutQuad) // Starts slow, speeds up, then slows down
+            .setEase(LeanTweenType.easeInOutQuart) // Starts slow, speeds up, then slows down
             .setOnUpdate((float t) =>
             {
                 flyingImageRect.anchoredPosition = CalculateQuadraticBezierPoint(t, startPosition, controlPoint, endPosition);
@@ -329,8 +315,6 @@ public class ObjectTouch : MonoBehaviour
         return point;
     }
     
-
-
 
     private bool IsPointerOverUIObject(Touch touch)
     {
@@ -494,10 +478,66 @@ public class ObjectTouch : MonoBehaviour
             .setLoopPingPong(1);
     }
 
-    
 
-    
-    
+    public IEnumerator Special(Vector2 touchPosition)
+    {
+        // Instantiate the target image prefab
+        targetImagePrefab = new GameObject("TargetImage");
+        Image targetImage = targetImagePrefab.AddComponent<Image>();
+        targetImagePrefab.transform.SetParent(GameObject.Find("Canvas").transform);
+        gameObject.GetComponent<ObjectTouch>().enabled = false;
+        gameObject.GetComponent<SpriteRenderer>().enabled = false;
 
-    
+
+        // Set the size and sprite of the target image
+        targetImage.sprite = gameObject.GetComponent<SpriteRenderer>().sprite;
+        targetImage.rectTransform.localScale = new Vector3(1.2f, 1.2f, 1.2f); // Adjust scale as needed
+        targetImage.rectTransform.sizeDelta = new Vector2(targetImage.sprite.rect.width, targetImage.sprite.rect.height); // Adjust size as needed
+
+
+        // Convert touch position to local position in the Canvas
+        RectTransform canvasRect = GameObject.Find("Canvas").GetComponent<RectTransform>();
+        Vector2 localPoint;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            canvasRect,
+            touchPosition,
+            mainCamera,
+            out localPoint
+        );
+
+        // Set the initial position of the target image to the touch position
+        targetImage.rectTransform.anchoredPosition = localPoint;
+
+        // Find the UI hotbar by name and assign it to UiHotbar
+        GameObject hotbarObject = GameObject.Find("Icon" + gameObject.name);
+
+        if (hotbarObject != null)
+        {
+            hotbarObject.transform.hasChanged = false;
+            UiHotbar = hotbarObject.transform;
+        }
+        else
+        {
+            Debug.Log("Icon" + gameObject.name);
+            Debug.LogError("Hotbar object not found in the scene.");
+        }
+        LeanTween.scale(targetImagePrefab, new Vector3(4, 4, 4), 1f).setEase(LeanTweenType.easeInOutQuart);
+        LeanTween.moveLocal(targetImagePrefab, new Vector2(0, 100), 1f).setEase(LeanTweenType.easeInOutQuart)
+            .setOnComplete(() =>
+            {
+                gameManager.SpecialFound.GetComponentInChildren<TextMeshProUGUI>().text = gameObject.name + " Found!";
+                gameManager.SpecialFound.SetActive(true);
+            });
+        yield return new WaitForSeconds(4f);
+        gameManager.SpecialFound.SetActive(false);
+        StartCoroutine(FlyToToolbar(targetImagePrefab));
+
+    }
+
+
+
+
+
+
+
 }
