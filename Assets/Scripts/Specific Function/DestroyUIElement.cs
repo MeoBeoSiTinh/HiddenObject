@@ -80,7 +80,7 @@ public class DestroyOnOutsideClick : MonoBehaviour, IPointerDownHandler
 
         if (!hitValidTarget)
         {
-            Destroy(gameObject, destroyDelay);
+            LeanTween.scale(gameObject, Vector3.zero, 0.3f).setOnComplete(() => Destroy(gameObject));
         }
     }
 

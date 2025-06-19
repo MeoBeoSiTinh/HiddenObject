@@ -17,6 +17,7 @@ TagManager:
   - Tree
   - Crafter
   - Pointer
+  - TutBox
   layers:
   - Default
   - TransparentFX

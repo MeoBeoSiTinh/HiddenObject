@@ -34,7 +34,7 @@ public class Map1 : MonoBehaviour
             }
             CameraManager.Instance.allowed = false;
 
-            createTutBox();
+            createTutBox("Open the bushes and pick up the hidden object",new Vector3(0, -600, 0));
             yield return CreateAndFadeInPointerDestroyOnClick(new Vector2(-2.5f, -2.7f), 0.5f);
         }
         while (GameObject.FindGameObjectsWithTag("Pointer").Length > 0)
@@ -47,10 +47,16 @@ public class Map1 : MonoBehaviour
             yield return CreateAndFadeInPointer(new Vector2(-2.5f, -2.7f), 0.5f);
             yield return null; // Wait for the next frame
         }
+        
         Destroy(GameObject.FindGameObjectWithTag("Pointer"));
         StartCoroutine(Box.GetComponent<TutorialBox>().popDown());
         StartCoroutine(focusCircleController.StopFocusing());
         CameraManager.Instance.allowed = true;
+        yield return new WaitForSeconds(0.5f);
+        createTutBox("Find the remaining objects", new Vector3(0, -1600, 0));
+        yield return new WaitForSeconds(5f);
+        StartCoroutine(Box.GetComponent<TutorialBox>().popDown());
+
 
     }
 
@@ -111,13 +117,13 @@ public class Map1 : MonoBehaviour
         }
     }
 
-    private void createTutBox()
+    private void createTutBox(string text, Vector3 position)
     {
         GameObject tut = Instantiate(tutBox);
         tut.transform.SetParent(GameObject.Find("Canvas").transform, false);
-        tut.GetComponent<TutorialBox>().ChangeText("Pick up the hidden object.");
+        tut.GetComponent<TutorialBox>().ChangeText(text);
         Box = tut;
-        StartCoroutine(Box.GetComponent<TutorialBox>().popUp());
+        StartCoroutine(Box.GetComponent<TutorialBox>().popUp(position));
     }
 
 }

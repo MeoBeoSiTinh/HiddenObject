@@ -52,7 +52,7 @@ public class ObjectInteract : MonoBehaviour
           
         Vector3 pos = transform.position;
         StartCoroutine(cam.GetComponent<CameraManager>().MoveCamera(pos, 6f, 1f));
-        pos.y += 1.8f;
+        pos.y += 1;
         WorldSpaceUI worldSpaceUI = spawnedTextBox.AddComponent<WorldSpaceUI>();
         worldSpaceUI.worldOffset = pos;
         spawnedTextBox.GetComponent<WorldSpaceUI>().Init();

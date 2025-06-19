@@ -148,7 +148,7 @@ GameObject:
   - component: {fileID: 2146980144080974878}
   m_Layer: 5
   m_Name: TutorialBox
-  m_TagString: Untagged
+  m_TagString: TutBox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

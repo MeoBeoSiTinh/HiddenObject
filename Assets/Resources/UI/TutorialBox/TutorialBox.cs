@@ -13,12 +13,12 @@ public class TutorialBox : MonoBehaviour
         TextUI.text = text;
     }
 
-    public IEnumerator popUp()
+    public IEnumerator popUp(Vector3 position)
     {
-        gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, -350, 0);
+        gameObject.GetComponent<RectTransform>().anchoredPosition = position;
         gameObject.GetComponent<RectTransform>().localScale = new Vector3(0.1f, 0.1f, 0.1f);
         yield return null;
-        LeanTween.scale(gameObject.GetComponent<RectTransform>(), new Vector3(1f, 1f, 1f), 1f).setEaseOutBounce();
+        LeanTween.scale(gameObject.GetComponent<RectTransform>(), new Vector3(1f, 1f, 1f), 1f).setEaseOutBack();
         yield return null;
     }
 
@@ -30,5 +30,10 @@ public class TutorialBox : MonoBehaviour
         });
 
         yield return null;
+    }
+
+    public void AddDestroyOnClick()
+    {
+        gameObject.AddComponent<DestroyOnOutsideClick>();
     }
 }
