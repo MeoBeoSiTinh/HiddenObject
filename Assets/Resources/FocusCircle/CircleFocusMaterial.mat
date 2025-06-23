@@ -29,9 +29,9 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _AspectRatio: 0.5
+    - _AspectRatio: 0.5625
     - _FadeWidth: 0.02
-    - _Radius: 0.1
+    - _Radius: 0.8346641
     m_Colors:
     - _CircleCenter: {r: 0.5, g: 0.5, b: 0, a: 0}
     - _Color: {r: 0, g: 0, b: 0, a: 0.5882353}

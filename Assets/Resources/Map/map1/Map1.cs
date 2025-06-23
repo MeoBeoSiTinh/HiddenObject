@@ -34,7 +34,7 @@ public class Map1 : MonoBehaviour
             }
             CameraManager.Instance.allowed = false;
 
-            createTutBox("Open the bushes and pick up the hidden object",new Vector3(0, -600, 0));
+            createTutBox("Open the bushes and pick up the hidden object",new Vector3(0, 0.4f, 0));
             yield return CreateAndFadeInPointerDestroyOnClick(new Vector2(-2.5f, -2.7f), 0.5f);
         }
         while (GameObject.FindGameObjectsWithTag("Pointer").Length > 0)
@@ -53,7 +53,7 @@ public class Map1 : MonoBehaviour
         StartCoroutine(focusCircleController.StopFocusing());
         CameraManager.Instance.allowed = true;
         yield return new WaitForSeconds(0.5f);
-        createTutBox("Find the remaining objects", new Vector3(0, -1600, 0));
+        createTutBox("Find the remaining objects", new Vector3(0, -0.48f, 0));
         yield return new WaitForSeconds(5f);
         StartCoroutine(Box.GetComponent<TutorialBox>().popDown());
 

@@ -28,7 +28,7 @@ public class Map2 : MonoBehaviour
         {
             yield return focusCircleController.StartFocusing(new Vector2(-12.6f, -8f), 0.1f);
         }
-        createTutBox("He needs somethings from you.", new Vector3(0, -600, 0));
+        createTutBox("He needs somethings from you.", new Vector3(0, 0.4f, 0));
         yield return CreateAndFadeInPointerDestroyOnClick(new Vector2(-12.6f, -7f), 0.5f);
         CameraManager.Instance.allowed = false;
         while (GameObject.FindGameObjectsWithTag("TextBox").Length <= 0)
@@ -39,7 +39,7 @@ public class Map2 : MonoBehaviour
         CameraManager.Instance.allowed = true;
         StartCoroutine(focusCircleController.StopFocusing());
         yield return new WaitForSeconds(0.5f);
-        createTutBox("Tap on Claim", new Vector3(0, -500, 0));
+        createTutBox("Tap on Claim", new Vector3(0, 0.5f, 0));
 
         bool claimButtonClicked = false;
         while (!claimButtonClicked)
@@ -75,7 +75,7 @@ public class Map2 : MonoBehaviour
             }
         }
         StartCoroutine(Box.GetComponent<TutorialBox>().popDown());
-        createTutBox("Find him what he need", new Vector3(0, -1600, 0));
+        createTutBox("Find him what he need", new Vector3(0, -0.48f, 0));
 
 
         while (!gameManager.foundTarget.Contains("Cần câu") || !gameManager.foundTarget.Contains("Giun đất"))
@@ -88,9 +88,9 @@ public class Map2 : MonoBehaviour
         {
             StartCoroutine(focusCircleController.StartFocusing(new Vector2(-12.6f, -8f), 0.1f));
         }
-        createTutBox("Give him what he needs to get the fish", new Vector3(0, -600, 0));
+        createTutBox("Give him what he needs to get the fish", new Vector3(0, 0.4f, 0));
         yield return CreateAndFadeInPointerDestroyOnClick(new Vector2(-12.6f, -7f), 0.5f);
-        CameraManager.Instance.allowed = false;
+        CameraManager.Instance.allowed = false; 
         while (GameObject.FindGameObjectsWithTag("TextBox").Length <= 0)
         {
             yield return null; // Wait for the next frame
